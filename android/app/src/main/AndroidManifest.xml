@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.online_tutor">
    <application
-        android:label="online_tutor"
+        android:label="Gia sư online"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
