@@ -1,0 +1,41 @@
+import 'package:flutter/material.dart';
+
+class CommonColor{
+  static const white = Color(0xffffffff);
+  static const pinkLight = Color(0xfffce4ec);
+  static const pinkLight2 = Color(0xfff48fb1);
+  static const pinkLight3 = Color(0xfff06292);
+  static const pinkDeep = Color(0xffec407a);
+  static const pink = Color(0xffe91e63);
+  static const pinkAccent = Color(0xffff4081);
+  static const red = Color(0xffd50000);
+  static const redAccent = Color(0xffff5252);
+  static const redLight = Color(0xfff44336);
+  static const orange = Color(0xffff5722);
+  static const orangeDeep = Color(0xfff4511e);
+  static const orangeLight = Color(0xffff7043);
+  static const orangeAccent = Color(0xffff3d00);
+  static const orangeOrigin = Color(0xffff9800);
+  static const orangeOriginLight = Color(0xffff6f00);
+  static const amber = Color(0xffffc107);
+  static const amberDeep = Color(0xffff6f00);
+  static const amberAccent = Color(0xffffd740);
+  static const yellow = Color(0xffffff00);
+  static const yellowDeep = Color(0xffffd600);
+  static const yellowLight = Color(0xffffeb3b);
+  static const greenLight = Color(0xffb2ff59);
+  static const green = Color(0xff4caf50);
+  static const greenDeep = Color(0xff1b5e20);
+  static const blueLight = Color(0xff03a9f4);
+  static const blue = Color(0xff2196f3);
+  static const blueDeep = Color(0xff0d47a1);
+  static const grayLight = Color(0xffeceff1);
+  static const gray = Color(0xffb0bec5);
+  static const grayDeep = Color(0xff607d8b);
+  static const greyWhite = Color(0xfffafafa);
+  static const greyLight = Color(0xfff5f5f5);
+  static const grey = Color(0xff9e9e9e);
+  static const blackDeep = Color(0xff000000);
+  static const blackLight = Color(0x8a000000);
+  static const black = Color(0xdd000000);
+}

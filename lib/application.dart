@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:online_tutor/home.dart';
+import 'package:online_tutor/dashboard.dart';
 import 'package:online_tutor/res/languages/app_localization_delegate.dart';
 import 'package:online_tutor/res/languages/locale_constant.dart';
 
@@ -46,7 +46,7 @@ class _Application extends State<Application>{
       builder: (context, child){
         return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: child!);
       },
-      home: Home(),
+      home: Dashboard(),
       debugShowCheckedModeBanner: false,
       locale: _locale,
       supportedLocales: const [
