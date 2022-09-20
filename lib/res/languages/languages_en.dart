@@ -5,4 +5,44 @@ class LanguageEn extends Languages{
   // TODO: implement appName
   String get appName => 'Online Tutor';
 
+  @override
+  // TODO: implement login
+  String get login => 'Log-in';
+
+  @override
+  // TODO: implement email
+  String get email => 'Email';
+
+  @override
+  // TODO: implement password
+  String get password => 'Mật khẩu';
+
+  @override
+  // TODO: implement emailError
+  String get emailError => 'Email không đúng định dạng';
+
+  @override
+  // TODO: implement passError
+  String get passError => 'Mật khẩu không được bỏ trống';
+
+  @override
+  // TODO: implement emailEmpty
+  String get emailEmpty => 'Email không được bỏ trống';
+
+  @override
+  // TODO: implement forgotPass
+  String get forgotPass => 'Quên mật khẩu?';
+
+  @override
+  // TODO: implement doLogin
+  String get doLogin => 'Đăng nhập';
+
+  @override
+  // TODO: implement signUp
+  String get signUp => 'Đăng ký';
+
+  @override
+  // TODO: implement donAccount
+  String get donAccount => 'Bạn chưa có tài khoản?';
+
 }

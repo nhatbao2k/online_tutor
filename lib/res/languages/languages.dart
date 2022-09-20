@@ -5,4 +5,14 @@ abstract class Languages{
     return Localizations.of(context, Languages);
   }
   String get appName;
+  String get login;
+  String get email;
+  String get password;
+  String get emailError;
+  String get passError;
+  String get emailEmpty;
+  String get forgotPass;
+  String get doLogin;
+  String get signUp;
+  String get donAccount;
 }

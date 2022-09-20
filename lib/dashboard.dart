@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/module/home/home_page.dart';
+import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
 import 'package:online_tutor/res/languages/languages.dart';
 
@@ -14,15 +15,15 @@ class Dashboard extends StatefulWidget{
 }
 
 class _Dashboard extends State<Dashboard>{
-  int _selectdIndex = 0;
+  int _selectdIndex = 2;
   Widget _getBody(){
     if(this._selectdIndex == 0){
       return HomePage();
     }else if(_selectdIndex == 1){
       return HomePage();
-    }else if(_selectdIndex == 1){
-      return HomePage();
-    }else if(_selectdIndex == 1){
+    }else if(_selectdIndex == 2){
+      return LoginPage();
+    }else if(_selectdIndex == 3){
       return HomePage();
     }else {
       return ProfilePage();

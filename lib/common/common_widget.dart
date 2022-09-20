@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:online_tutor/common/common_color.dart';
 
 Widget CustomText(String content, {textStyle, maxline, overFlow, textAlign}){
   return Text(
@@ -10,3 +11,11 @@ Widget CustomText(String content, {textStyle, maxline, overFlow, textAlign}){
     textAlign: textAlign,
   );
 }
+
+Widget CustomAppBar(String title){
+  return AppBar(
+    title: CustomText(title, textStyle: TextStyle(color: CommonColor.white)),
+    backgroundColor: CommonColor.blueLight,
+  );
+}
+

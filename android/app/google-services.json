@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "927163919536",
+    "project_id": "online-tutor-b6f27",
+    "storage_bucket": "online-tutor-b6f27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:927163919536:android:e037dcfbf709f3dbfe5f75",
+        "android_client_info": {
+          "package_name": "com.example.online_tutor"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "927163919536-pse3pj2qooomkq0mmoo3usd6umufid6j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqxoeGn2DUzeZf3vI6i6xsMP8Ex5m8v50"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "927163919536-pse3pj2qooomkq0mmoo3usd6umufid6j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
