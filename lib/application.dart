@@ -4,6 +4,8 @@ import 'package:online_tutor/dashboard.dart';
 import 'package:online_tutor/res/languages/app_localization_delegate.dart';
 import 'package:online_tutor/res/languages/locale_constant.dart';
 
+import 'module/splash/splash_page.dart';
+
 class Application extends StatefulWidget{
 
   static void setLocale(BuildContext context, Locale newLocale){
@@ -46,7 +48,7 @@ class _Application extends State<Application>{
       builder: (context, child){
         return MediaQuery(data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0), child: child!);
       },
-      home: Dashboard(),
+      home: SplashPage(),
       debugShowCheckedModeBanner: false,
       locale: _locale,
       supportedLocales: const [

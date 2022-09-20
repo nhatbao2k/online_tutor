@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_widget.dart';
@@ -17,7 +18,11 @@ class SignUpPage extends StatefulWidget{
 }
 
 class _SignUpPage extends State<SignUpPage>{
-  
+  String _fullname='';
+  String _phone='';
+  String _email='';
+  String _pass1='';
+  String _pass2='';
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -64,51 +69,69 @@ class _SignUpPage extends State<SignUpPage>{
                   children: [
                     TextFormField(
                       decoration: InputDecoration(
-                          label: CustomText('Họ và tên*'),
+                          label: CustomText('${Languages.of(context).fullName} *'),
                           icon: Icon(Icons.key)
                       ),
+                      onChanged: (fullname){
+                        _fullname=fullname;
+                        setState((){
+                        });
+                      },
                     ),
                     SizedBox(height: 16,),
                     TextFormField(
                       decoration: InputDecoration(
-                          label: CustomText('${Languages.of(context).password}*'),
+                          label: CustomText('${Languages.of(context).phone} *'),
                           icon: Icon(Icons.key)
                       ),
+                      onChanged: (value){
+                      _phone=value;
+                      setState((){
+                      });
+                    },
                     ),
                     SizedBox(height: 16,),
                     TextFormField(
                       decoration: InputDecoration(
-                          label: CustomText('email*'),
+                          label: CustomText('${Languages.of(context).email} *'),
                           icon: Icon(Icons.key)
                       ),
+                      onChanged: (value){
+                        _email=value;
+                        setState((){
+                        });
+                      },
                     ),
                     SizedBox(height: 16,),
                     TextFormField(
                       decoration: InputDecoration(
-                          label: CustomText('số điện thoại*'),
+                          label: CustomText('${Languages.of(context).password} *'),
                           icon: Icon(Icons.key)
                       ),
+                      onChanged: (value){
+                        _pass1=value;
+                        setState((){
+                        });
+                      },
                     ),
                     SizedBox(height: 16,),
                     TextFormField(
                       decoration: InputDecoration(
-                          label: CustomText('pass*'),
+                          label: CustomText('${Languages.of(context).password} *'),
                           icon: Icon(Icons.key)
                       ),
-                    ),
-                    SizedBox(height: 16,),
-                    TextFormField(
-                      decoration: InputDecoration(
-                          label: CustomText('pass*'),
-                          icon: Icon(Icons.key)
-                      ),
+                      onChanged: (value){
+                        _pass1=value;
+                        setState((){
+                        });
+                      },
                     ),
                     SizedBox(height: 16,),
                     SizedBox(
                       width: getWidthDevice(context)-16,
                       child: ElevatedButton(
                         onPressed: (){
-
+                          register(_email, _pass1);
                         },
                         child: CustomText(Languages.of(context).signUp, textStyle: TextStyle(fontSize: 16, color: CommonColor.white, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
@@ -125,5 +148,23 @@ class _SignUpPage extends State<SignUpPage>{
         ),
       ),
     );
+  }
+
+  Future<void> register(String email, pass) async{
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: email,
+        password: pass,
+      );
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+        Navigator.pop(context);
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 }

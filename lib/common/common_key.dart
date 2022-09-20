@@ -13,4 +13,8 @@ class CommonKey{
   static final String LOGIN = 'LOGIN';
   static final String SIGN_UP = 'SIGN_UP';
   static final String FORGOT_PASS = 'FORGOT_PASS';
+  static final String USERNAME = 'USERNAME';
+  static final String TOKEN_FIREBASE = 'TOKEN_FIREBASE';
+  static final String nullDynamic = "Instance of 'Future<dynamic>'";
+
 }

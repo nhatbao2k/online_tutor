@@ -45,4 +45,12 @@ class LanguageEn extends Languages{
   // TODO: implement donAccount
   String get donAccount => 'Bạn chưa có tài khoản?';
 
+  @override
+  // TODO: implement fullName
+  String get fullName => 'Họ và tên';
+
+  @override
+  // TODO: implement phone
+  String get phone => 'Số điện thoại';
+
 }

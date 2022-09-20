@@ -1,32 +1,46 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
+import 'package:online_tutor/module/splash/splash_page.dart';
 import 'package:online_tutor/res/languages/languages.dart';
 
 class Dashboard extends StatefulWidget{
+  bool? _checkLogin;
+
+  Dashboard(this._checkLogin);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _Dashboard();
+    return _Dashboard(_checkLogin);
   }
 }
 
 class _Dashboard extends State<Dashboard>{
+  bool? _checkLogin;
   int _selectdIndex = 2;
+
+  _Dashboard(this._checkLogin);
+
+  @override
+  void initState() {
+
+  }
   Widget _getBody(){
     if(this._selectdIndex == 0){
-      return HomePage();
+      return _checkLogin!?ProfilePage():LoginPage();
     }else if(_selectdIndex == 1){
-      return HomePage();
+      return _checkLogin!?ProfilePage():LoginPage();
     }else if(_selectdIndex == 2){
       return LoginPage();
     }else if(_selectdIndex == 3){
-      return HomePage();
+      return _checkLogin!?ProfilePage():LoginPage();
     }else {
-      return ProfilePage();
+      return _checkLogin!?ProfilePage():LoginPage();
     }
   }
 
@@ -79,5 +93,6 @@ class _Dashboard extends State<Dashboard>{
       ),
     );
   }
+
 
 }

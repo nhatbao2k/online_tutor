@@ -15,4 +15,6 @@ abstract class Languages{
   String get doLogin;
   String get signUp;
   String get donAccount;
+  String get fullName;
+  String get phone;
 }

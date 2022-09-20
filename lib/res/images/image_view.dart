@@ -7,4 +7,5 @@ class ImageView{
   static const banner_login = asset + 'banner_login.png';
   static const no_load = asset + 'no_load.png';
   static const banner_register = asset + 'banner_register.png';
+  static const splash = asset + 'splash.jpg';
 }
