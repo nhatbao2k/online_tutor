@@ -17,4 +17,14 @@ abstract class Languages{
   String get donAccount;
   String get fullName;
   String get phone;
+  String get close;
+  String get nameEmpty;
+  String get phoneEmpty;
+  String get phoneError;
+  String get passNotEqual;
+  String get weakPass;
+  String get alert;
+  String get existEmail;
+  String get accountWrong;
+  String get passWrong;
 }

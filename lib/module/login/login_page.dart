@@ -1,11 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/module/sign_up/sign_up_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
-import 'package:online_tutor/res/languages/languages.dart';
+import 'package:online_tutor/restart_page.dart';
+import 'package:online_tutor/storage/shared_preferences.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/common_function.dart';
+import '../../languages/languages.dart';
 
 class LoginPage extends StatefulWidget{
   @override
@@ -17,8 +23,8 @@ class LoginPage extends StatefulWidget{
 }
 
 class _LoginPage extends State<LoginPage>{
-
-
+  String _email='';
+  String _pass='';
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -78,7 +84,9 @@ class _LoginPage extends State<LoginPage>{
                       },
                       keyboardType: TextInputType.emailAddress,
                       onChanged: (content){
-
+                        _email=content;
+                        setState((){
+                        });
                       },
                     ),
                     SizedBox(height: 16,),
@@ -87,6 +95,11 @@ class _LoginPage extends State<LoginPage>{
                         label: CustomText('${Languages.of(context).password}*'),
                         icon: Icon(Icons.key)
                       ),
+                      onChanged: (value){
+                        _pass=value;
+                        setState((){
+                        });
+                      },
                     ),
                     SizedBox(height: 8,),
                     Align(
@@ -101,8 +114,11 @@ class _LoginPage extends State<LoginPage>{
                     SizedBox(
                       width: getWidthDevice(context)-16,
                       child: ElevatedButton(
-                        onPressed: (){
-
+                        onPressed: ()async{
+                          if(validateEmail(_email) && _pass.isNotEmpty){
+                            showLoaderDialog(context);
+                            _doLogin(_email, _pass);
+                          }
                         },
                         child: CustomText(Languages.of(context).doLogin, textStyle: TextStyle(fontSize: 16, color: CommonColor.white, fontWeight: FontWeight.bold)),
                         style: ElevatedButton.styleFrom(
@@ -139,5 +155,32 @@ class _LoginPage extends State<LoginPage>{
     );
   }
 
+  Future<void> _doLogin(String email, String pass) async{
+    try {
+      UserCredential userCredential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: "$email",
+          password: "$pass"
+      );
+    } on FirebaseAuthException catch (e) {
+      // Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        print('No user found for that email.');
+        CustomDialog(context: context, content: Languages.of(context).accountWrong);
+      } else if (e.code == 'wrong-password') {
+        print('Wrong password provided for that user.');
+        CustomDialog(context: context, content: Languages.of(context).passWrong);
+      }else{
 
+      }
+    }
+    FirebaseFirestore.instance.collection('user').where('email', isEqualTo: email).get().then((value) {
+      value.docs.forEach((element) {
+        print(element.data());
+        Map<String, dynamic> map = element.data();
+        print(map);
+      });
+
+    });
+
+  }
 }

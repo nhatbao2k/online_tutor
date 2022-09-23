@@ -163,61 +163,73 @@ class _ProfilePage extends State<ProfilePage>{
   }
 
   Widget _itemOption(String title, IconData iconData, String keyFlow){
-    return   Container(
-      width: getWidthDevice(context)/2-16,
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(Radius.circular(8)),
-        color: CommonColor.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 7,
-            offset: const Offset(0, 3), // changes position of shadow
-          ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(iconData, color: CommonColor.blue,),
-          const SizedBox(height: 8,),
-          CustomText('$title', textStyle: const TextStyle(color: CommonColor.black, fontWeight: FontWeight.w500, fontSize: 14))
-        ],
+    return   InkWell(
+      onTap: (){
+
+      },
+      child: Container(
+        width: getWidthDevice(context)/2-16,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          borderRadius: const BorderRadius.all(Radius.circular(8)),
+          color: CommonColor.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: const Offset(0, 3), // changes position of shadow
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(iconData, color: CommonColor.blue,),
+            const SizedBox(height: 8,),
+            CustomText('$title', textStyle: const TextStyle(color: CommonColor.black, fontWeight: FontWeight.w500, fontSize: 14))
+          ],
+        ),
       ),
     );
   }
 
   Widget _itemOption2(String title, IconData iconData, String keyFlow){
-    return Container(
-      width: getWidthDevice(context)-16,
-      height: getHeightDevice(context)*0.07,
-      margin: EdgeInsets.only(right: 8, left: 8),
-      padding: EdgeInsets.only(left: 4,right: 4),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(8)),
-        color: CommonColor.white,
-        boxShadow: [
-          BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 1,
-              blurRadius: 7,
-              offset: Offset(0,3)
-          )
-        ],
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(iconData, color: CommonColor.blueLight,),
-          SizedBox(width: 4,),
-          CustomText('$title', textStyle: TextStyle(color: CommonColor.black, fontSize: 14, fontWeight: FontWeight.w500),)
-        ],
+    return InkWell(
+      onTap: (){
+        if(CommonKey.LOGOUT==keyFlow){
+          signOut(context);
+        }
+      },
+      child: Container(
+        width: getWidthDevice(context)-16,
+        height: getHeightDevice(context)*0.07,
+        margin: EdgeInsets.only(right: 8, left: 8),
+        padding: EdgeInsets.only(left: 4,right: 4),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          color: CommonColor.white,
+          boxShadow: [
+            BoxShadow(
+                color: Colors.grey.withOpacity(0.5),
+                spreadRadius: 1,
+                blurRadius: 7,
+                offset: Offset(0,3)
+            )
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(iconData, color: CommonColor.blueLight,),
+            SizedBox(width: 4,),
+            CustomText('$title', textStyle: TextStyle(color: CommonColor.black, fontSize: 14, fontWeight: FontWeight.w500),)
+          ],
+        ),
       ),
     );
   }

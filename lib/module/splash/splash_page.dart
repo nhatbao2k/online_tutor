@@ -58,19 +58,20 @@ class _SplashPage extends State<SplashPage>{
     // String username = user.toString();
     // if(username.isNotEmpty){
     bool checkLogin = false;
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User? user) {
-      if (user == null) {
-        checkLogin = false;
-      } else {
-        checkLogin = true;
-      }
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
-    });
-
-    // }else{
-    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage()));
-    // }
+    dynamic username = await SharedPreferencesData.GetData(CommonKey.USERNAME);
+    if(username.toString().isNotEmpty){
+      checkLogin=true;
+    }
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
+    // FirebaseAuth.instance
+    //     .authStateChanges()
+    //     .listen((User? user) {
+    //   if (user == null) {
+    //     checkLogin = false;
+    //   } else {
+    //     checkLogin = true;
+    //   }
+    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
+    // });
   }
 }

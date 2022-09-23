@@ -1,4 +1,6 @@
-import 'package:online_tutor/res/languages/languages.dart';
+
+
+import 'languages.dart';
 
 class LanguagesVn extends Languages{
   @override
@@ -51,4 +53,44 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement phone
   String get phone => 'Số điện thoại';
+
+  @override
+  // TODO: implement close
+  String get close => 'Đóng';
+
+  @override
+  // TODO: implement emptyName
+  String get nameEmpty => 'Họ và tên không được để trống';
+
+  @override
+  // TODO: implement phoneEmpty
+  String get phoneEmpty => 'Số điện thoại không được để trống';
+
+  @override
+  // TODO: implement phoneError
+  String get phoneError => 'Số điện thoại không đúng';
+
+  @override
+  // TODO: implement passNotEqual
+  String get passNotEqual => 'Mật khẩu không khớp';
+
+  @override
+  // TODO: implement weakPass
+  String get weakPass => 'Mật khẩu yếu';
+
+  @override
+  // TODO: implement alert
+  String get alert => 'Thông báo';
+
+  @override
+  // TODO: implement existEmail
+  String get existEmail => 'Email đã tồn tại';
+
+  @override
+  // TODO: implement accountWrong
+  String get accountWrong => 'Thông tin đăng nhập không chính xác';
+
+  @override
+  // TODO: implement passWrong
+  String get passWrong => 'Mật khẩu không đúng, vui lòng nhập lại!';
 }

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:online_tutor/res/languages/languages.dart';
-import 'package:online_tutor/res/languages/languages_en.dart';
-import 'package:online_tutor/res/languages/languages_vn.dart';
+
+import 'languages.dart';
+import 'languages_en.dart';
+import 'languages_vn.dart';
 
 class AppLocalizationsDelegate extends LocalizationsDelegate<Languages>{
   @override

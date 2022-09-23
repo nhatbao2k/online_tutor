@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:online_tutor/dashboard.dart';
-import 'package:online_tutor/res/languages/app_localization_delegate.dart';
-import 'package:online_tutor/res/languages/locale_constant.dart';
 
+import 'languages/app_localization_delegate.dart';
+import 'languages/locale_constant.dart';
 import 'module/splash/splash_page.dart';
 
 class Application extends StatefulWidget{

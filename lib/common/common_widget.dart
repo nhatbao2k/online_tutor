@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:online_tutor/common/common_color.dart';
+import 'package:online_tutor/languages/languages.dart';
 
 Widget CustomText(String content, {textStyle, maxline, overFlow, textAlign}){
   return Text(
@@ -27,32 +28,53 @@ Widget LoadingView(){
   );
 }
 
-int checkVarriable(dynamic value){
-  if(value is String){
-    return 0;
-  }else if(value is int){
-    return 1;
-  }else if(value is double){
-    return 2;
-  }else if(value is bool){
-    return 3;
-  }else{
-    return 4;
-  }
+
+
+CustomDialog(
+    {required BuildContext context, IconData? iconData, String? title, required String content}){
+  return showDialog(
+    context: context,
+    builder: (context){
+      return AlertDialog(
+        title: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            iconData!=null?Icon(
+              iconData,
+              color: CommonColor.yellowDeep,
+              size: 80,
+            ):SizedBox(),
+            title==null||title.isEmpty?SizedBox():CustomText(title, overFlow: TextOverflow.ellipsis, maxline: 2, textAlign: TextAlign.center, textStyle: TextStyle(fontSize: 16, color: CommonColor.black, fontWeight: FontWeight.bold)),
+          ],
+        ),
+        content: CustomText(content, overFlow: TextOverflow.ellipsis, maxline: 2, textAlign: TextAlign.center, textStyle: TextStyle(fontSize: 14, color: CommonColor.black,)),
+
+        actions: [
+          MaterialButton(
+            onPressed: ()=>Navigator.pop(context),
+            child: CustomText(Languages.of(context).close),
+          )
+        ],
+      );
+    }
+  );
 }
 
-int partInterger(dynamic value){
-  return int.parse(value);
+showLoaderDialog(BuildContext context){
+  AlertDialog alert=AlertDialog(
+    content: new Row(
+      children: [
+        CircularProgressIndicator(),
+        Container(margin: EdgeInsets.only(left: 7),child:Text("Loading..." )),
+      ],),
+  );
+  showDialog(barrierDismissible: false,
+    context:context,
+    builder:(BuildContext context){
+      return alert;
+    },
+  );
 }
 
-String partString(dynamic value){
-  return value.toString();
-}
-
-double partDouble(dynamic value){
-  return double.parse(value);
-}
-
-bool partBool(dynamic value){
-  return value.toString()=='true'?true:false;
-}
