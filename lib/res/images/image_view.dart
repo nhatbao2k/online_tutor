@@ -8,4 +8,10 @@ class ImageView{
   static const no_load = asset + 'no_load.png';
   static const banner_register = asset + 'banner_register.png';
   static const splash = asset + 'splash.jpg';
+  static const banner_contest = asset + 'banner_contest.png';
+  static const banner_document = asset + 'banner_document.png';
+  static const banner_golden = asset + 'banner_golden.png';
+  static const banner_intro = asset + 'banner_intro.png';
+  static const banner_test = asset + 'banner_test.png';
+  static const tab_bar = asset + 'tab_bar.png';
 }

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
+import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
 
@@ -32,7 +33,7 @@ class _Dashboard extends State<Dashboard>{
     }else if(_selectdIndex == 1){
       return _checkLogin!?ProfilePage():LoginPage();
     }else if(_selectdIndex == 2){
-      return LoginPage();
+      return HomePage();
     }else if(_selectdIndex == 3){
       return _checkLogin!?ProfilePage():LoginPage();
     }else {

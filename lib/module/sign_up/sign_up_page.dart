@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
@@ -31,6 +32,7 @@ class _SignUpPage extends State<SignUpPage>{
   final _formPass1 = GlobalKey<FormState>();
   final _formPass2 = GlobalKey<FormState>();
   final _formEmail = GlobalKey<FormState>();
+  final _user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -192,6 +194,7 @@ class _SignUpPage extends State<SignUpPage>{
                           setState((){
                           });
                         },
+                        obscureText: _seePass2,
                         validator: (value){
                           if(value!.isEmpty){
                             return '\u26A0 ${Languages.of(context).passError}';
@@ -253,6 +256,7 @@ class _SignUpPage extends State<SignUpPage>{
       // await user!.updateDisplayName(_phone);
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
+
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
 
@@ -260,11 +264,23 @@ class _SignUpPage extends State<SignUpPage>{
         print('The account already exists for that email.');
         CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).existEmail);
       }else{
-        RestartPage.restartApp(context);
-        Navigator.pop(context);
+
+
       }
     } catch (e) {
       print(e);
     }
+
+    await _user?.updateDisplayName(_phone);
+    FirebaseFirestore.instance.collection('users').doc(_phone).set({
+      "phone": _phone,
+      "avatar": "",
+      "fullname":_fullname,
+      "role":"MEMBER",
+      "email":_email
+    }).then((value) => {
+      RestartPage.restartApp(context),
+      Navigator.pop(context),
+    });
   }
 }

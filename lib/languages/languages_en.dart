@@ -92,4 +92,12 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement passWrong
   String get passWrong => 'Mật khẩu không đúng, vui lòng nhập lại!';
+
+  @override
+  // TODO: implement classNew
+  String get classNew => 'Lớp học mới';
+
+  @override
+  // TODO: implement seeMore
+  String get seeMore => 'Xem thêm';
 }

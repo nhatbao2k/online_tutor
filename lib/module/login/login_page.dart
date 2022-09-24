@@ -25,6 +25,7 @@ class LoginPage extends StatefulWidget{
 class _LoginPage extends State<LoginPage>{
   String _email='';
   String _pass='';
+  bool _seePass = true;
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -93,12 +94,21 @@ class _LoginPage extends State<LoginPage>{
                     TextFormField(
                       decoration: InputDecoration(
                         label: CustomText('${Languages.of(context).password}*'),
-                        icon: Icon(Icons.key)
+                        icon: Icon(Icons.key),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _seePass?Icons.visibility_off:Icons.visibility
+                          ),
+                          onPressed: ()=>setState(()=>_seePass=!_seePass),
+                        )
                       ),
                       onChanged: (value){
                         _pass=value;
                         setState((){
                         });
+                      },
+                      validator: (value){
+                        return value!.isEmpty?'\u26A0 ${Languages.of(context).passError}':null;
                       },
                     ),
                     SizedBox(height: 8,),
@@ -161,6 +171,17 @@ class _LoginPage extends State<LoginPage>{
           email: "$email",
           password: "$pass"
       );
+      final _user = FirebaseAuth.instance.currentUser;
+      if(_user!=null){
+        String phone = _user.displayName!;
+        if(phone.isNotEmpty){
+          await SharedPreferencesData.SaveData(CommonKey.USERNAME, phone);
+          Navigator.pop(context);
+          RestartPage.restartApp(context);
+        }else{
+          _doLogin(email, pass);
+        }
+      }
     } on FirebaseAuthException catch (e) {
       // Navigator.pop(context);
       if (e.code == 'user-not-found') {
@@ -169,18 +190,18 @@ class _LoginPage extends State<LoginPage>{
       } else if (e.code == 'wrong-password') {
         print('Wrong password provided for that user.');
         CustomDialog(context: context, content: Languages.of(context).passWrong);
-      }else{
-
       }
-    }
-    FirebaseFirestore.instance.collection('user').where('email', isEqualTo: email).get().then((value) {
-      value.docs.forEach((element) {
-        print(element.data());
-        Map<String, dynamic> map = element.data();
-        print(map);
-      });
 
-    });
+    }
+
+    // FirebaseFirestore.instance.collection('user').where('email', isEqualTo: email).get().then((value) {
+    //   value.docs.forEach((element) {
+    //     print(element.data());
+    //     Map<String, dynamic> map = element.data();
+    //     print(map);
+    //   });
+    //
+    // });
 
   }
 }

@@ -27,4 +27,6 @@ abstract class Languages{
   String get existEmail;
   String get accountWrong;
   String get passWrong;
+  String get classNew;
+  String get seeMore;
 }

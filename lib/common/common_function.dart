@@ -2,6 +2,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:online_tutor/restart_page.dart';
+import 'package:online_tutor/storage/shared_preferences.dart';
 
 double getWidthDevice(BuildContext context){
   return MediaQuery.of(context).size.width;
@@ -62,10 +63,15 @@ bool partBool(dynamic value){
 }
 
 Future<void> signOut(BuildContext context) async {
+  await SharedPreferencesData.DeleteAll();
   await FirebaseAuth.instance.signOut();
   RestartPage.restartApp(context);
 }
 
 bool checkEmpty(String content){
   return content.isEmpty;
+}
+
+String replaceEmail(String email){
+  return email.replaceAll("@", "").replaceAll(".", "");
 }

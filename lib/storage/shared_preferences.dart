@@ -29,4 +29,9 @@ class SharedPreferencesData{
     _preferences = await SharedPreferences.getInstance();
     await _preferences!.remove(key);
   }
+
+  static Future<void> DeleteAll() async{
+    _preferences = await SharedPreferences.getInstance();
+    await _preferences!.clear();
+  }
 }

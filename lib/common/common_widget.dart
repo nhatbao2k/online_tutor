@@ -3,6 +3,9 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/languages/languages.dart';
 
+import 'common_function.dart';
+import 'image_load.dart';
+
 Widget CustomText(String content, {textStyle, maxline, overFlow, textAlign}){
   return Text(
     content,
@@ -14,21 +17,12 @@ Widget CustomText(String content, {textStyle, maxline, overFlow, textAlign}){
   );
 }
 
-Widget CustomAppBar(String title){
-  return AppBar(
-    title: CustomText(title, textStyle: TextStyle(color: CommonColor.white)),
-    backgroundColor: CommonColor.blueLight,
-  );
-}
-
 Widget LoadingView(){
   return SpinKitCircle(
     color: Colors.blue,
     size: 75.0,
   );
 }
-
-
 
 CustomDialog(
     {required BuildContext context, IconData? iconData, String? title, required String content}){
@@ -75,6 +69,82 @@ showLoaderDialog(BuildContext context){
     builder:(BuildContext context){
       return alert;
     },
+  );
+}
+
+Widget itemSeeMore(BuildContext context,Function(String call) callback){
+  return  Row(
+    mainAxisSize: MainAxisSize.max,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      SizedBox(width: 8,),
+      Expanded(child: CustomText(Languages.of(context).classNew, textStyle: TextStyle(color: CommonColor.blue, fontSize: 14, fontWeight: FontWeight.bold))),
+      InkWell(
+        onTap: ()=>callback(''),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CustomText(Languages.of(context).seeMore, textStyle: TextStyle(color: CommonColor.blue, fontWeight: FontWeight.bold)),
+            Icon(Icons.double_arrow, color: CommonColor.blue,)
+          ],
+        ),
+      ),
+      SizedBox(width: 8,),
+    ],
+  );
+}
+
+Widget itemClass(BuildContext context, String title, String content1, String content2, Function(bool click) onClick){
+  return InkWell(
+    onTap: () => onClick(true),
+    child: Container(
+      height: 300,
+      width: 250,
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          color: CommonColor.white,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            )
+          ]
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ImageLoad.imageNetwork('', 150, getWidthDevice(context)),
+          SizedBox(height: 16,),
+          CustomText('Lập trình javascript ssssssssssssss', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2),
+          SizedBox(height: 8,),
+          CustomText(
+              'GV: Đỗ Oanh Cường',
+              textStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: CommonColor.black,
+              ),
+              maxline: 2
+          ),
+          Spacer(),
+          Container(
+            width: getWidthDevice(context),
+            margin: EdgeInsets.only(left: 8, right: 8),
+            child: ElevatedButton(
+              onPressed: ()=>onClick(true),
+              child: CustomText(Languages.of(context).signUp),
+            ),
+          )
+        ],
+      ),
+    ),
   );
 }
 
