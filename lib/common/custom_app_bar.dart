@@ -28,19 +28,19 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget{
 
 class _CustomAppBar extends State<CustomAppBar>{
 
-  AppType? appType;
-  String? title;
+  AppType? _appType;
+  String? _title;
   Function(String content)? callback;
-  _CustomAppBar(this.appType, this.title, this.callback);
+  _CustomAppBar(this._appType, this._title, this.callback);
 
 
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    if(appType==AppType.appbar_home){
+    if(_appType==AppType.appbar_home){
       return _appBarHome();
     }
-    return _appBarHome();
+    return _appBarChild();
   }
 
   Widget _appBarHome(){
@@ -66,6 +66,31 @@ class _CustomAppBar extends State<CustomAppBar>{
             onPressed: (){},
             icon: Icon(Icons.search_sharp, color: CommonColor.blue,),
           )
+        ],
+      ),
+    );
+  }
+
+  Widget _appBarChild(){
+    return Container(
+      width: getWidthDevice(context),
+      height: 52,
+      decoration: const BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(ImageView.tab_bar),
+          fit: BoxFit.fill,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(width: 8,),
+          IconButton(onPressed: ()=>Navigator.pop(context), icon: Icon(Icons.arrow_back, color: CommonColor.blue,)),
+          SizedBox(width: 8,),
+          Expanded(child: CustomText(_title!, textStyle: TextStyle(color: CommonColor.blueLight, fontSize: 18, fontWeight: FontWeight.bold), textAlign: TextAlign.center)),
+          SizedBox(width: 52,)
         ],
       ),
     );

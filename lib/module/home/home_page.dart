@@ -2,10 +2,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/advise/advise_page.dart';
 import 'package:online_tutor/module/home/presenter/home_presenter.dart';
 
 import 'model/banner_slider.dart';
@@ -87,9 +89,70 @@ class _HomePage extends State<HomePage>{
                       }).toList(),
                     ),
                     SizedBox(height: 16,),
-                    itemSeeMore(context, (call) => null),
+                    itemSeeMore(context, Languages.of(context).classNew,(call) => null),
                     SizedBox(height: 8,),
-                    itemClass(context, '', '', '', (click) => null)
+                    itemClass(context, '', '', '', (click) => null),
+                    SizedBox(height: 16,),
+                    itemSeeMore(context, Languages.of(context).comment, (call) => null),
+                    Container(
+                      padding: EdgeInsets.all(8),
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      decoration: BoxDecoration(
+                        color: CommonColor.white,
+                        borderRadius: BorderRadius.all(Radius.circular(8)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.5),
+                            spreadRadius: 1,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          )
+                        ]
+                      ),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ClipOval(
+                                child: ImageLoad.imageNetwork('', 50, 50),
+                              ),
+                              SizedBox(width: 8,),
+                              Expanded(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  mainAxisSize: MainAxisSize.max,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CustomText('username', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 1),
+                                    CustomText('member', textStyle: TextStyle(color: CommonColor.black, fontSize: 12)),
+                                  ],
+                                ),
+                              )
+                            ],
+                          ),
+                          CustomText('khoas hoc rat la hay, cac kieu, cau kieu ca ssssssssssssssssssssssssssss aaaaaaaaaaaaaa sssssssssssssssss ssssssssssssss bshhashjsa jkaskjkdjbsajbdkj', textStyle: TextStyle(fontSize: 12, color: CommonColor.black, overflow: TextOverflow.ellipsis), maxline: 3)
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 16,),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: CustomText(Languages.of(context).registerAdvise, textStyle: TextStyle(fontWeight: FontWeight.bold, color: CommonColor.blue, fontSize: 14)),
+                    ),
+                    SizedBox(height: 4,),
+                    Container(
+                      height: 400,
+                      decoration: BoxDecoration(
+                        color: CommonColor.white
+                      ),
+                      child: AdvisePage(CommonKey.HOME_PAGE),
+                    )
                   ],
                 ),
               ),
@@ -136,6 +199,4 @@ class _HomePage extends State<HomePage>{
         )
     );
   }
-
-
 }

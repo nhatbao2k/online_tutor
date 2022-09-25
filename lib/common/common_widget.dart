@@ -72,14 +72,14 @@ showLoaderDialog(BuildContext context){
   );
 }
 
-Widget itemSeeMore(BuildContext context,Function(String call) callback){
+Widget itemSeeMore(BuildContext context, String title, Function(String call) callback){
   return  Row(
     mainAxisSize: MainAxisSize.max,
     mainAxisAlignment: MainAxisAlignment.start,
     crossAxisAlignment: CrossAxisAlignment.center,
     children: [
       SizedBox(width: 8,),
-      Expanded(child: CustomText(Languages.of(context).classNew, textStyle: TextStyle(color: CommonColor.blue, fontSize: 14, fontWeight: FontWeight.bold))),
+      Expanded(child: CustomText(title, textStyle: TextStyle(color: CommonColor.blue, fontSize: 14, fontWeight: FontWeight.bold))),
       InkWell(
         onTap: ()=>callback(''),
         child: Row(

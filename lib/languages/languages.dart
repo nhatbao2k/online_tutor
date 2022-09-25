@@ -29,4 +29,8 @@ abstract class Languages{
   String get passWrong;
   String get classNew;
   String get seeMore;
+  String get comment;
+  String get registerAdvise;
+  String get enterContent;
+  String get submitInfo;
 }

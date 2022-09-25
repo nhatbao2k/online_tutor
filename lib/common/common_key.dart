@@ -16,5 +16,5 @@ class CommonKey{
   static final String USERNAME = 'USERNAME';
   static final String TOKEN_FIREBASE = 'TOKEN_FIREBASE';
   static final String nullDynamic = "Instance of 'Future<dynamic>'";
-
+  static final String HOME_PAGE = "HOME_PAGE";
 }

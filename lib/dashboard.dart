@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
+import 'package:online_tutor/common/common_key.dart';
+import 'package:online_tutor/module/advise/advise_page.dart';
 import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
@@ -29,7 +31,7 @@ class _Dashboard extends State<Dashboard>{
   }
   Widget _getBody(){
     if(this._selectdIndex == 0){
-      return _checkLogin!?ProfilePage():LoginPage();
+      return _checkLogin!?AdvisePage(CommonKey.HOME_PAGE):LoginPage();
     }else if(_selectdIndex == 1){
       return _checkLogin!?ProfilePage():LoginPage();
     }else if(_selectdIndex == 2){

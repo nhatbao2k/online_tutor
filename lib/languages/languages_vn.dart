@@ -101,4 +101,20 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement seeMore
   String get seeMore => 'Xem thêm';
+
+  @override
+  // TODO: implement comment
+  String get comment => 'Nhận xét';
+
+  @override
+  // TODO: implement registerAdvise
+  String get registerAdvise => 'Đăng ký & tư vấn';
+
+  @override
+  // TODO: implement enterContent
+  String get enterContent => 'Nhập nội dung';
+
+  @override
+  // TODO: implement submitInfo
+  String get submitInfo => 'Gửi thông tin';
 }
