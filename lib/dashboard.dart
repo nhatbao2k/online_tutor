@@ -6,6 +6,7 @@ import 'package:online_tutor/module/advise/advise_page.dart';
 import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
+import 'package:online_tutor/module/social/news/news_page.dart';
 
 class Dashboard extends StatefulWidget{
   bool? _checkLogin;
@@ -27,7 +28,7 @@ class _Dashboard extends State<Dashboard>{
 
   @override
   void initState() {
-    getData();
+
   }
   Widget _getBody(){
     if(this._selectdIndex == 0){
@@ -37,7 +38,7 @@ class _Dashboard extends State<Dashboard>{
     }else if(_selectdIndex == 2){
       return HomePage();
     }else if(_selectdIndex == 3){
-      return _checkLogin!?ProfilePage():LoginPage();
+      return _checkLogin!?NewPages():LoginPage();
     }else {
       return _checkLogin!?ProfilePage():LoginPage();
     }
@@ -93,20 +94,20 @@ class _Dashboard extends State<Dashboard>{
     );
   }
 
-  Future<void> getData() async{
-    // dynamic user = await SharedPreferencesData.GetData(CommonKey.USERNAME);
-    // String username = user.toString();
-    // if(username.isNotEmpty){
-    bool checkLogin = false;
-    FirebaseAuth.instance
-        .authStateChanges()
-        .listen((User? user) {
-      if (user == null) {
-        _checkLogin = false;
-      } else {
-        _checkLogin = true;
-      }
-      // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
-    });
-  }
+  // Future<void> getData() async{
+  //   // dynamic user = await SharedPreferencesData.GetData(CommonKey.USERNAME);
+  //   // String username = user.toString();
+  //   // if(username.isNotEmpty){
+  //   bool checkLogin = false;
+  //   FirebaseAuth.instance
+  //       .authStateChanges()
+  //       .listen((User? user) {
+  //     if (user == null) {
+  //       _checkLogin = false;
+  //     } else {
+  //       _checkLogin = true;
+  //     }
+  //     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
+  //   });
+  // }
 }

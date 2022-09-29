@@ -254,6 +254,21 @@ class _SignUpPage extends State<SignUpPage>{
         password: pass,
       );
       // await user!.updateDisplayName(_phone);
+      await _user?.updateDisplayName(_phone);
+      FirebaseFirestore.instance.collection('users').doc(_phone).set({
+        "phone": _phone,
+        "avatar": "",
+        "fullname":_fullname,
+        "role":"MEMBER",
+        "email":_email,
+        'address': '',
+        'birthday': '',
+        'describeInfo': '',
+        'office': ''
+      }).then((value) => {
+        RestartPage.restartApp(context),
+        Navigator.pop(context),
+      });
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
 
@@ -265,22 +280,9 @@ class _SignUpPage extends State<SignUpPage>{
         CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).existEmail);
       }else{
 
-
       }
     } catch (e) {
       print(e);
     }
-
-    await _user?.updateDisplayName(_phone);
-    FirebaseFirestore.instance.collection('users').doc(_phone).set({
-      "phone": _phone,
-      "avatar": "",
-      "fullname":_fullname,
-      "role":"MEMBER",
-      "email":_email
-    }).then((value) => {
-      RestartPage.restartApp(context),
-      Navigator.pop(context),
-    });
   }
 }

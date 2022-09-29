@@ -33,4 +33,14 @@ abstract class Languages{
   String get registerAdvise;
   String get enterContent;
   String get submitInfo;
+  String get qa;
+  String get uNeed;
+  String get accountInfo;
+  String get noData;
+  String get hello;
+  String get address;
+  String get birthday;
+  String get office;
+  String get describeInfo;
+  String get save;
 }

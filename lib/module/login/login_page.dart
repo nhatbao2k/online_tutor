@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -176,6 +178,13 @@ class _LoginPage extends State<LoginPage>{
         String phone = _user.displayName!;
         if(phone.isNotEmpty){
           await SharedPreferencesData.SaveData(CommonKey.USERNAME, phone);
+          FirebaseFirestore.instance.collection('users').doc(phone).get().then((value) {
+            if(value.exists){
+              Map<String, dynamic>? data = value.data() ;
+              SharedPreferencesData.SaveData(CommonKey.USER, jsonEncode(data));
+              print(data);
+            }
+          });
           Navigator.pop(context);
           RestartPage.restartApp(context);
         }else{
@@ -183,7 +192,7 @@ class _LoginPage extends State<LoginPage>{
         }
       }
     } on FirebaseAuthException catch (e) {
-      // Navigator.pop(context);
+      Navigator.pop(context);
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
         CustomDialog(context: context, content: Languages.of(context).accountWrong);

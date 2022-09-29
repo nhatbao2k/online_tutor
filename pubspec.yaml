@@ -43,6 +43,10 @@ dependencies:
   firebase_core: ^1.22.0
   cloud_firestore: ^3.4.9
   carousel_slider: ^4.1.1
+  flutter_datetime_picker: ^1.5.1
+  firebase_storage: ^10.3.10
+  image_picker: ^0.8.4+10
+  image_cropper: ^3.0.0
 #flutter_icons:
 #  android: true
 #  ios: true

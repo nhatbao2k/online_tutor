@@ -116,4 +116,44 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement submitInfo
   String get submitInfo => 'Gửi thông tin';
+
+  @override
+  // TODO: implement qa
+  String get qa => 'Hỏi đáp';
+
+  @override
+  // TODO: implement uNeed
+  String get uNeed => 'Bạn đang cần gì?';
+
+  @override
+  // TODO: implement accountInfo
+  String get accountInfo => 'Thông tin cá nhân';
+
+  @override
+  // TODO: implement noData
+  String get noData => 'Không tìm thấy dữ liệu';
+
+  @override
+  // TODO: implement hello
+  String get hello => 'Xin chào';
+
+  @override
+  // TODO: implement address
+  String get address => 'Địa chỉ';
+
+  @override
+  // TODO: implement birthday
+  String get birthday => 'Ngày sinh';
+
+  @override
+  // TODO: implement describeInfo
+  String get describeInfo => 'Giới thiệu bản thân';
+
+  @override
+  // TODO: implement office
+  String get office => 'Chức vụ';
+
+  @override
+  // TODO: implement save
+  String get save => 'Lưu';
 }

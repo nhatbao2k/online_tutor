@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
+import 'package:online_tutor/module/account_detail/account_detail_page.dart';
+import 'package:online_tutor/module/profile/profile_presenter.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
 import '../../common/common_function.dart';
@@ -16,7 +18,19 @@ class ProfilePage extends StatefulWidget{
 }
 
 class _ProfilePage extends State<ProfilePage>{
+  Map<String, dynamic>? _user;
+  ProfilePresenter? _presenter;
 
+  @override
+  void initState() {
+    _presenter = ProfilePresenter();
+    initData();
+  }
+
+  Future<void> initData() async{
+    _user = await _presenter!.getAccountInfor();
+    print(_user);
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -121,15 +135,18 @@ class _ProfilePage extends State<ProfilePage>{
                             width: 1.0
                         )
                     ),
-                    child: const ClipRRect(
-                      borderRadius: BorderRadius.all(Radius.circular(200)),
-                      child: Image(
-                        image: AssetImage(
-                            ImageView.truong_man
+                    child: InkWell(
+                      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>AccountDetailPage(_user))),
+                      child: const ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(200)),
+                        child: Image(
+                          image: AssetImage(
+                              ImageView.truong_man
+                          ),
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.fill,
                         ),
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.fill,
                       ),
                     )
                 ),
@@ -233,4 +250,6 @@ class _ProfilePage extends State<ProfilePage>{
       ),
     );
   }
+
+
 }

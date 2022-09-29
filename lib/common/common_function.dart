@@ -75,3 +75,8 @@ bool checkEmpty(String content){
 String replaceEmail(String email){
   return email.replaceAll("@", "").replaceAll(".", "");
 }
+
+String splitSpace(String content){
+  var data = content.split(" ");
+  return data[0];
+}

@@ -61,4 +61,5 @@ flutter {
 
 dependencies {
     implementation platform('com.google.firebase:firebase-bom:30.4.1')
+    implementation 'com.android.support:multidex:1.0.3'
 }

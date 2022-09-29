@@ -14,4 +14,5 @@ class ImageView{
   static const banner_intro = asset + 'banner_intro.png';
   static const banner_test = asset + 'banner_test.png';
   static const tab_bar = asset + 'tab_bar.png';
+  static const not_found = asset + 'notFound.png';
 }

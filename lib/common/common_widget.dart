@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:online_tutor/common/common_color.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/res/images/image_view.dart';
 
 import 'common_function.dart';
 import 'image_load.dart';
@@ -146,5 +152,80 @@ Widget itemClass(BuildContext context, String title, String content1, String con
       ),
     ),
   );
+}
+
+Widget NoDataView(String mess){
+  return Column(
+    mainAxisSize: MainAxisSize.max,
+    mainAxisAlignment: MainAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
+    children: [
+      Image.asset('${ImageView.not_found}', ),
+      SizedBox(height: 8,),
+      CustomText(mess, textStyle: TextStyle(color: CommonColor.grey, fontSize: 20))
+    ],
+  );
+}
+
+Future<void> cropImage(Function (File?) onSelectFile, String type,BuildContext context) async {
+  final pickedImage =
+  await ImagePicker().getImage(source: CommonKey.CAMERA==type?ImageSource.camera : ImageSource.gallery);
+  if(pickedImage==null){
+    onSelectFile(null);
+  }else {
+    CroppedFile? croppedFile =  await ImageCropper().cropImage(
+      sourcePath: pickedImage.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+        CropAspectRatioPreset.ratio3x2,
+        CropAspectRatioPreset.original,
+        CropAspectRatioPreset.ratio4x3,
+        CropAspectRatioPreset.ratio16x9
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+            toolbarTitle: 'Cropper',
+            toolbarColor: CommonColor.blue,
+            toolbarWidgetColor: CommonColor.white,
+            initAspectRatio: CropAspectRatioPreset.original,
+            lockAspectRatio: false),
+        IOSUiSettings(
+          title: 'Cropper',
+        ),
+        WebUiSettings(
+          context: context,
+        ),
+      ],
+    );
+    if (croppedFile != null) {
+      onSelectFile(File(croppedFile.path));
+    }
+  }
+}
+
+Future<void> selectImages(Function (List<File>?) onSelectFile, bool type) async {
+  if(type){
+    final pickedCam = await ImagePicker().getImage(source:ImageSource.camera);
+    if(pickedCam==null){
+      onSelectFile(null);
+    }else {
+      List<File> fileCam = [];
+      fileCam.add(File(pickedCam.path));
+      onSelectFile(fileCam);
+    }
+  }else{
+    final pickedImages = await ImagePicker().pickMultiImage();
+    if(pickedImages==null){
+      onSelectFile(null);
+    }else {
+      if(pickedImages.isNotEmpty){
+        List<File> file =[];
+        for(XFile i in pickedImages){
+          file.add(File(i.path));
+        }
+        onSelectFile(file);
+      }
+    }
+  }
 }
 
