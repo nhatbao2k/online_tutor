@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
@@ -20,9 +19,9 @@ import '../../common/common_widget.dart';
 import '../../res/images/image_view.dart';
 
 class ClassAddPage extends StatefulWidget {
-  ClassCourse? _course;
-  String? _keyFlow;
-  Map<String, dynamic>? _data;
+  final ClassCourse? _course;
+  final String? _keyFlow;
+  final Map<String, dynamic>? _data;
   ClassAddPage(this._course, this._keyFlow, this._data);
 
   @override
@@ -30,15 +29,15 @@ class ClassAddPage extends StatefulWidget {
 }
 
 class _ClassAddPageState extends State<ClassAddPage> {
-  ClassCourse? _course;
-  String? _keyFlow;
-  Map<String, dynamic>? _data;
+  final ClassCourse? _course;
+  final String? _keyFlow;
+  final Map<String, dynamic>? _data;
   _ClassAddPageState(this._course, this._keyFlow, this._data);
   File? _fileImage;
   String _idClass=''; String _idCourse=''; String _idTeacher='';
-  String _teacherName=''; String _status=''; String _startDate='';
-  String _price=''; String _nameClass = ''; String _describe = '';
-  List<Status> _statusList = [];
+  String _teacherName=''; String _status=''; final String _startDate='';
+  final String _price=''; String _nameClass = ''; String _describe = '';
+  final List<Status> _statusList = [];
   Status? _selectStatus;
   ClassAddPresenter? _presenter;
   TextEditingController _controllerIdClass = TextEditingController();
