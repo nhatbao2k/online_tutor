@@ -5,8 +5,11 @@ import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/class/class_page.dart';
 import 'package:online_tutor/module/course/course_product_page.dart';
 import 'package:online_tutor/module/course/presenter/course_prenter.dart';
+
+import '../class/model/class_course.dart';
 
 class CoursePage extends StatefulWidget {
   @override
@@ -54,7 +57,7 @@ class _CoursePageState extends State<CoursePage> {
                           return itemCourse(context, data['name'], data['teacherName'], data['imageLink'],
                                   (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage(CommonKey.EDIT, data))),
                                   (onClickDelete) => _presenter!.deleteCourse(data['idCourse']),
-                                  (click) => null);
+                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name'])))));
                         }).toList(),
                       );
                     },

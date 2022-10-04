@@ -4,6 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:online_tutor/restart_page.dart';
 import 'package:online_tutor/storage/shared_preferences.dart';
 
+import '../languages/languages.dart';
+import 'common_widget.dart';
+
 double getWidthDevice(BuildContext context){
   return MediaQuery.of(context).size.width;
 }
@@ -79,4 +82,14 @@ String replaceEmail(String email){
 String splitSpace(String content){
   var data = content.split(" ");
   return data[0];
+}
+
+void listenStatus(BuildContext context, bool value){
+  Navigator.pop(context);
+  if(value){
+    Navigator.pop(context);
+    showToast(Languages.of(context).onSuccess);
+  }else{
+    showToast(Languages.of(context).addFailure);
+  }
 }

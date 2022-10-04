@@ -212,4 +212,48 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement imageNull
   String get imageNull => 'Chưa có ảnh';
+
+  @override
+  // TODO: implement myClass
+  String get myClass => 'Lớp học';
+
+  @override
+  // TODO: implement classAdd
+  String get classAdd => 'Thêm mới lớp học';
+
+  @override
+  // TODO: implement describeClass
+  String get describeClass => 'Mô tả lớp học';
+
+  @override
+  // TODO: implement idClass
+  String get idClass => 'Mã lớp học';
+
+  @override
+  // TODO: implement nameClass
+  String get nameClass => 'Tên Môn';
+
+  @override
+  // TODO: implement status
+  String get status => 'Trạng thái';
+
+  @override
+  // TODO: implement pending
+  String get pending => 'Chưa bắt đầu';
+
+  @override
+  // TODO: implement ready
+  String get ready => 'Bắt đầu';
+
+  @override
+  // TODO: implement idClassEmpty
+  String get idClassEmpty => 'Chưa nhập mã lớp học';
+
+  @override
+  // TODO: implement statusNull
+  String get statusNull => 'Chưa chọn trạng thái';
+
+  @override
+  // TODO: implement subjectEmpty
+  String get subjectEmpty => 'Chưa nhập tên môn học';
 }

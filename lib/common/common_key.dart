@@ -24,4 +24,6 @@ class CommonKey{
   static final String AVATAR = "AVATAR";
   static final String COURSE = "COURSE";
   static final String EDIT = "EDIT";
+  static final String PENDING = "PENDING";
+  static final String READY = "READY";
 }

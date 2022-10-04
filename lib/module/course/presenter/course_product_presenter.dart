@@ -18,7 +18,7 @@ class CourseProductPresenter{
         .putFile(fileImage, metadata);
 
 // Listen for state changes, errors, and completion of the upload.
-    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) {
+    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async{
       switch (taskSnapshot.state) {
         case TaskState.running:
           final progress =
@@ -36,7 +36,7 @@ class CourseProductPresenter{
           break;
         case TaskState.success:
         // Handle successful uploads on complete
-          String url = storageRef.getDownloadURL().toString();
+          String url = await getLinkAvatar(idCourse, nameCourse);
           FirebaseFirestore.instance
               .collection('course')
               .doc(idCourse)
