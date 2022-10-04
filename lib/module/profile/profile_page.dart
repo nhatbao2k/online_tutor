@@ -4,6 +4,7 @@ import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/module/account_detail/account_detail_page.dart';
 import 'package:online_tutor/module/profile/profile_presenter.dart';
+import 'package:online_tutor/module/teacher/teacher_add_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
 import '../../common/common_function.dart';
@@ -182,7 +183,9 @@ class _ProfilePage extends State<ProfilePage>{
   Widget _itemOption(String title, IconData iconData, String keyFlow){
     return   InkWell(
       onTap: (){
-
+        if(CommonKey.TEAM_TEACHER==keyFlow){
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherAddPage()));
+        }
       },
       child: Container(
         width: getWidthDevice(context)/2-16,

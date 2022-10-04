@@ -15,4 +15,5 @@ class ImageView{
   static const banner_test = asset + 'banner_test.png';
   static const tab_bar = asset + 'tab_bar.png';
   static const not_found = asset + 'notFound.png';
+  static const chose_image = asset + 'chose_image.jpg';
 }

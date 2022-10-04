@@ -263,7 +263,7 @@ class _SignUpPage extends State<SignUpPage>{
         "email":_email,
         'address': '',
         'birthday': '',
-        'describeInfo': '',
+        'describe': '',
         'office': ''
       }).then((value) => {
         RestartPage.restartApp(context),

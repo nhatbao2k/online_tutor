@@ -156,4 +156,60 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement save
   String get save => 'Lưu';
+
+  @override
+  // TODO: implement createCourse
+  String get createCourse => 'Thêm mới khóa học';
+
+  @override
+  // TODO: implement createNew
+  String get createNew => 'Thêm mới';
+
+  @override
+  // TODO: implement idCourse
+  String get idCourse => 'Mã khóa học';
+
+  @override
+  // TODO: implement idTeacher
+  String get idTeacher => 'Mã giáo viên';
+
+  @override
+  // TODO: implement nameCourse
+  String get nameCourse => 'Tên khóa học';
+
+  @override
+  // TODO: implement teacherName
+  String get teacherName => 'Tên giáo viên';
+
+  @override
+  // TODO: implement teacherAdd
+  String get teacherAdd => 'Thêm mới giáo viên';
+
+  @override
+  // TODO: implement addFailure
+  String get addFailure => 'Thêm mới thất bại';
+
+  @override
+  // TODO: implement onSuccess
+  String get onSuccess => 'Thành công';
+
+  @override
+  // TODO: implement choseId
+  String get choseId => 'Chọn mã';
+
+  @override
+  // TODO: implement choseTeacher
+  String get choseTeacher => 'Chọn giáo viên';
+
+  @override
+  // TODO: implement idCourseEmpty
+  String get idCourseEmpty => 'Mã khóa học không được để trống';
+
+  @override
+  // TODO: implement nameCourseEmpty
+  String get nameCourseEmpty => 'Tên khóa học không được để trống';
+
+  @override
+  // TODO: implement imageNull
+  String get imageNull => 'Chưa có ảnh';
 }

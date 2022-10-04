@@ -43,4 +43,18 @@ abstract class Languages{
   String get office;
   String get describeInfo;
   String get save;
+  String get createCourse;
+  String get createNew;
+  String get idCourse;
+  String get nameCourse;
+  String get idTeacher;
+  String get teacherName;
+  String get teacherAdd;
+  String get addFailure;
+  String get onSuccess;
+  String get choseTeacher;
+  String get choseId;
+  String get idCourseEmpty;
+  String get nameCourseEmpty;
+  String get imageNull;
 }

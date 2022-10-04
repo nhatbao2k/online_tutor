@@ -22,4 +22,6 @@ class CommonKey{
   static final String USER = "USER";
   static final String CAMERA = "CAMERA";
   static final String AVATAR = "AVATAR";
+  static final String COURSE = "COURSE";
+  static final String EDIT = "EDIT";
 }
