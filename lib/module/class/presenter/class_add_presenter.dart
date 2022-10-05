@@ -42,8 +42,6 @@ class ClassAddPresenter{
           FirebaseFirestore.instance
               .collection('class')
               .doc(course.getIdCourse)
-              .collection('${course.getIdCourse}')
-              .doc(myClass.idClass)
               .set({
             'idClass': myClass.idClass,
             'idCourse': course.getIdCourse,
@@ -104,7 +102,7 @@ class ClassAddPresenter{
     return true;
   }
   void _updateClass(ClassCourse course, MyClass myClass, String url){
-    FirebaseFirestore.instance.collection('class').doc(course.getIdCourse).collection('${course.getIdCourse}').doc(myClass.idClass)
+    FirebaseFirestore.instance.collection('class').doc(myClass.idClass)
         .update({
       'status': myClass.status,
       'startDate':'',
@@ -121,8 +119,8 @@ class ClassAddPresenter{
     return url;
   }
 
-  void deleteClass(String idClass, String idCourse){
-    FirebaseFirestore.instance.collection('class').doc(idCourse).collection(idCourse).doc(idClass).delete();
+  void deleteClass(String idClass){
+    FirebaseFirestore.instance.collection('class').doc(idClass).delete();
   }
 
 }

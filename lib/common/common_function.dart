@@ -1,5 +1,6 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:online_tutor/restart_page.dart';
 import 'package:online_tutor/storage/shared_preferences.dart';
@@ -92,4 +93,14 @@ void listenStatus(BuildContext context, bool value){
   }else{
     showToast(Languages.of(context).addFailure);
   }
+}
+
+Future<String> getLinkAvatar(String link) async{
+  final ref = FirebaseStorage.instance.ref().child("${link}");
+  String url = (await ref.getDownloadURL()).toString();
+  return url;
+}
+
+String replaceSpace(String content){
+  return content.replaceAll(" ", "");
 }

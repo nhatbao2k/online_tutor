@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
@@ -12,10 +11,10 @@ import 'package:online_tutor/module/class/model/status.dart';
 import 'package:online_tutor/module/class/presenter/class_add_presenter.dart';
 import 'package:tiengviet/tiengviet.dart';
 
-import '../../common/common_color.dart';
 import '../../common/common_key.dart';
 import '../../common/common_theme.dart';
 import '../../common/common_widget.dart';
+import '../../common/drop_down_status.dart';
 import '../../res/images/image_view.dart';
 
 class ClassAddPage extends StatefulWidget {
@@ -96,7 +95,7 @@ class _ClassAddPageState extends State<ClassAddPage> {
               }else if(_status.isEmpty){
                 showToast(Languages.of(context).statusNull);
               }else{
-                MyClass myClass = MyClass(idClass: _idClass, idCourse: _idCourse, idTeacher: _idTeacher,
+                MyClass myClass = MyClass(idClass: replaceSpace(_idClass), idCourse: _idCourse, idTeacher: _idTeacher,
                   teacherName: _teacherName, status: _status, startDate: '',
                 price: '', nameClass: _nameClass, describe: _describe);
                 showLoaderDialog(context);
@@ -166,63 +165,6 @@ class _ClassAddPageState extends State<ClassAddPage> {
               ),
             )
           ],
-        ),
-      ),
-    );
-  }
-}
-
-class DropDownBoxStatus extends StatelessWidget {
-  final value;
-  final List<Status> itemsList;
-  final Function(dynamic value) onChanged;
-
-  const DropDownBoxStatus({
-    required this.value,
-    required this.itemsList,
-    required this.onChanged,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.only(top: 3, bottom: 3),
-      child: Container(
-        decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8),
-            color: Colors.white,
-            border: Border.all(
-                color: CommonColor.blue
-            )
-        ),
-        child: DropdownButtonHideUnderline(
-          child: Padding(
-              padding: const EdgeInsets.only(right: 4),
-              child: ButtonTheme(
-                alignedDropdown: true,
-                child: DropdownButton2(
-                  isExpanded: true,
-                  value: value,
-                  iconEnabledColor: CommonColor.greyLight,
-                  iconDisabledColor: CommonColor.greyLight,
-                  items: itemsList
-                      .map((Status item) => DropdownMenuItem<Status>(
-                    value: item,
-                    child: CustomText(
-                      item.getTitle,
-                      textStyle: TextStyle(fontSize: 16, color: CommonColor.black),
-                    ),
-                  ))
-                      .toList(),
-                  onChanged: (value) => onChanged(value),
-                  dropdownDecoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  dropdownMaxHeight: MediaQuery.of(context).size.height/2,
-                  dropdownWidth: MediaQuery.of(context).size.width/2+25,
-                ),
-              )
-          ),
         ),
       ),
     );

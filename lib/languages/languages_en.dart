@@ -256,4 +256,48 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement subjectEmpty
   String get subjectEmpty => 'Chưa nhập tên môn học';
+
+  @override
+  // TODO: implement classDetail
+  String get classDetail => 'Chi tiết lớp học';
+
+  @override
+  // TODO: implement classDetailNew
+  String get classDetailNew => 'Thêm mới chi tiết lớp học';
+
+  @override
+  // TODO: implement idClassDetail
+  String get idClassDetail => 'Mã chi tiết buổi học';
+
+  @override
+  // TODO: implement nameLession
+  String get nameLession => 'Tên buổi học';
+
+  @override
+  // TODO: implement idLession
+  String get idLession => 'Mã buổi học';
+
+  @override
+  // TODO: implement delete
+  String get delete => 'Xóa';
+
+  @override
+  // TODO: implement idLessionEmpty
+  String get idLessionEmpty => 'Chưa nhập mã buổi học';
+
+  @override
+  // TODO: implement nameClassEmpty
+  String get nameClassEmpty => 'Chưa nhập tên môn';
+
+  @override
+  // TODO: implement nameLessionEmpty
+  String get nameLessionEmpty => 'Chưa nhập tên buổi học';
+
+  @override
+  // TODO: implement infor
+  String get infor => 'Thông tin';
+
+  @override
+  // TODO: implement rating
+  String get rating => 'Đánh giá';
 }

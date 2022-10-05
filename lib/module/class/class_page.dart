@@ -6,6 +6,8 @@ import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/class/class_add_page.dart';
+import 'package:online_tutor/module/class/class_detail_admin_page.dart';
+import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/presenter/class_add_presenter.dart';
 
 import 'model/class_course.dart';
@@ -26,7 +28,7 @@ class _ClassPageState extends State<ClassPage> {
 
   @override
   void initState() {
-    _stream = FirebaseFirestore.instance.collection('class').doc(_course!.getIdCourse).collection('${_course!.getIdCourse}').snapshots();
+    _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
     _presenter = ClassAddPresenter();
   }
 
@@ -61,8 +63,8 @@ class _ClassPageState extends State<ClassPage> {
                             Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
                             return itemCourse(context, data['nameClass'], data['teacherName'], data['imageLink'],
                                     (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course, CommonKey.EDIT, data))),
-                                    (onClickDelete) => _presenter!.deleteClass(data['idClass'], _course!.getIdCourse!),
-                                    (click) => null);
+                                    (onClickDelete) => _presenter!.deleteClass(data['idClass']),
+                                    (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course))));
                           }).toList(),
                         );
                       }

@@ -68,4 +68,15 @@ abstract class Languages{
   String get idClassEmpty;
   String get subjectEmpty;
   String get statusNull;
+  String get classDetail;
+  String get classDetailNew;
+  String get idClassDetail;
+  String get nameLession;
+  String get idLession;
+  String get delete;
+  String get nameClassEmpty;
+  String get idLessionEmpty;
+  String get nameLessionEmpty;
+  String get infor;
+  String get rating;
 }

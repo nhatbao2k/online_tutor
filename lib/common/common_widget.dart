@@ -305,3 +305,17 @@ Widget itemCourse(BuildContext context, String title, String content, String ima
   );
 }
 
+Widget ButtonDefault(String content, Function(String data) onClick){
+  return ElevatedButton(
+    onPressed: ()=>onClick(''),
+    child: CustomText(content, textStyle: TextStyle(fontSize: 14, color: CommonColor.white)),
+  );
+}
+
+Widget ButtonIcon(IconData iconData, Function(String data) onClick){
+  return ElevatedButton(
+    onPressed: ()=>onClick(''),
+    child: Icon(iconData, color: CommonColor.white,),
+  );
+}
+

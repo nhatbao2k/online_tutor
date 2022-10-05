@@ -113,12 +113,12 @@ class _CourseProductPage extends State<CourseProductPage>{
                 showToast(Languages.of(context).imageNull);
               } else{
                 showLoaderDialog(context);
-                CommonKey.EDIT!=_keyFlow?_presenter!.addCourse(_fileImage!, _idCourse, _nameCourse, _teacherName, _idTeacher).then((value) {
+                CommonKey.EDIT!=_keyFlow?_presenter!.addCourse(_fileImage!, replaceSpace(_idCourse), _nameCourse, _teacherName, _idTeacher).then((value) {
                   _onResult(value);
-                }):_fileImage!=null?_presenter!.updateCourse(fileImage: _fileImage, idCourse: _idCourse, idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName).then((value) {
+                }):_fileImage!=null?_presenter!.updateCourse(fileImage: _fileImage, idCourse: replaceSpace(_idCourse), idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName).then((value) {
                  _onResult(value);
                 })
-                :_presenter!.updateCourse(idCourse: _idCourse, idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName, imageLink: '').then((value) {
+                :_presenter!.updateCourse(idCourse: replaceSpace(_idCourse), idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName, imageLink: '').then((value) {
                   _onResult(value);
                 });
               }
