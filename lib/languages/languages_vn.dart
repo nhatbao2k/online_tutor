@@ -300,4 +300,8 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement rating
   String get rating => 'Đánh giá';
+
+  @override
+  // TODO: implement lessionList
+  String get lessionList => 'Danh sách tiết học';
 }

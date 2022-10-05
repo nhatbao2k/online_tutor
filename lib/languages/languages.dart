@@ -79,4 +79,5 @@ abstract class Languages{
   String get nameLessionEmpty;
   String get infor;
   String get rating;
+  String get lessionList;
 }

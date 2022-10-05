@@ -78,16 +78,12 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             _header(),
-                            Container(
-                              height: getHeightDevice(context),
-                              child: ListView.separated(
-                                physics: NeverScrollableScrollPhysics(),
-                                itemCount: _myClassResult!.lession!.length,
-                                itemBuilder: (context, index){
-                                  return _itemLession(_myClassResult!.lession![index]);
-                                },
-                                separatorBuilder: (BuildContext context, int index) { return Divider(); },
-                              ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0, bottom: 8),
+                              child: CustomText(Languages.of(context).lessionList, textStyle: TextStyle(fontSize: 18, color: CommonColor.black)),
+                            ),
+                            Wrap(
+                              children: List.generate(_myClassResult!.lession!.length, (index) => _itemLession(_myClassResult!.lession![index])),
                             )
                           ],
                         ):SizedBox();
@@ -108,18 +104,23 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   }
 
   Widget _itemLession(Lession lession){
-    return Row(
-      mainAxisSize: MainAxisSize.max,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(width: 8,),
-        Icon(Icons.circle_outlined, color: CommonColor.blue,),
-        SizedBox(width: 4,),
-        Expanded(child: CustomText('content', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
-        Icon(Icons.access_time_filled, color: CommonColor.blue,),
-        SizedBox(width: 8,),
-      ],
+    return Container(
+      width: getWidthDevice(context),
+      color: CommonColor.white,
+      padding: EdgeInsets.all(4),
+      child: Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          SizedBox(width: 8,),
+          Icon(Icons.circle_outlined, color: CommonColor.blue,),
+          SizedBox(width: 4,),
+          Expanded(child: CustomText('content', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
+          Icon(Icons.access_time_filled, color: CommonColor.blue,),
+          SizedBox(width: 8,),
+        ],
+      ),
     );
   }
 
