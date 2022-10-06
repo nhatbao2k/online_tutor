@@ -26,4 +26,5 @@ class CommonKey{
   static final String EDIT = "EDIT";
   static final String PENDING = "PENDING";
   static final String READY = "READY";
+  static final String ADD_NEW = "ADD_NEW";
 }

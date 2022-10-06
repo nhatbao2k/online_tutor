@@ -61,4 +61,64 @@ class ClassDetailProductPresenter{
     });
     return true;
   }
+
+  Future<bool> UpdateClassDetail(
+      {File? fileImage, MyClassDetail? myClassDetail,
+      ClassCourse? course, MyClass? myClass, String? linkImage}) async{
+    if(fileImage!=null){
+      final metadata = SettableMetadata(contentType: "image/jpeg");
+
+// Create a reference to the Firebase Storage bucket
+      final storageRef = FirebaseStorage.instance.ref();
+
+// Upload file and metadata to the path 'images/mountains.jpg'
+      String link = "${CommonKey.COURSE}/${course!.getIdCourse}/${course.getNameCourse}/${myClass!.idClass}/class_detail.jpg";
+      final uploadTask = storageRef
+          .child(link)
+          .putFile(fileImage, metadata);
+
+// Listen for state changes, errors, and completion of the upload.
+      uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async{
+        switch (taskSnapshot.state) {
+          case TaskState.running:
+            final progress =
+                100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
+            print("Upload is $progress% complete.");
+            break;
+          case TaskState.paused:
+            print("Upload is paused.");
+            break;
+          case TaskState.canceled:
+            print("Upload was canceled");
+            break;
+          case TaskState.error:
+          // Handle unsuccessful uploads
+            break;
+          case TaskState.success:
+          // Handle successful uploads on complete
+            String url = await getLinkAvatar(link);
+            List<Map<String, dynamic>> lession =[];
+            myClassDetail!.lession!.forEach((element) {lession.add(element.toJson());});
+            _updateClassDetail(myClassDetail, course, myClass, url, lession);
+            break;
+        }
+      });
+    }else{
+      List<Map<String, dynamic>> lession =[];
+      myClassDetail!.lession!.forEach((element) {lession.add(element.toJson());});
+      _updateClassDetail(myClassDetail, course!, myClass!, linkImage!, lession);
+    }
+    return true;
+  }
+
+  void _updateClassDetail(MyClassDetail myClassDetail, ClassCourse course, MyClass myClass, String linkImage, List<Map<String, dynamic>> lession){
+    FirebaseFirestore.instance
+        .collection('class_detail')
+        .doc(myClassDetail.idClassDetail)
+        .update({
+      'describe': myClassDetail.describe,
+      'imageLink': linkImage,
+      'lession': lession
+    }).onError((error, stackTrace) => false);
+  }
 }

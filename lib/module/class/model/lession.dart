@@ -3,7 +3,7 @@ class Lession {
       this.lessionId, 
       this.idClassDetail, 
       this.nameLession, 
-      this.status,});
+      this.status});
 
   Lession.fromJson(dynamic json) {
     lessionId = json['lessionId'];

@@ -1,16 +1,19 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
+import 'package:online_tutor/common/single_state.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/class/class_detail_product_page.dart';
 import 'package:online_tutor/module/class/model/Lession.dart';
 import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/model/my_class_detail.dart';
+import 'package:online_tutor/module/class/presenter/class_detail_admin_presenter.dart';
 
 import '../../common/image_load.dart';
 
@@ -29,10 +32,11 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   ClassCourse? _course;
   _ClassDetailAdminPageState(this._myClass, this._course);
   Stream<QuerySnapshot>? _stream;
-  bool _onSuccess = false;
   MyClassDetail? _myClassResult;
+  ClassDetailAdminPresenter? _presenter;
   @override
   void initState() {
+    _presenter = ClassDetailAdminPresenter();
     _stream =  FirebaseFirestore.instance.collection('class_detail').where('idClass', isEqualTo: '${_myClass!.idClass!}').snapshots();
   }
 
@@ -64,14 +68,13 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
                       }else if(!snapshot.hasData){
                         return NoDataView(Languages.of(context).noData);
                       }else{
-                        if(!_onSuccess){
-                          _onSuccess = true;
-                        }
-
                         snapshot.data!.docs.forEach((element) {
                           _myClassResult = MyClassDetail.fromJson(element.data());
                         });
-                        print(_myClassResult);
+                        if(_myClassResult!=null){
+                          _presenter!.loadData(true);
+                        }
+
                         return _myClassResult!=null?Column(
                           mainAxisSize: MainAxisSize.max,
                           mainAxisAlignment: MainAxisAlignment.start,
@@ -97,13 +100,24 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailProductPage(_myClass, _course))),
-        child: Icon(_onSuccess?Icons.edit:Icons.add, color: CommonColor.white,),
+        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailProductPage(_myClass, _course, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'',_presenter!.state==SingleState.HAS_DATA?_myClassResult:null))),
+        child: Observer(
+          builder: (_){
+            if(_presenter!.state==SingleState.LOADING){
+              return Icon(Icons.add, color: CommonColor.white,);
+            }else if(_presenter!.state==SingleState.NO_DATA){
+              return Icon(Icons.add, color: CommonColor.white,);
+            }else{
+              return Icon(Icons.edit, color: CommonColor.white,);
+            }
+          },
+        )
       ),
     );
   }
 
   Widget _itemLession(Lession lession){
+
     return Container(
       width: getWidthDevice(context),
       color: CommonColor.white,
@@ -116,7 +130,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
           SizedBox(width: 8,),
           Icon(Icons.circle_outlined, color: CommonColor.blue,),
           SizedBox(width: 4,),
-          Expanded(child: CustomText('content', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
+          Expanded(child: CustomText('${lession.nameLession}', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
           Icon(Icons.access_time_filled, color: CommonColor.blue,),
           SizedBox(width: 8,),
         ],
