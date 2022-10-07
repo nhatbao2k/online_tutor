@@ -80,4 +80,8 @@ abstract class Languages{
   String get infor;
   String get rating;
   String get lessionList;
+  String get content;
+  String get exercise;
+  String get answer;
+  String get discuss;
 }

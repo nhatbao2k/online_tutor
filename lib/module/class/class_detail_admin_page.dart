@@ -14,6 +14,7 @@ import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/model/my_class_detail.dart';
 import 'package:online_tutor/module/class/presenter/class_detail_admin_presenter.dart';
+import 'package:online_tutor/module/lession/lession_admin_page.dart';
 
 import '../../common/image_load.dart';
 
@@ -118,22 +119,25 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
 
   Widget _itemLession(Lession lession){
 
-    return Container(
-      width: getWidthDevice(context),
-      color: CommonColor.white,
-      padding: EdgeInsets.all(4),
-      child: Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          SizedBox(width: 8,),
-          Icon(Icons.circle_outlined, color: CommonColor.blue,),
-          SizedBox(width: 4,),
-          Expanded(child: CustomText('${lession.nameLession}', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
-          Icon(Icons.access_time_filled, color: CommonColor.blue,),
-          SizedBox(width: 8,),
-        ],
+    return InkWell(
+      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN))),
+      child: Container(
+        width: getWidthDevice(context),
+        color: CommonColor.white,
+        padding: EdgeInsets.all(4),
+        child: Row(
+          mainAxisSize: MainAxisSize.max,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(width: 8,),
+            Icon(Icons.circle_outlined, color: CommonColor.blue,),
+            SizedBox(width: 4,),
+            Expanded(child: CustomText('${lession.nameLession}', textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
+            Icon(Icons.access_time_filled, color: CommonColor.blue,),
+            SizedBox(width: 8,),
+          ],
+        ),
       ),
     );
   }

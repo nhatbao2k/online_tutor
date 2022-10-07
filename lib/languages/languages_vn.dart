@@ -304,4 +304,20 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement lessionList
   String get lessionList => 'Danh sách tiết học';
+
+  @override
+  // TODO: implement answer
+  String get answer => 'Đáp án';
+
+  @override
+  // TODO: implement content
+  String get content => 'Nội dung';
+
+  @override
+  // TODO: implement discuss
+  String get discuss => 'Thảo luận';
+
+  @override
+  // TODO: implement exercise
+  String get exercise => 'Bài tập';
 }
