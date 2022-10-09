@@ -17,8 +17,8 @@ import '../../common/common_theme.dart';
 import '../../common/common_widget.dart';
 import '../../common/drop_down_status.dart';
 import '../../res/images/image_view.dart';
-import 'model/Lession.dart';
 import 'model/class_course.dart';
+import 'model/lession.dart';
 import 'model/status.dart';
 
 class ClassDetailProductPage extends StatefulWidget {

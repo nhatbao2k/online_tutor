@@ -1,4 +1,6 @@
-import 'Lession.dart';
+
+
+import 'lession.dart';
 
 class MyClassDetail {
   MyClassDetail({

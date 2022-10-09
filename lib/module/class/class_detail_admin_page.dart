@@ -9,7 +9,6 @@ import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/single_state.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/class/class_detail_product_page.dart';
-import 'package:online_tutor/module/class/model/Lession.dart';
 import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/model/my_class_detail.dart';
@@ -17,6 +16,7 @@ import 'package:online_tutor/module/class/presenter/class_detail_admin_presenter
 import 'package:online_tutor/module/lession/lession_admin_page.dart';
 
 import '../../common/image_load.dart';
+import 'model/lession.dart';
 
 class ClassDetailAdminPage extends StatefulWidget {
   MyClass? _myClass;
@@ -120,7 +120,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   Widget _itemLession(Lession lession){
 
     return InkWell(
-      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN))),
+      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN, _myClassResult, _myClass, _course))),
       child: Container(
         width: getWidthDevice(context),
         color: CommonColor.white,

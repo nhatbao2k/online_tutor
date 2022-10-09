@@ -95,7 +95,7 @@ void listenStatus(BuildContext context, bool value){
   }
 }
 
-Future<String> getLinkAvatar(String link) async{
+Future<String> getLinkStorage(String link) async{
   final ref = FirebaseStorage.instance.ref().child("${link}");
   String url = (await ref.getDownloadURL()).toString();
   return url;

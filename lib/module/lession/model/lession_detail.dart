@@ -1,6 +1,7 @@
-import 'package:online_tutor/module/lession/model/Homework.dart';
+
 
 import 'Discuss.dart';
+import 'homework.dart';
 
 class LessionDetail {
   LessionDetail({

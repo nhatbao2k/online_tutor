@@ -41,7 +41,7 @@ class ClassDetailProductPresenter{
           break;
         case TaskState.success:
         // Handle successful uploads on complete
-          String url = await getLinkAvatar(link);
+          String url = await getLinkStorage(link);
           List<Map<String, dynamic>> lession =[];
           myClassDetail.lession!.forEach((element) {lession.add(element.toJson());});
           FirebaseFirestore.instance
@@ -96,7 +96,7 @@ class ClassDetailProductPresenter{
             break;
           case TaskState.success:
           // Handle successful uploads on complete
-            String url = await getLinkAvatar(link);
+            String url = await getLinkStorage(link);
             List<Map<String, dynamic>> lession =[];
             myClassDetail!.lession!.forEach((element) {lession.add(element.toJson());});
             _updateClassDetail(myClassDetail, course, myClass, url, lession);

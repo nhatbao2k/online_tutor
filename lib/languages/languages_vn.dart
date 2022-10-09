@@ -320,4 +320,20 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement exercise
   String get exercise => 'Bài tập';
+
+  @override
+  // TODO: implement fileAnswer
+  String get fileAnswer => 'File đáp án';
+
+  @override
+  // TODO: implement fileQuestion
+  String get fileQuestion => 'File câu hỏi';
+
+  @override
+  // TODO: implement linkExercise
+  String get linkExercise => 'Link youtube';
+
+  @override
+  // TODO: implement question
+  String get question => 'Câu hỏi';
 }
