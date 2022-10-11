@@ -54,6 +54,8 @@ dependencies:
   flutter_mobx: ^2.0.6+4
   file_picker: ^5.2.0+1
   youtube_player_flutter: ^8.1.0
+  flutter_cached_pdfview: ^0.4.1
+  provider: ^6.0.4
 #flutter_icons:
 #  android: true
 #  ios: true

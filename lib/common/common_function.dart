@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:online_tutor/restart_page.dart';
 import 'package:online_tutor/storage/shared_preferences.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../languages/languages.dart';
 import 'common_widget.dart';
@@ -103,4 +104,9 @@ Future<String> getLinkStorage(String link) async{
 
 String replaceSpace(String content){
   return content.replaceAll(" ", "");
+}
+
+String getYoutubeId(String url){
+  String? id = YoutubePlayer.convertUrlToId(url);
+  return id!;
 }
