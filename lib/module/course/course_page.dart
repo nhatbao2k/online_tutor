@@ -12,13 +12,21 @@ import 'package:online_tutor/module/course/presenter/course_prenter.dart';
 import '../class/model/class_course.dart';
 
 class CoursePage extends StatefulWidget {
+  String? _role;
+
+  CoursePage(this._role);
+
   @override
-  State<CoursePage> createState() => _CoursePageState();
+  State<CoursePage> createState() => _CoursePageState(_role);
 }
 
 class _CoursePageState extends State<CoursePage> {
   Stream<QuerySnapshot>? _stream;
   CoursePresenter? _presenter;
+  String? _role;
+
+  _CoursePageState(this._role);
+
   @override
   void initState() {
     _presenter = CoursePresenter();
@@ -54,10 +62,11 @@ class _CoursePageState extends State<CoursePage> {
                       return Wrap(
                         children: snapshot.data!.docs.map((e) {
                           Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
-                          return itemCourse(context, data['name'], data['teacherName'], data['imageLink'],
+                          return CommonKey.ADMIN==_role?itemCourseAdmin(context, data['name'], data['teacherName'], data['imageLink'],
                                   (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage(CommonKey.EDIT, data))),
                                   (onClickDelete) => _presenter!.deleteCourse(data['idCourse']),
-                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name'])))));
+                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name'])))))
+                          :itemCourse(context, data['name'], data['teacherName'], data['imageLink'], (id) => null);
                         }).toList(),
                       );
                     },

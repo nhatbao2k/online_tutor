@@ -61,7 +61,7 @@ class _ClassPageState extends State<ClassPage> {
                         return Wrap(
                           children:snapshot.data!.docs.map((e) {
                             Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
-                            return itemCourse(context, data['nameClass'], data['teacherName'], data['imageLink'],
+                            return itemCourseAdmin(context, data['nameClass'], data['teacherName'], data['imageLink'],
                                     (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course, CommonKey.EDIT, data))),
                                     (onClickDelete) => _presenter!.deleteClass(data['idClass']),
                                     (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course))));

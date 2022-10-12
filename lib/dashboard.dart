@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
@@ -8,6 +10,7 @@ import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
 import 'package:online_tutor/module/social/news/news_page.dart';
+import 'package:online_tutor/storage/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget{
   bool? _checkLogin;
@@ -24,7 +27,7 @@ class Dashboard extends StatefulWidget{
 class _Dashboard extends State<Dashboard>{
   bool? _checkLogin;
   int _selectdIndex = 2;
-
+  String _role = '';
   _Dashboard(this._checkLogin);
 
   @override
@@ -35,7 +38,7 @@ class _Dashboard extends State<Dashboard>{
     if(this._selectdIndex == 0){
       return _checkLogin!?AdvisePage(CommonKey.HOME_PAGE):LoginPage();
     }else if(_selectdIndex == 1){
-      return _checkLogin!?CoursePage():LoginPage();
+      return _checkLogin!?CoursePage(_role):LoginPage();
     }else if(_selectdIndex == 2){
       return HomePage();
     }else if(_selectdIndex == 3){
@@ -95,20 +98,9 @@ class _Dashboard extends State<Dashboard>{
     );
   }
 
-  // Future<void> getData() async{
-  //   // dynamic user = await SharedPreferencesData.GetData(CommonKey.USERNAME);
-  //   // String username = user.toString();
-  //   // if(username.isNotEmpty){
-  //   bool checkLogin = false;
-  //   FirebaseAuth.instance
-  //       .authStateChanges()
-  //       .listen((User? user) {
-  //     if (user == null) {
-  //       _checkLogin = false;
-  //     } else {
-  //       _checkLogin = true;
-  //     }
-  //     // Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
-  //   });
-  // }
+  Future<void> getUser()async{
+    dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
+    Map<String, dynamic>json = jsonDecode(data.toString());
+    _role = json['role'];
+  }
 }
