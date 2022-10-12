@@ -1,17 +1,21 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/custom_drop_down_box.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:online_tutor/module/lession/model/discuss.dart';
 import 'package:online_tutor/module/lession/model/homework.dart';
 import 'package:online_tutor/module/lession/model/lession_detail.dart';
 import 'package:online_tutor/module/lession/model/qa.dart';
 import 'package:online_tutor/module/lession/presenter/lession_product_presenter.dart';
+import 'package:online_tutor/storage/shared_preferences.dart';
 
 import '../../common/common_theme.dart';
 import '../class/model/class_course.dart';
@@ -24,11 +28,12 @@ class LessionProductPage extends StatefulWidget {
   ClassCourse? _course;
   MyClass? _myClass;
   String? _keyFlow;
+  LessionDetail? _lessionDetail;
 
-  LessionProductPage(this._lession, this._keyFlow, this._course, this._myClass, this._myClassDetail);
+  LessionProductPage(this._lession, this._keyFlow, this._course, this._myClass, this._myClassDetail, this._lessionDetail);
 
   @override
-  State<LessionProductPage> createState() => _LessionProductPageState(_lession, _keyFlow, _course, _myClass, _myClassDetail);
+  State<LessionProductPage> createState() => _LessionProductPageState(_lession, _keyFlow, _course, _myClass, _myClassDetail, _lessionDetail);
 }
 
 class _LessionProductPageState extends State<LessionProductPage> {
@@ -37,7 +42,8 @@ class _LessionProductPageState extends State<LessionProductPage> {
   MyClassDetail? _myClassDetail;
   ClassCourse? _course;
   MyClass? _myClass;
-  _LessionProductPageState(this._lession, this._keyFlow, this._course, this._myClass, this._myClassDetail);
+  LessionDetail? _lessionDetail;
+  _LessionProductPageState(this._lession, this._keyFlow, this._course, this._myClass, this._myClassDetail, this._lessionDetail);
 
   LessionProductPresenter? _presenter;
   String _fileNameContent = '';
@@ -50,10 +56,18 @@ class _LessionProductPageState extends State<LessionProductPage> {
   List<Homework> _homeworkList = [Homework(idHomework: '1',listQuestion: [QA(id: '1')], worksheet: true)];
   List<String> _stringList = ['Có trắc nghiệm', 'Không trắc nghiệm'];
   String _select = '';
+  String _fullname = '';
+  String _avatar = '';
+  TextEditingController _controllerUrlLink = TextEditingController();
+
   @override
   void initState() {
     _presenter = LessionProductPresenter();
     _select = _stringList[0];
+    getDataUser();
+    if(CommonKey.EDIT==_keyFlow){
+      getDataEdit();
+    }
   }
 
   @override
@@ -78,11 +92,23 @@ class _LessionProductPageState extends State<LessionProductPage> {
             }else if(_fileQuestion.isEmpty){
               CustomDialog(context: context, content: 'Chưa có file câu hỏi');
             }else{
-              LessionDetail lessionDetail = LessionDetail(idLessionDetail: _lession!.lessionId, fileContent: _fileContent, nameLession: _lession!.nameLession!, videoLink: _videoLink, homework: _homeworkList);
-              showLoaderDialog(context);
-              _presenter!.CreateLessionDetail(lessionDetail).then((value){
-                listenStatus(context, value);
-              });
+              if(CommonKey.EDIT!=_keyFlow){
+                Discuss? discuss = Discuss(name: _fullname, avatar: _avatar, timeStamp: getTimestamp(), content: Languages.of(context).youNeed);
+                LessionDetail lessionDetail = LessionDetail(idLessionDetail: replaceSpace(_lession!.lessionId!), fileContent: _fileContent,
+                    nameLession: _lession!.nameLession!, videoLink: _videoLink, homework: _homeworkList, discuss: [discuss]);
+                showLoaderDialog(context);
+                _presenter!.CreateLessionDetail(lessionDetail).then((value){
+                  listenStatus(context, value);
+                });
+              }else{
+                LessionDetail lessionDetail = LessionDetail(idLessionDetail: replaceSpace(_lession!.lessionId!), fileContent: _fileContent,
+                    nameLession: _lession!.nameLession!, videoLink: _videoLink, homework: _homeworkList);
+                showLoaderDialog(context);
+                _presenter!.updateLessionDetail(lessionDetail).then((value){
+                  listenStatus(context, value);
+                });
+              }
+
             }
 
           },),
@@ -129,6 +155,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
                     child: TextFormField(
                       decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).linkExercise, hintText: Languages.of(context).linkExercise),
                       onChanged: (value)=>setState(()=> _videoLink=value),
+                      controller: _controllerUrlLink,
                     ),
                   ),
                   Padding(
@@ -272,5 +299,27 @@ class _LessionProductPageState extends State<LessionProductPage> {
         ],
       ),
     );
+  }
+
+  Future<void> getDataUser() async{
+    Map<String, dynamic> data;
+    dynamic user = await SharedPreferencesData.GetData(CommonKey.USER);
+    data = jsonDecode(user.toString());
+    _fullname = data['fullname'];
+    _avatar = data['avatar'];
+  }
+
+  Future<void> getDataEdit() async{
+    _fileNameAnswer = _lessionDetail!.homework![0].answer!;
+    _fileAnswer = _fileNameAnswer;
+    _fileNameQuestion = _lessionDetail!.homework![0].question!;
+    _fileQuestion = _fileNameQuestion;
+    _fileContent = _lessionDetail!.fileContent!;
+    _fileNameContent = _fileContent;
+    _videoLink = _lessionDetail!.videoLink!;
+    _homeworkList[0].question=_fileQuestion;
+    _homeworkList[0].answer=_fileAnswer;
+    _controllerUrlLink = TextEditingController(text: _videoLink);
+    setState(()=>null);
   }
 }

@@ -336,4 +336,8 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement question
   String get question => 'Câu hỏi';
+
+  @override
+  // TODO: implement youNeed
+  String get youNeed => 'Các bạn có câu thắc mắc gì về buổi học hôm nay không?';
 }

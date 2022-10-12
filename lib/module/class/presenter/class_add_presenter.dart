@@ -41,7 +41,7 @@ class ClassAddPresenter{
           String url = await getLinkAvatar(course.getIdCourse!, course.getNameCourse!, myClass.idClass!);
           FirebaseFirestore.instance
               .collection('class')
-              .doc(course.getIdCourse)
+              .doc(myClass.idClass)
               .set({
             'idClass': myClass.idClass,
             'idCourse': course.getIdCourse,

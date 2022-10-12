@@ -5,10 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
+import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/single_state.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/lession/discuss/discuss_page.dart';
 import 'package:online_tutor/module/lession/lession_product_page.dart';
 import 'package:online_tutor/module/lession/presenter/lession_admin_presenter.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
@@ -48,9 +50,7 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
   @override
   void initState() {
     _presenter = LessionAdminPresenter();
-    _presenter!.getLessionDetail(_lession!);
-
-
+    _getData();
   }
 
   void _loadInitYoutube(){
@@ -78,7 +78,7 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
 
   @override
   void deactivate() {
-    _controller.pause();
+    // _controller.pause();
   }
 
 
@@ -89,7 +89,6 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       color: CommonColor.white,
       child: Observer(
@@ -98,7 +97,43 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
             return LoadingView();
 
           }else if(_presenter!.state==SingleState.NO_DATA){
-            return NoDataView(Languages.of(context).noData);
+            return Scaffold(
+              appBar: AppBar(toolbarHeight: 0,),
+              body: Column(
+                mainAxisSize: MainAxisSize.max,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  CustomAppBar(appType: AppType.child, title: _lession!.nameLession!),
+                  Expanded(
+                    child: RefreshIndicator(
+                        child: CustomScrollView(
+                          slivers: [
+                            SliverFillRemaining(
+                              hasScrollBody: false,
+                              child: NoDataView(Languages.of(context).noData),
+                            )
+                          ],
+                        ), onRefresh: (){
+                          return Future.delayed(Duration(seconds: 1), () => setState(()=>_getData()),);
+                    }),
+                  )
+                ],
+              ),
+              floatingActionButton: FloatingActionButton(
+                onPressed: ()=> {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => LessionProductPage(_lession!, '', _course!, _myClass!, _myClassDetail!, null))),
+                  _controller.pause(),
+                },
+                child: Icon(
+                  Icons.add,
+                  color: CommonColor.white,
+                ),
+              ),
+            );
           }else{
             if(_isLoadFirst){
               _loadInitYoutube();
@@ -169,7 +204,8 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                                     :NoDataView(Languages.of(context).noData)
                             ),
                             Container(
-                              child: Text('1'),
+                              child: _presenter!.detail!=null?DiscussPage(_presenter!.detail)
+                    :NoDataView(Languages.of(context).noData),
                             )
                           ],
                         ),
@@ -181,13 +217,24 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (_) => LessionProductPage(_lession!, '', _course!, _myClass!, _myClassDetail!))),
+                              builder: (_) => LessionProductPage(_lession!, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'', _course!, _myClass!, _myClassDetail!, _presenter!.state==SingleState.HAS_DATA?_presenter!.detail:null))),
                       _controller.pause(),
                     },
-                    child: Icon(
-                      Icons.add,
-                      color: CommonColor.white,
-                    ),
+                    child: Observer(
+                      builder: (_){
+                        if(_presenter!.state==SingleState.HAS_DATA){
+                          return Icon(
+                            Icons.edit,
+                            color: CommonColor.white,
+                          );
+                        }else{
+                          return Icon(
+                            Icons.edit,
+                            color: CommonColor.white,
+                          );
+                        }
+                      },
+                    )
                   ),
                 ),
               ),
@@ -196,5 +243,9 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
         },
       ),
     );
+  }
+
+  void _getData(){
+    _presenter!.getLessionDetail(_lession!);
   }
 }

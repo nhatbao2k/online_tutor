@@ -118,7 +118,7 @@ class _CourseProductPage extends State<CourseProductPage>{
                 }):_fileImage!=null?_presenter!.updateCourse(fileImage: _fileImage, idCourse: replaceSpace(_idCourse), idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName).then((value) {
                  _onResult(value);
                 })
-                :_presenter!.updateCourse(idCourse: replaceSpace(_idCourse), idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName, imageLink: '').then((value) {
+                :_presenter!.updateCourse(idCourse: replaceSpace(_idCourse), idTeacher: _idTeacher, nameCourse: _nameCourse, nameTeacher: _teacherName, imageLink: _imageLink).then((value) {
                   _onResult(value);
                 });
               }

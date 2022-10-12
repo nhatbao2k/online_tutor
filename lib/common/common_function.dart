@@ -1,4 +1,5 @@
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
@@ -109,4 +110,10 @@ String replaceSpace(String content){
 String getYoutubeId(String url){
   String? id = YoutubePlayer.convertUrlToId(url);
   return id!;
+}
+
+Timestamp getTimestamp(){
+  DateTime currentDate = DateTime.now(); //DateTime
+  Timestamp myTimeStamp = Timestamp.fromDate(currentDate);
+  return myTimeStamp;
 }

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Discuss {
   Discuss({
       this.name, 
@@ -17,7 +19,7 @@ class Discuss {
   String? avatar;
   String? content;
   String? imageLink;
-  String? timeStamp;
+  Timestamp? timeStamp;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

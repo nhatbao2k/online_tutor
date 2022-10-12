@@ -88,4 +88,5 @@ abstract class Languages{
   String get fileAnswer;
   String get linkExercise;
   String get question;
+  String get youNeed;
 }

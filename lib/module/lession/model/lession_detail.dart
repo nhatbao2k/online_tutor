@@ -1,6 +1,5 @@
 
-
-import 'Discuss.dart';
+import 'discuss.dart';
 import 'homework.dart';
 
 class LessionDetail {

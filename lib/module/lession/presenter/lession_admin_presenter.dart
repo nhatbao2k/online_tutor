@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
+import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/single_state.dart';
 
 import '../../class/model/lession.dart';
@@ -11,12 +12,11 @@ class LessionAdminPresenter = _LessionAdminPresenter with _$LessionAdminPresente
 abstract class _LessionAdminPresenter with Store{
   @observable
   SingleState state = SingleState.LOADING;
-
   LessionDetail? detail;
   @action
   Future getLessionDetail(Lession lession) async{
     state = SingleState.LOADING;
-    await FirebaseFirestore.instance.collection('lession_detail').doc(lession.lessionId).get().then((value) {
+    await FirebaseFirestore.instance.collection('lession_detail').doc(replaceSpace(lession.lessionId!)).get().then((value) {
       if(value.exists){
         detail = LessionDetail.fromJson(value.data());
         if(detail!=null){

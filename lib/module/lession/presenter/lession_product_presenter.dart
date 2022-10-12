@@ -37,4 +37,16 @@ class LessionProductPresenter{
     }*/data).catchError((onError)=> false);
     return true;
   }
+
+  Future<bool> updateLessionDetail(LessionDetail lessionDetail) async{
+    List<Map<String, dynamic>> discuss =[];
+    List<Map<String, dynamic>> dataHomework =[];
+    lessionDetail.homework!.forEach((element) => dataHomework.add(element.toJson()));
+    await FirebaseFirestore.instance.collection('lession_detail').doc(replaceSpace(lessionDetail.idLessionDetail!)).update({
+      'fileContent': lessionDetail.fileContent,
+      'videoLink': lessionDetail.videoLink,
+      'homework':dataHomework,
+    }).then((value) => true).catchError((onError)=>false);
+    return true;
+  }
 }
