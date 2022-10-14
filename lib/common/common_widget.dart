@@ -104,11 +104,11 @@ Widget itemSeeMore(BuildContext context, String title, Function(String call) cal
   );
 }
 
-Widget itemClass(BuildContext context, String title, String content1, String content2, Function(bool click) onClick){
+Widget itemClass(BuildContext context, String title, String gv, String imageLink, Function(bool click) onClick){
   return InkWell(
     onTap: () => onClick(true),
     child: Container(
-      height: 300,
+      height: 250,
       width: 250,
       padding: EdgeInsets.all(4),
       decoration: BoxDecoration(
@@ -128,12 +128,12 @@ Widget itemClass(BuildContext context, String title, String content1, String con
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ImageLoad.imageNetwork('', 150, getWidthDevice(context)),
+          ImageLoad.imageNetwork('$imageLink', 150, getWidthDevice(context)),
           SizedBox(height: 16,),
-          CustomText('Lập trình javascript ssssssssssssss', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2),
+          CustomText('$title', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2),
           SizedBox(height: 8,),
           CustomText(
-              'GV: Đỗ Oanh Cường',
+              'GV: $gv',
               textStyle: TextStyle(
                 overflow: TextOverflow.ellipsis,
                 color: CommonColor.black,
@@ -141,14 +141,14 @@ Widget itemClass(BuildContext context, String title, String content1, String con
               maxline: 2
           ),
           Spacer(),
-          Container(
-            width: getWidthDevice(context),
-            margin: EdgeInsets.only(left: 8, right: 8),
-            child: ElevatedButton(
-              onPressed: ()=>onClick(true),
-              child: CustomText(Languages.of(context).signUp),
-            ),
-          )
+          // Container(
+          //   width: getWidthDevice(context),
+          //   margin: EdgeInsets.only(left: 8, right: 8),
+          //   child: ElevatedButton(
+          //     onPressed: ()=>onClick(true),
+          //     child: CustomText(Languages.of(context).signUp),
+          //   ),
+          // )
         ],
       ),
     ),

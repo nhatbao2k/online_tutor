@@ -340,4 +340,16 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement youNeed
   String get youNeed => 'Các bạn có câu thắc mắc gì về buổi học hôm nay không?';
+
+  @override
+  // TODO: implement classStudy
+  String get classStudy => 'Lớp học';
+
+  @override
+  // TODO: implement course
+  String get course => 'Khóa học';
+
+  @override
+  // TODO: implement requireLogin
+  String get requireLogin => 'Bạn phải đăng nhập';
 }

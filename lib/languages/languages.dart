@@ -89,4 +89,7 @@ abstract class Languages{
   String get linkExercise;
   String get question;
   String get youNeed;
+  String get classStudy;
+  String get course;
+  String get requireLogin;
 }

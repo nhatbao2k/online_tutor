@@ -1,4 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
@@ -10,13 +11,19 @@ import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/advise/advise_page.dart';
 import 'package:online_tutor/module/home/presenter/home_presenter.dart';
 
+import '../class/class_page.dart';
+import '../class/model/class_course.dart';
 import 'model/banner_slider.dart';
 
 class HomePage extends StatefulWidget{
+  String? _role;
+
+  HomePage(this._role);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _HomePage();
+    return _HomePage(_role);
   }
 }
 
@@ -26,10 +33,16 @@ class _HomePage extends State<HomePage>{
   HomePresenter? _presenter;
   final CarouselController _controller = CarouselController();
   int _current = 0;
+  Stream<QuerySnapshot>? _streamClass;
+  String? _role;
+
+  _HomePage(this._role);
+
   @override
   void initState() {
     _presenter = HomePresenter();
     _bannerList = _presenter!.getBanner();
+    _streamClass = FirebaseFirestore.instance.collection('course').snapshots();
   }
 
   @override
@@ -89,9 +102,41 @@ class _HomePage extends State<HomePage>{
                       }).toList(),
                     ),
                     SizedBox(height: 16,),
-                    itemSeeMore(context, Languages.of(context).classNew,(call) => null),
+                    itemSeeMore(context, Languages.of(context).course,(call) => null),
                     SizedBox(height: 8,),
-                    itemClass(context, '', '', '', (click) => null),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _streamClass,
+                      builder: (context, snapshot){
+                        if(snapshot.connectionState==ConnectionState.waiting){
+                          return LoadingView();
+                        }else if(snapshot.hasError){
+                          return NoDataView(Languages.of(context).noData);
+                        }else{
+                          return Container(
+                            height: 300,
+                            child: ListView(
+                              shrinkWrap: true,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshot.data!.docs.map((e) {
+                                Map<String, dynamic> data = e.data() as  Map<String, dynamic>;
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: itemClass(context, data['name'], data['teacherName'], data['imageLink'], (click) => {
+                                    if(_role==null||_role!.isEmpty){
+                                      CustomDialog(context: context, content: Languages.of(context).requireLogin)
+                                    }else{
+                                      Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))),
+                                    }
+
+                                  }),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
                     SizedBox(height: 16,),
                     itemSeeMore(context, Languages.of(context).comment, (call) => null),
                     Container(

@@ -14,15 +14,17 @@ import 'model/class_course.dart';
 
 class ClassPage extends StatefulWidget {
   final ClassCourse? _course;
-  ClassPage(this._course);
+  String? _role;
+  ClassPage(this._course, this._role);
 
   @override
-  State<ClassPage> createState() => _ClassPageState(_course);
+  State<ClassPage> createState() => _ClassPageState(_course, _role);
 }
 
 class _ClassPageState extends State<ClassPage> {
   final ClassCourse? _course;
-  _ClassPageState(this._course);
+  String? _role;
+  _ClassPageState(this._course, this._role);
   Stream<QuerySnapshot>? _stream;
   ClassAddPresenter? _presenter;
 
@@ -61,10 +63,13 @@ class _ClassPageState extends State<ClassPage> {
                         return Wrap(
                           children:snapshot.data!.docs.map((e) {
                             Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
-                            return itemCourseAdmin(context, data['nameClass'], data['teacherName'], data['imageLink'],
+                            return (CommonKey.TEACHER==_role||CommonKey.ADMIN==_role)?itemCourseAdmin(context, data['nameClass'], data['teacherName'], data['imageLink'],
                                     (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course, CommonKey.EDIT, data))),
                                     (onClickDelete) => _presenter!.deleteClass(data['idClass']),
-                                    (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course))));
+                                    (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role))))
+                            :itemCourse(context, data['nameClass'], data['teacherName'], data['imageLink'], (id) => {
+                              Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role)))
+                            });
                           }).toList(),
                         );
                       }
@@ -76,9 +81,12 @@ class _ClassPageState extends State<ClassPage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course,'',null))),
-        child: Icon(Icons.add, color: CommonColor.white,),
+      floatingActionButton: Visibility(
+        visible: CommonKey.ADMIN==_role||CommonKey.TEACHER==_role,
+        child: FloatingActionButton(
+          onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course,'',null))),
+          child: Icon(Icons.add, color: CommonColor.white,),
+        ),
       ),
     );
   }

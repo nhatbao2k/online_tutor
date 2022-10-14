@@ -27,10 +27,11 @@ class LessionAdminPage extends StatefulWidget {
   MyClassDetail? _myClassDetail;
   ClassCourse? _course;
   MyClass? _myClass;
-  LessionAdminPage(this._lession, this._type, this._myClassDetail, this._myClass, this._course);
+  String? _role;
+  LessionAdminPage(this._lession, this._type, this._myClassDetail, this._myClass, this._course, this._role);
 
   @override
-  State<LessionAdminPage> createState() => _LessionAdminPageState(_lession, _type, _myClassDetail, _myClass, _course);
+  State<LessionAdminPage> createState() => _LessionAdminPageState(_lession, _type, _myClassDetail, _myClass, _course, _role);
 }
 
 class _LessionAdminPageState extends State<LessionAdminPage> {
@@ -39,7 +40,8 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
   MyClassDetail? _myClassDetail;
   ClassCourse? _course;
   MyClass? _myClass;
-  _LessionAdminPageState(this._lession, this._type, this._myClassDetail, this._myClass, this._course);
+  String? _role;
+  _LessionAdminPageState(this._lession, this._type, this._myClassDetail, this._myClass, this._course, this._role);
 
   late YoutubePlayerController _controller;
   late PlayerState _playerState;
@@ -120,17 +122,20 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                   )
                 ],
               ),
-              floatingActionButton: FloatingActionButton(
-                onPressed: ()=> {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (_) => LessionProductPage(_lession!, '', _course!, _myClass!, _myClassDetail!, null))),
-                  _controller.pause(),
-                },
-                child: Icon(
-                  Icons.add,
-                  color: CommonColor.white,
+              floatingActionButton: Visibility(
+                visible: CommonKey.ADMIN==_role||CommonKey.TEACHER==_role,
+                child: FloatingActionButton(
+                  onPressed: ()=> {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (_) => LessionProductPage(_lession!, '', _course!, _myClass!, _myClassDetail!, null))),
+                    _controller.pause(),
+                  },
+                  child: Icon(
+                    Icons.add,
+                    color: CommonColor.white,
+                  ),
                 ),
               ),
             );
@@ -212,29 +217,32 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                       )
                     ],
                   ),
-                  floatingActionButton: FloatingActionButton(
-                    onPressed: ()=> {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LessionProductPage(_lession!, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'', _course!, _myClass!, _myClassDetail!, _presenter!.state==SingleState.HAS_DATA?_presenter!.detail:null))),
-                      _controller.pause(),
-                    },
-                    child: Observer(
-                      builder: (_){
-                        if(_presenter!.state==SingleState.HAS_DATA){
-                          return Icon(
-                            Icons.edit,
-                            color: CommonColor.white,
-                          );
-                        }else{
-                          return Icon(
-                            Icons.edit,
-                            color: CommonColor.white,
-                          );
-                        }
+                  floatingActionButton: Visibility(
+                    visible: CommonKey.ADMIN==_role||CommonKey.TEACHER==_role,
+                    child: FloatingActionButton(
+                      onPressed: ()=> {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => LessionProductPage(_lession!, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'', _course!, _myClass!, _myClassDetail!, _presenter!.state==SingleState.HAS_DATA?_presenter!.detail:null))),
+                        _controller.pause(),
                       },
-                    )
+                      child: Observer(
+                        builder: (_){
+                          if(_presenter!.state==SingleState.HAS_DATA){
+                            return Icon(
+                              Icons.edit,
+                              color: CommonColor.white,
+                            );
+                          }else{
+                            return Icon(
+                              Icons.edit,
+                              color: CommonColor.white,
+                            );
+                          }
+                        },
+                      )
+                    ),
                   ),
                 ),
               ),

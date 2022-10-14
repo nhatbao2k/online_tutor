@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
@@ -62,11 +61,11 @@ class _CoursePageState extends State<CoursePage> {
                       return Wrap(
                         children: snapshot.data!.docs.map((e) {
                           Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
-                          return CommonKey.ADMIN==_role?itemCourseAdmin(context, data['name'], data['teacherName'], data['imageLink'],
+                          return (CommonKey.ADMIN==_role||CommonKey.TEACHER==_role)?itemCourseAdmin(context, data['name'], data['teacherName'], data['imageLink'],
                                   (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage(CommonKey.EDIT, data))),
                                   (onClickDelete) => _presenter!.deleteCourse(data['idCourse']),
-                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name'])))))
-                          :itemCourse(context, data['name'], data['teacherName'], data['imageLink'], (id) => null);
+                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))))
+                          :itemCourse(context, data['name'], data['teacherName'], data['imageLink'], (id) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))));
                         }).toList(),
                       );
                     },
@@ -77,9 +76,12 @@ class _CoursePageState extends State<CoursePage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage('',null))),
-        child: Icon(Icons.add,),
+      floatingActionButton: Visibility(
+        visible: (CommonKey.ADMIN==_role||CommonKey.TEACHER==_role),
+        child: FloatingActionButton(
+          onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage('',null))),
+          child: Icon(Icons.add,),
+        ),
       ),
     );
   }

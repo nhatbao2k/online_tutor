@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_key.dart';
@@ -10,25 +9,24 @@ import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
 import 'package:online_tutor/module/social/news/news_page.dart';
-import 'package:online_tutor/storage/shared_preferences.dart';
 
 class Dashboard extends StatefulWidget{
   bool? _checkLogin;
-
-  Dashboard(this._checkLogin);
+  String? _role;
+  Dashboard(this._checkLogin, this._role);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _Dashboard(_checkLogin);
+    return _Dashboard(_checkLogin, _role);
   }
 }
 
 class _Dashboard extends State<Dashboard>{
   bool? _checkLogin;
   int _selectdIndex = 2;
-  String _role = '';
-  _Dashboard(this._checkLogin);
+  String? _role;
+  _Dashboard(this._checkLogin, this._role);
 
   @override
   void initState() {
@@ -40,7 +38,7 @@ class _Dashboard extends State<Dashboard>{
     }else if(_selectdIndex == 1){
       return _checkLogin!?CoursePage(_role):LoginPage();
     }else if(_selectdIndex == 2){
-      return HomePage();
+      return HomePage(_role);
     }else if(_selectdIndex == 3){
       return _checkLogin!?NewPages():LoginPage();
     }else {
@@ -96,11 +94,5 @@ class _Dashboard extends State<Dashboard>{
         ),
       ),
     );
-  }
-
-  Future<void> getUser()async{
-    dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
-    Map<String, dynamic>json = jsonDecode(data.toString());
-    _role = json['role'];
   }
 }

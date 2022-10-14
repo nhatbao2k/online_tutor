@@ -1,13 +1,12 @@
 import 'dart:async';
+import 'dart:convert';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/dashboard.dart';
-import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 import 'package:online_tutor/storage/shared_preferences.dart';
 
@@ -28,7 +27,7 @@ class _SplashPage extends State<SplashPage>{
         elevation: 0,
         backgroundColor: CommonColor.blueLight,
       ),
-      body: Container(
+      body: SizedBox(
         height: getHeightDevice(context),
         width: getWidthDevice(context),
         child: Stack(
@@ -48,7 +47,7 @@ class _SplashPage extends State<SplashPage>{
 
   @override
   void initState() {
-    Timer(Duration(seconds: 5), (){
+    Timer(const Duration(seconds: 5), (){
       getData();
     });
   }
@@ -58,20 +57,17 @@ class _SplashPage extends State<SplashPage>{
     // String username = user.toString();
     // if(username.isNotEmpty){
     bool checkLogin = false;
+    String role = '';
     dynamic username = await SharedPreferencesData.GetData(CommonKey.USERNAME);
+    dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
     if(username.toString().isNotEmpty){
       checkLogin=true;
+
+      if(data!=null){
+        Map<String, dynamic>json = jsonDecode(data.toString());
+        role = json['role']!=null?json['role']:'';
+      }
     }
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
-    // FirebaseAuth.instance
-    //     .authStateChanges()
-    //     .listen((User? user) {
-    //   if (user == null) {
-    //     checkLogin = false;
-    //   } else {
-    //     checkLogin = true;
-    //   }
-    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin)));
-    // });
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin, role)));
   }
 }

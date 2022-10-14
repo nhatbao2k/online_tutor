@@ -21,17 +21,18 @@ import 'model/lession.dart';
 class ClassDetailAdminPage extends StatefulWidget {
   MyClass? _myClass;
   ClassCourse? _course;
-
-  ClassDetailAdminPage(this._myClass, this._course);
+  String? _role;
+  ClassDetailAdminPage(this._myClass, this._course, this._role);
 
   @override
-  State<ClassDetailAdminPage> createState() => _ClassDetailAdminPageState(_myClass, _course);
+  State<ClassDetailAdminPage> createState() => _ClassDetailAdminPageState(_myClass, _course, _role);
 }
 
 class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   MyClass? _myClass;
   ClassCourse? _course;
-  _ClassDetailAdminPageState(this._myClass, this._course);
+  String? _role;
+  _ClassDetailAdminPageState(this._myClass, this._course, this._role);
   Stream<QuerySnapshot>? _stream;
   MyClassDetail? _myClassResult;
   ClassDetailAdminPresenter? _presenter;
@@ -100,19 +101,22 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
           )
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailProductPage(_myClass, _course, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'',_presenter!.state==SingleState.HAS_DATA?_myClassResult:null))),
-        child: Observer(
-          builder: (_){
-            if(_presenter!.state==SingleState.LOADING){
-              return Icon(Icons.add, color: CommonColor.white,);
-            }else if(_presenter!.state==SingleState.NO_DATA){
-              return Icon(Icons.add, color: CommonColor.white,);
-            }else{
-              return Icon(Icons.edit, color: CommonColor.white,);
-            }
-          },
-        )
+      floatingActionButton: Visibility(
+        visible: CommonKey.TEACHER==_role||CommonKey.ADMIN==_role,
+        child: FloatingActionButton(
+          onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailProductPage(_myClass, _course, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'',_presenter!.state==SingleState.HAS_DATA?_myClassResult:null))),
+          child: Observer(
+            builder: (_){
+              if(_presenter!.state==SingleState.LOADING){
+                return Icon(Icons.add, color: CommonColor.white,);
+              }else if(_presenter!.state==SingleState.NO_DATA){
+                return Icon(Icons.add, color: CommonColor.white,);
+              }else{
+                return Icon(Icons.edit, color: CommonColor.white,);
+              }
+            },
+          )
+        ),
       ),
     );
   }
@@ -120,7 +124,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   Widget _itemLession(Lession lession){
 
     return InkWell(
-      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN, _myClassResult, _myClass, _course))),
+      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN, _myClassResult, _myClass, _course, _role))),
       child: Container(
         width: getWidthDevice(context),
         color: CommonColor.white,
