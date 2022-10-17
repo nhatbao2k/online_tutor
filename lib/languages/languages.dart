@@ -92,4 +92,15 @@ abstract class Languages{
   String get classStudy;
   String get course;
   String get requireLogin;
+  String get hourEmpty;
+  String get startHours;
+  String get time;
+  String get monday;
+  String get tuesday;
+  String get wednesday;
+  String get thurday;
+  String get friday;
+  String get saturday;
+  String get sunday;
+  String get schedule;
 }

@@ -8,6 +8,7 @@ class MyClass{
   String? price;
   String? nameClass;
   String? describe;
+  String? startHour;
 
   MyClass(
       {this.idClass,
@@ -18,5 +19,6 @@ class MyClass{
       this.startDate,
       this.price,
       this.nameClass,
-      this.describe});
+      this.describe,
+      this.startHour});
 }

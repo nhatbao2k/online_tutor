@@ -352,4 +352,48 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement requireLogin
   String get requireLogin => 'Bạn phải đăng nhập';
+
+  @override
+  // TODO: implement hourEmpty
+  String get hourEmpty => 'Chưa chọn giờ';
+
+  @override
+  // TODO: implement startHours
+  String get startHours => 'Giờ bắt đầu';
+
+  @override
+  // TODO: implement time
+  String get time => 'Thời gian';
+
+  @override
+  // TODO: implement Friday
+  String get friday => 'Thứ sáu';
+
+  @override
+  // TODO: implement Saturday
+  String get saturday => 'Thứ 7';
+
+  @override
+  // TODO: implement Sunday
+  String get sunday => 'Chủ nhật';
+
+  @override
+  // TODO: implement Thurday
+  String get thurday => 'Thứ 5';
+
+  @override
+  // TODO: implement monday
+  String get monday => 'Thứ 2';
+
+  @override
+  // TODO: implement tuesday
+  String get tuesday => 'Thứ 3';
+
+  @override
+  // TODO: implement wednesday
+  String get wednesday => 'Thứ 4';
+
+  @override
+  // TODO: implement schedule
+  String get schedule => 'Lịch học';
 }

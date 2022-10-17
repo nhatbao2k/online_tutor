@@ -63,7 +63,22 @@ class _ClassPageState extends State<ClassPage> {
                         return Wrap(
                           children:snapshot.data!.docs.map((e) {
                             Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
-                            return (CommonKey.TEACHER==_role||CommonKey.ADMIN==_role)?itemCourseAdmin(context, data['nameClass'], data['teacherName'], data['imageLink'],
+                            return (CommonKey.TEACHER==_role||CommonKey.ADMIN==_role)?itemCourseAdminHours(context, data['nameClass'], data['teacherName'],
+                                data['imageLink'], '${
+                                CommonKey.MON==data['startDate']
+                                    ? Languages.of(context).monday
+                                    :CommonKey.TUE==data['startDate']
+                                    ? Languages.of(context).tuesday
+                                    :CommonKey.WED==data['startDate']
+                                    ? Languages.of(context).wednesday
+                                    :CommonKey.THU==data['startDate']
+                                    ? Languages.of(context).thurday
+                                    :CommonKey.FRI==data['startDate']
+                                    ? Languages.of(context).friday
+                                    :CommonKey.SAT==data['startDate']
+                                    ? Languages.of(context).saturday
+                                    :Languages.of(context).sunday
+                                } - ${data['startHours']}',
                                     (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course, CommonKey.EDIT, data))),
                                     (onClickDelete) => _presenter!.deleteClass(data['idClass']),
                                     (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role))))

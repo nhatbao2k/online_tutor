@@ -27,4 +27,20 @@ class CommonKey{
   static final String PENDING = "PENDING";
   static final String READY = "READY";
   static final String ADD_NEW = "ADD_NEW";
+  static final String MON="MON";
+  static final String WED="WED";
+  static final String FRI="FRI";
+  static final String TUE="TUE";
+  static final String THU="THU";
+  static final String SAT="SAT";
+  static final String SUN="SUN";
+  static final String Monday="Monday";
+  static final String Tuesday="Tuesday";
+  static final String Wednesday="Wednesday";
+  static final String Thursday="Thursday";
+  static final String Friday="Friday";
+  static final String Saturday="Saturday";
+  static final String Sunday="Sunday";
+
+
 }

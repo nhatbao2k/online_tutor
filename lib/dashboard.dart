@@ -8,6 +8,7 @@ import 'package:online_tutor/module/course/course_page.dart';
 import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
+import 'package:online_tutor/module/schedule/schedule_page.dart';
 import 'package:online_tutor/module/social/news/news_page.dart';
 
 class Dashboard extends StatefulWidget{
@@ -34,7 +35,7 @@ class _Dashboard extends State<Dashboard>{
   }
   Widget _getBody(){
     if(this._selectdIndex == 0){
-      return _checkLogin!?AdvisePage(CommonKey.HOME_PAGE):LoginPage();
+      return _checkLogin!?SchedulePage():LoginPage();
     }else if(_selectdIndex == 1){
       return _checkLogin!?CoursePage(_role):LoginPage();
     }else if(_selectdIndex == 2){

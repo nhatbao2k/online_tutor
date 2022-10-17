@@ -48,11 +48,15 @@ class ClassAddPresenter{
             'idTeacher': course.getIdTeacher,
             'teacherName': course.getNameTeacher,
             'status': myClass.status,
-            'startDate':'',
             'price': myClass.price,
             'nameClass': myClass.nameClass,
             'describe': myClass.describe,
-            'imageLink': url
+            'imageLink': url,
+            'startDate': myClass.startDate,
+            'startHours': myClass.startHour,
+            'subscribe': [
+              'admin'
+            ]
           }).then((value) => true);
           break;
       }
@@ -105,11 +109,12 @@ class ClassAddPresenter{
     FirebaseFirestore.instance.collection('class').doc(myClass.idClass)
         .update({
       'status': myClass.status,
-      'startDate':'',
       'price': myClass.price,
       'nameClass': myClass.nameClass,
       'describe': myClass.describe,
-      'imageLink': url
+      'imageLink': url,
+      'startDate': myClass.startDate,
+      'startHours': myClass.startHour
         });
   }
 

@@ -9,7 +9,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../languages/languages.dart';
 import 'common_widget.dart';
-
+import 'package:intl/intl.dart';
 double getWidthDevice(BuildContext context){
   return MediaQuery.of(context).size.width;
 }
@@ -117,3 +117,38 @@ Timestamp getTimestamp(){
   Timestamp myTimeStamp = Timestamp.fromDate(currentDate);
   return myTimeStamp;
 }
+
+String splitSpaceEnd(String content){
+  var data = content.split(" ");
+  return data[data.length-1];
+}
+
+List splitList(String content){
+  return content.split(":");
+}
+
+String getDateWeek(int day){
+  var d = DateTime.now();
+  var weekDay = d.weekday;
+  var date = d.subtract(Duration(days: weekDay-day));
+  var formatterDate = DateFormat('dd/MM');
+  String value = formatterDate.format(date);
+
+  return value;
+}
+
+String getDateNow(){
+  var now = DateTime.now();
+  var formatterDate = DateFormat('dd/MM');
+  String actualDate = formatterDate.format(now);
+  return actualDate;
+}
+
+String getNameDateNow(){
+  var now = DateTime.now();
+  var formatterDate = DateFormat('EEEE').format(now);
+  return formatterDate.toString();
+}
+
+
+

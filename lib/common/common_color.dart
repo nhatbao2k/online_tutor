@@ -38,4 +38,6 @@ class CommonColor{
   static const blackDeep = Color(0xff000000);
   static const blackLight = Color(0x8a000000);
   static const black = Color(0xdd000000);
+  static const transparent = Color(0x00000000);
+  static const black_light = Color(0x42000000);
 }

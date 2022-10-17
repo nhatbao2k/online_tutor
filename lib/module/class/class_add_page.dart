@@ -1,16 +1,18 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
+import 'package:online_tutor/common/drop_down_birthday.dart';
 import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/class/model/birthday.dart';
 import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/model/status.dart';
 import 'package:online_tutor/module/class/presenter/class_add_presenter.dart';
 import 'package:tiengviet/tiengviet.dart';
-
 import '../../common/common_key.dart';
 import '../../common/common_theme.dart';
 import '../../common/common_widget.dart';
@@ -43,6 +45,19 @@ class _ClassAddPageState extends State<ClassAddPage> {
   TextEditingController _controllerNameClass = TextEditingController();
   TextEditingController _controllerDescribeClass = TextEditingController();
   String _imageLink = '';
+  String _hour = '';
+  String _day = 'MON';
+  List<Birthday> _birthdayList = [
+    Birthday(date: 'Thứ 2', key: CommonKey.MON),
+    Birthday(date: 'Thứ 3', key: CommonKey.TUE),
+    Birthday(date: 'Thứ 4', key: CommonKey.WED),
+    Birthday(date: 'Thứ 5', key: CommonKey.THU),
+    Birthday(date: 'Thứ 6', key: CommonKey.FRI),
+    Birthday(date: 'Thứ 7', key: CommonKey.SAT),
+    Birthday(date: 'Chủ Nhật', key: CommonKey.SUN),
+  ];
+  Birthday? _birthdaySelect;
+  TextEditingController _controllerBirthday = TextEditingController();
   @override
   void initState() {
     _idCourse = _course!.getIdCourse!;
@@ -52,6 +67,7 @@ class _ClassAddPageState extends State<ClassAddPage> {
     _statusList.add(Status(CommonKey.PENDING, 'Chưa bắt đầu'));
     _statusList.add(Status(CommonKey.READY, 'Bắt đầu'));
     _selectStatus = _statusList[0];
+    _birthdaySelect = _birthdayList[0];
     _presenter = ClassAddPresenter();
     if(CommonKey.EDIT==_keyFlow){
       _controllerIdClass = TextEditingController(text: _data!['idClass']);
@@ -67,6 +83,16 @@ class _ClassAddPageState extends State<ClassAddPage> {
         }
       }
       _status=_selectStatus!.getKey;
+      _day = _data!['startDate'];
+      _hour = _data!['startHours'];
+      _controllerBirthday = TextEditingController(text: _hour);
+      _birthdaySelect = CommonKey.MON==_day?_birthdayList[0]
+          :CommonKey.TUE==_day?_birthdayList[1]
+          :CommonKey.WED==_day?_birthdayList[2]
+          :CommonKey.THU==_day?_birthdayList[3]
+          :CommonKey.FRI==_day?_birthdayList[4]
+          :CommonKey.SAT==_day?_birthdayList[5]
+          :_birthdayList[6];
     }
   }
 
@@ -94,9 +120,11 @@ class _ClassAddPageState extends State<ClassAddPage> {
                 showToast(Languages.of(context).subjectEmpty);
               }else if(_status.isEmpty){
                 showToast(Languages.of(context).statusNull);
+              }else if(_hour.isEmpty){
+                showToast(Languages.of(context).hourEmpty);
               }else{
                 MyClass myClass = MyClass(idClass: replaceSpace(_idClass), idCourse: _idCourse, idTeacher: _idTeacher,
-                  teacherName: _teacherName, status: _status, startDate: '',
+                  teacherName: _teacherName, status: _status, startDate: _day, startHour: _hour,
                 price: '', nameClass: _nameClass, describe: _describe);
                 showLoaderDialog(context);
                 CommonKey.EDIT!=_keyFlow?_presenter!.createClass(_fileImage!, _course!, myClass).then((value) {
@@ -160,6 +188,38 @@ class _ClassAddPageState extends State<ClassAddPage> {
                         controller: _controllerDescribeClass,
                       ),
                     ),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child:InkWell(
+                        onTap: ()=>DatePicker.showTimePicker(context,
+                            showTitleActions: true,
+                            onChanged: (date) {
+                            }, onConfirm: (date) {
+                              List list = splitList(splitSpaceEnd(date.toString()));
+                              _hour = '${list[0]}:${list[1]}';
+                              _controllerBirthday = TextEditingController(text: _hour);
+                              setState(()=>null);
+                            }, currentTime: DateTime.now(), locale: LocaleType.vi),
+                        child: TextFormField(
+                          decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).startHours, hintText: Languages.of(context).startHours),
+                          enabled: false,
+                          controller: _controllerBirthday,
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.all(16.0),
+                      child: DropDownBirthday(
+                        value: _birthdaySelect,
+                        itemsList: _birthdayList,
+                        onChanged: (value){
+                          setState((){
+                            _birthdaySelect=value;
+                            _day=_birthdaySelect!.key!;
+                          });
+                        },
+                      ),
+                    )
                   ],
                 ),
               ),
