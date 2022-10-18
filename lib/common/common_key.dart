@@ -41,6 +41,7 @@ class CommonKey{
   static final String Friday="Friday";
   static final String Saturday="Saturday";
   static final String Sunday="Sunday";
-
-
+  static final String CLASS="CLASS";
+  static final String CLASS_DETAIL="CLASS_DETAIL";
+  static final String LESSION = "LESSION";
 }

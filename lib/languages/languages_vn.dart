@@ -367,7 +367,7 @@ class LanguagesVn extends Languages{
 
   @override
   // TODO: implement Friday
-  String get friday => 'Thứ sáu';
+  String get friday => 'Thứ 6';
 
   @override
   // TODO: implement Saturday

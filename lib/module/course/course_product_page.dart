@@ -50,6 +50,7 @@ class _CourseProductPage extends State<CourseProductPage>{
 
   @override
   void initState() {
+    _idCourse = CommonKey.COURSE+getCurrentTime();
     _presenter = CourseProductPresenter();
     getData();
     if(CommonKey.EDIT==_keyFlow){
@@ -105,9 +106,7 @@ class _CourseProductPage extends State<CourseProductPage>{
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).createCourse, nameFunction: Languages.of(context).createNew, callback: (value){
-              if(_idCourse.isEmpty){
-                showToast(Languages.of(context).idCourseEmpty);
-              }else if(_nameCourse.isEmpty){
+              if(_nameCourse.isEmpty){
                 showToast(Languages.of(context).nameCourseEmpty);
               }else if(_fileImage==null && CommonKey.EDIT!=_keyFlow){
                 showToast(Languages.of(context).imageNull);
@@ -133,15 +132,6 @@ class _CourseProductPage extends State<CourseProductPage>{
                     InkWell(
                       onTap: () => cropImage((p0) => setState(()=>_fileImage=p0!), '', context),
                       child: Center(child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):_imageLink.isEmpty?Image.asset(ImageView.chose_image, width: 150, height: 150,):ImageLoad.imageNetwork(_imageLink, 150, 150)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                          decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).idCourse, hintText: Languages.of(context).idCourse),
-                          onChanged: (value)=>setState(()=> _idCourse=TiengViet.parse(value)),
-                        enabled: CommonKey.EDIT==_keyFlow?false:true,
-                        controller: _controllerId,
-                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),

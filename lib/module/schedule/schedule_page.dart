@@ -35,21 +35,24 @@ class _SchedulePageState extends State<SchedulePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).schedule),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(width: 2,),
-              _itemDate(CommonKey.Monday,getDateWeek(1)),
-              _itemDate(CommonKey.Tuesday,getDateWeek(2)),
-              _itemDate(CommonKey.Wednesday,getDateWeek(3)),
-              _itemDate(CommonKey.Thursday,getDateWeek(4)),
-              _itemDate(CommonKey.Friday,getDateWeek(5)),
-              _itemDate(CommonKey.Saturday,getDateWeek(6)),
-              _itemDate(CommonKey.Sunday,getDateWeek(7)),
-              SizedBox(width: 2,)
-            ],
+          Container(
+            height: checkLandscape(context)?getWidthDevice(context)/8:getHeightDevice(context)/8,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(width: 2,),
+                _itemDate(CommonKey.Monday,getDateWeek(1)),
+                _itemDate(CommonKey.Tuesday,getDateWeek(2)),
+                _itemDate(CommonKey.Wednesday,getDateWeek(3)),
+                _itemDate(CommonKey.Thursday,getDateWeek(4)),
+                _itemDate(CommonKey.Friday,getDateWeek(5)),
+                _itemDate(CommonKey.Saturday,getDateWeek(6)),
+                _itemDate(CommonKey.Sunday,getDateWeek(7)),
+                SizedBox(width: 2,)
+              ],
+            ),
           ),
           Container(
             color: CommonColor.gray,
@@ -78,14 +81,14 @@ class _SchedulePageState extends State<SchedulePage> {
   Widget _itemDate(String day, String date){
     return InkWell(
       onTap: ()=>setState((){
-
+        _dateNow = date;
       }),
       splashColor: CommonColor.transparent,
       child: Container(
         padding: EdgeInsets.only(top: 8, bottom: 8, left: 4, right: 4),
         margin: EdgeInsets.only(left: 2, right: 2),
         width: checkLandscape(context)?getHeightDevice(context)/8:getWidthDevice(context)/8,
-        height: checkLandscape(context)?getHeightDevice(context)/5:getWidthDevice(context)/5.5,
+        height: checkLandscape(context)?_dateNow==date?getWidthDevice(context)/4:getHeightDevice(context)/5:_dateNow==date?getWidthDevice(context)/4:getWidthDevice(context)/5.5,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.all(Radius.circular(200)),
             color: _dateNow==date?CommonColor.blue:CommonColor.gray,
@@ -103,20 +106,20 @@ class _SchedulePageState extends State<SchedulePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             CustomText('${CommonKey.Monday==day
-                ?'T'+Languages.of(context).monday
+                ?Languages.of(context).monday
                 :CommonKey.Tuesday==day
-                ?'T'+Languages.of(context).tuesday
+                ?Languages.of(context).tuesday
                 :CommonKey.Wednesday==day
-                ?'T'+Languages.of(context).wednesday
+                ?Languages.of(context).wednesday
                 :CommonKey.Thursday==day
-                ?'T'+Languages.of(context).thurday
+                ?Languages.of(context).thurday
                 :CommonKey.Friday==day
-                ?'T'+Languages.of(context).friday
+                ?Languages.of(context).friday
                 :CommonKey.Saturday==day
-                ?'T'+Languages.of(context).saturday:
+                ?Languages.of(context).saturday:
             CommonKey.Sunday==day
-                ?Languages.of(context).sunday:''}', textStyle: TextStyle(fontSize: 18, color: _dateNow==date?CommonColor.white:CommonColor.black_light)),
-            CustomText('$date', textStyle: TextStyle(fontSize: 14, color: _dateNow==date?CommonColor.white:CommonColor.black_light))
+                ?Languages.of(context).sunday:''}', textStyle: TextStyle(fontSize: 14, color: _dateNow==date?CommonColor.white:CommonColor.black_light)),
+            CustomText('$date', textStyle: TextStyle(fontSize: 12, color: _dateNow==date?CommonColor.white:CommonColor.black_light))
           ],
         ),
       ),
@@ -194,7 +197,7 @@ class _SchedulePageState extends State<SchedulePage> {
       padding: EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
       height: checkLandscape(context)?getWidthDevice(context)/8:getHeightDevice(context)/8,
       decoration: BoxDecoration(
-          color: CommonColor.gray,
+          color: CommonColor.greyLight,
           border: Border(
               right: BorderSide(
                   width: 1,
@@ -213,7 +216,7 @@ class _SchedulePageState extends State<SchedulePage> {
           child: Padding(
             padding: const EdgeInsets.only(left: 2.0,right: 2,top: 4,bottom: 4),
             child: CustomText('19:00',
-                textStyle: TextStyle(fontSize: 16, color: CommonColor.black),
+                textStyle: TextStyle(fontSize: 12, color: CommonColor.black),
           ),
         ),
       ), itemCount: 4,  separatorBuilder: (context, index)=>SizedBox(height: 4,),

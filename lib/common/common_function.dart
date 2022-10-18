@@ -150,5 +150,10 @@ String getNameDateNow(){
   return formatterDate.toString();
 }
 
+String getCurrentTime() {
+  DateTime now = DateTime.now();
+  int time=now.millisecondsSinceEpoch;
+  return "$time";
+}
 
 

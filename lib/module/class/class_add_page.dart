@@ -60,6 +60,7 @@ class _ClassAddPageState extends State<ClassAddPage> {
   TextEditingController _controllerBirthday = TextEditingController();
   @override
   void initState() {
+    _idClass=CommonKey.CLASS+getCurrentTime();
     _idCourse = _course!.getIdCourse!;
     _idTeacher = _course!.getIdTeacher!;
     _teacherName = _course!.getNameTeacher!;
@@ -114,8 +115,6 @@ class _ClassAddPageState extends State<ClassAddPage> {
               if(_fileImage==null&&CommonKey.EDIT!=_keyFlow
               ){
                 showToast(Languages.of(context).imageNull);
-              }else if(_idClass.isEmpty){
-                showToast(Languages.of(context).idClassEmpty);
               }else if(_nameClass.isEmpty){
                 showToast(Languages.of(context).subjectEmpty);
               }else if(_status.isEmpty){
@@ -148,15 +147,6 @@ class _ClassAddPageState extends State<ClassAddPage> {
                     InkWell(
                       onTap: () => cropImage((p0) => setState(()=>_fileImage=p0!), '', context),
                       child: Center(child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):(_imageLink.isNotEmpty&&CommonKey.EDIT==_keyFlow)?ImageLoad.imageNetwork(_imageLink, 150, 150):Image.asset(ImageView.chose_image, width: 150, height: 150,)),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).idClass, hintText: Languages.of(context).idClass),
-                        onChanged: (value)=>setState(()=> _idClass=TiengViet.parse(value)),
-                        enabled: CommonKey.EDIT==_keyFlow?false:true,
-                        controller: _controllerIdClass,
-                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),

@@ -57,6 +57,7 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
     _selectStatus = _statusList[0];
     _lessionList.add(Lession(status: CommonKey.PENDING));
     _nameClass = _myClass!.nameClass!;
+    _idClassDetail = CommonKey.CLASS_DETAIL+getCurrentTime();
     _presenter = ClassDetailProductPresenter();
     if(CommonKey.EDIT==_keyFlow){
       _controllerIdLession = TextEditingController(text: _myClassResult!.idClassDetail);
@@ -87,8 +88,6 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
             CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).classDetailNew, nameFunction: Languages.of(context).createNew, callback: (value){
               if(_fileImage==null&&CommonKey.EDIT!=_keyFlow){
                 showToast(Languages.of(context).imageNull);
-              }else if(_idClassDetail.isEmpty){
-                showToast(Languages.of(context).idClassEmpty);
               }else{
                 showLoaderDialog(context);
                 MyClassDetail myClassDetail = MyClassDetail(idClassDetail: replaceSpace(_idClassDetail), idClass: _myClass!.idClass,
@@ -115,15 +114,6 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
                     InkWell(
                       onTap: () => cropImage((p0) => setState(()=>_fileImage=p0!), '', context),
                       child: Center(child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):(!_imageLink.isEmpty?ImageLoad.imageNetwork(_imageLink, 150, 150):Image.asset(ImageView.chose_image, width: 150, height: 150,))),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: TextFormField(
-                        decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).idClassDetail, hintText: Languages.of(context).idClassDetail),
-                        onChanged: (value)=>setState(()=> _idClassDetail=TiengViet.parse(value)),
-                        enabled: CommonKey.EDIT==_keyFlow?false:true,
-                        controller: _controllerIdLession,
-                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -161,6 +151,7 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
     lession.idClassDetail = _idClassDetail;
     TextEditingController controllerId = TextEditingController();
     TextEditingController controllerName = TextEditingController();
+    lession.lessionId = CommonKey.LESSION+getCurrentTime();
     if(CommonKey.EDIT==_keyFlow){
       if(lession.idClassDetail!=null){
         controllerId = TextEditingController(text: lession.lessionId);
@@ -191,17 +182,6 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: TextFormField(
-              decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).idLession, hintText: Languages.of(context).idLession),
-              onChanged: (value)=>setState(() {
-                lession.lessionId = replaceSpace(TiengViet.parse(value));
-              }),
-              enabled: (CommonKey.EDIT==_keyFlow&&_indexLength>index)?false:true,
-              controller: (CommonKey.EDIT==_keyFlow&&_indexLength>index)?controllerId:null,
-            ),
-          ),
           (CommonKey.EDIT==_keyFlow&&_indexLength>index)?Padding(
             padding: EdgeInsets.only(left: 16, top: 8, bottom: 8, right: 16),
             child: CustomText(lession.nameLession!, textStyle: TextStyle(fontSize: 14, color: CommonColor.black)),
