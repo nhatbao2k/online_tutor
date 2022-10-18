@@ -1,11 +1,20 @@
+
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
+import 'package:online_tutor/common/single_state.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/schedule/presenter/schedule_presenter.dart';
+import 'package:online_tutor/storage/shared_preferences.dart';
+
+import '../class/model/my_class.dart';
 
 class SchedulePage extends StatefulWidget {
 
@@ -15,10 +24,12 @@ class SchedulePage extends StatefulWidget {
 
 class _SchedulePageState extends State<SchedulePage> {
   String _dateNow='';
-
-
+  List<MyClass> _myClass = [];
+  SchedulePresenter? _presenter;
   @override
   void initState() {
+    _presenter = SchedulePresenter();
+    _getData();
     _dateNow = getDateNow();
   }
 
@@ -35,42 +46,59 @@ class _SchedulePageState extends State<SchedulePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).schedule),
-          Container(
-            height: checkLandscape(context)?getWidthDevice(context)/8:getHeightDevice(context)/8,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SizedBox(width: 2,),
-                _itemDate(CommonKey.Monday,getDateWeek(1)),
-                _itemDate(CommonKey.Tuesday,getDateWeek(2)),
-                _itemDate(CommonKey.Wednesday,getDateWeek(3)),
-                _itemDate(CommonKey.Thursday,getDateWeek(4)),
-                _itemDate(CommonKey.Friday,getDateWeek(5)),
-                _itemDate(CommonKey.Saturday,getDateWeek(6)),
-                _itemDate(CommonKey.Sunday,getDateWeek(7)),
-                SizedBox(width: 2,)
-              ],
-            ),
-          ),
-          Container(
-            color: CommonColor.gray,
-            child: Row(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-                Expanded(child: _itemWatcher()),
-              ],
-            ),
-          ),
+          Observer(
+            builder: (_){
+              if(_presenter!.state==SingleState.LOADING){
+                return LoadingView();
+              }else if(_presenter!.state==SingleState.NO_DATA){
+                return NoDataView(Languages.of(context).noData);
+              }else{
+                return Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: checkLandscape(context)?getWidthDevice(context)/8:getHeightDevice(context)/8,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisSize: MainAxisSize.max,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          SizedBox(width: 2,),
+                          _itemDate(CommonKey.Monday,getDateWeek(1)),
+                          _itemDate(CommonKey.Tuesday,getDateWeek(2)),
+                          _itemDate(CommonKey.Wednesday,getDateWeek(3)),
+                          _itemDate(CommonKey.Thursday,getDateWeek(4)),
+                          _itemDate(CommonKey.Friday,getDateWeek(5)),
+                          _itemDate(CommonKey.Saturday,getDateWeek(6)),
+                          _itemDate(CommonKey.Sunday,getDateWeek(7)),
+                          SizedBox(width: 2,)
+                        ],
+                      ),
+                    ),
+                    Container(
+                      color: CommonColor.gray,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.max,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(child: _itemWatcher(CommonKey.MON)),
+                          Expanded(child: _itemWatcher(CommonKey.TUE)),
+                          Expanded(child: _itemWatcher(CommonKey.WED)),
+                          Expanded(child: _itemWatcher(CommonKey.THU)),
+                          Expanded(child: _itemWatcher(CommonKey.FRI)),
+                          Expanded(child: _itemWatcher(CommonKey.SAT)),
+                          Expanded(child: _itemWatcher(CommonKey.SUN)),
+                        ],
+                      ),
+                    ),
+                  ],
+                );
+              }
+            },
+          )
 
         ],
       ),
@@ -192,7 +220,7 @@ class _SchedulePageState extends State<SchedulePage> {
     );
   }
 
-  Widget _itemWatcher(){
+  Widget _itemWatcher(String day){
     return  Container(
       padding: EdgeInsets.only(left: 4, right: 4, top: 4, bottom: 4),
       height: checkLandscape(context)?getWidthDevice(context)/8:getHeightDevice(context)/8,
@@ -215,12 +243,36 @@ class _SchedulePageState extends State<SchedulePage> {
           ),
           child: Padding(
             padding: const EdgeInsets.only(left: 2.0,right: 2,top: 4,bottom: 4),
-            child: CustomText('19:00',
+            child: CustomText('${
+                day==_presenter!.listMon[index].startDate?_presenter!.listMon[index].startHours
+                    :day==_presenter!.listTue[index].startDate?_presenter!.listTue[index].startHours
+                    :day==_presenter!.listWeb[index].startDate?_presenter!.listWeb[index].startHours
+                    :day==_presenter!.listThu[index].startDate?_presenter!.listThu[index].startHours
+                    :day==_presenter!.listFri[index].startDate?_presenter!.listFri[index].startHours
+                    :day==_presenter!.listSat[index].startDate?_presenter!.listSat[index].startHours
+                    :_presenter!.listSun[index].startHours
+            }',
                 textStyle: TextStyle(fontSize: 12, color: CommonColor.black),
           ),
         ),
-      ), itemCount: 4,  separatorBuilder: (context, index)=>SizedBox(height: 4,),
+      ), itemCount: CommonKey.MON==day?_presenter!.listMon.length
+        :CommonKey.TUE==day?_presenter!.listTue.length
+        :CommonKey.WED==day?_presenter!.listWeb.length
+        :CommonKey.THU==day?_presenter!.listThu.length
+        :CommonKey.FRI==day?_presenter!.listFri.length
+        :CommonKey.SAT==day?_presenter!.listSat.length
+        :_presenter!.listSun.length,  separatorBuilder: (context, index)=>SizedBox(height: 4,),
     ));
   }
 
+  Future<void> _getData() async{
+    dynamic data =await SharedPreferencesData.GetData(CommonKey.USER);
+    if(data!=null){
+      Map<String, dynamic>json = jsonDecode(data.toString());
+      String phone = json['phone']!=null?json['phone']:'';
+      _myClass = await
+      _presenter!.getSchedule(phone);
+    }
+
+  }
 }

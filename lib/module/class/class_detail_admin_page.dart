@@ -54,7 +54,14 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppBar(appType: AppType.child, title: Languages.of(context).classDetail),
+          CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).classDetail, nameFunction: Languages.of(context).delete, callback: (value){
+            if(_myClassResult!.idClassDetail!=null){
+              showLoaderDialog(context);
+              _presenter!.DeleteClassDetail(_myClassResult!.idClassDetail!).then((value) {
+                listenStatus(context, value);
+              });
+            }
+          }),
           Expanded(
             child: CustomScrollView(
               slivers: [

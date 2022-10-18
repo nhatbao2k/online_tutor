@@ -148,7 +148,7 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
   Widget _itemLession(Lession lession, int index){
     Status selectStatus = _selectStatus!;
     print('test $selectStatus -- ');
-    lession.idClassDetail = _idClassDetail;
+    lession.idClassDetail = CommonKey.LESSION+getCurrentTime();
     TextEditingController controllerId = TextEditingController();
     TextEditingController controllerName = TextEditingController();
     lession.lessionId = CommonKey.LESSION+getCurrentTime();

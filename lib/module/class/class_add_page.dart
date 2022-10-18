@@ -123,7 +123,7 @@ class _ClassAddPageState extends State<ClassAddPage> {
                 showToast(Languages.of(context).hourEmpty);
               }else{
                 MyClass myClass = MyClass(idClass: replaceSpace(_idClass), idCourse: _idCourse, idTeacher: _idTeacher,
-                  teacherName: _teacherName, status: _status, startDate: _day, startHour: _hour,
+                  teacherName: _teacherName, status: _status, startDate: _day, startHours: _hour,
                 price: '', nameClass: _nameClass, describe: _describe);
                 showLoaderDialog(context);
                 CommonKey.EDIT!=_keyFlow?_presenter!.createClass(_fileImage!, _course!, myClass).then((value) {

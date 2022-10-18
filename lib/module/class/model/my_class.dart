@@ -8,7 +8,9 @@ class MyClass{
   String? price;
   String? nameClass;
   String? describe;
-  String? startHour;
+  String? startHours;
+  String? imageLink;
+  List<String>? subscribe;
 
   MyClass(
       {this.idClass,
@@ -20,5 +22,35 @@ class MyClass{
       this.price,
       this.nameClass,
       this.describe,
-      this.startHour});
+      this.startHours,
+      this.subscribe});
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['idCourse'] = idCourse;
+    map['idTeacher'] = idTeacher;
+    map['imageLink'] = imageLink;
+    map['nameClass'] = nameClass;
+    map['price'] = price;
+    map['startDate'] = startDate;
+    map['startHours'] = startHours;
+    map['status'] = status;
+    map['subscribe'] = subscribe;
+    map['teacherName'] = teacherName;
+    return map;
+  }
+
+  MyClass.fromJson(dynamic json) {
+    idClass = json['lessionId'];
+    idCourse = json['idClassDetail'];
+    idTeacher = json['nameLession'];
+    status = json['status'];
+    teacherName = json['teacherName'];
+    startDate = json['startDate'];
+    price = json['price'];
+    nameClass = json['nameClass'];
+    describe = json['describe'];
+    startHours = json['startHours'];
+    subscribe = json['subscribe'] != null ? json['subscribe'].cast<String>() : [];
+  }
 }

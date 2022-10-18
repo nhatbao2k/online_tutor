@@ -53,7 +53,7 @@ class ClassAddPresenter{
             'describe': myClass.describe,
             'imageLink': url,
             'startDate': myClass.startDate,
-            'startHours': myClass.startHour,
+            'startHours': myClass.startHours,
             'subscribe': [
               'admin'
             ]
@@ -114,7 +114,7 @@ class ClassAddPresenter{
       'describe': myClass.describe,
       'imageLink': url,
       'startDate': myClass.startDate,
-      'startHours': myClass.startHour
+      'startHours': myClass.startHours
         });
   }
 

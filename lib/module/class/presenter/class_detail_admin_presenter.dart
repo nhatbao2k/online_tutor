@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
 import 'package:online_tutor/common/single_state.dart';
+import 'package:online_tutor/module/class/model/my_class_detail.dart';
 
 part 'class_detail_admin_presenter.g.dart';
 
@@ -17,5 +19,12 @@ abstract class _ClassDetailAdminPresenter with Store{
     }else{
       state = SingleState.NO_DATA;
     }
+  }
+
+  Future<bool> DeleteClassDetail(String idClass)async{
+    await FirebaseFirestore.instance
+        .collection('class_detail')
+        .doc(idClass).delete().then((value) => true).catchError((onError)=>false);
+    return true;
   }
 }

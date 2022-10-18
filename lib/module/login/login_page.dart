@@ -173,7 +173,7 @@ class _LoginPage extends State<LoginPage>{
           email: "$email",
           password: "$pass"
       );
-      final _user = FirebaseAuth.instance.currentUser;
+      final _user =await FirebaseAuth.instance.currentUser;
       if(_user!=null){
         String phone = _user.displayName!;
         if(phone.isNotEmpty){
