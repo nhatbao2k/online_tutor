@@ -9,8 +9,11 @@ import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/advise/advise_page.dart';
+import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/home/presenter/home_presenter.dart';
 
+
+import '../class/class_detail_admin_page.dart';
 import '../class/class_page.dart';
 import '../class/model/class_course.dart';
 import 'model/banner_slider.dart';
@@ -33,16 +36,20 @@ class _HomePage extends State<HomePage>{
   HomePresenter? _presenter;
   final CarouselController _controller = CarouselController();
   int _current = 0;
+  Stream<QuerySnapshot>? _streamCourse;
   Stream<QuerySnapshot>? _streamClass;
   String? _role;
+  String? _phone = '';
 
   _HomePage(this._role);
 
   @override
   void initState() {
     _presenter = HomePresenter();
+    _getAccountInfor();
     _bannerList = _presenter!.getBanner();
-    _streamClass = FirebaseFirestore.instance.collection('course').snapshots();
+    _streamCourse = FirebaseFirestore.instance.collection('course').snapshots();
+    _streamClass = FirebaseFirestore.instance.collection('class').snapshots();
   }
 
   @override
@@ -105,7 +112,7 @@ class _HomePage extends State<HomePage>{
                     itemSeeMore(context, Languages.of(context).course,(call) => null),
                     SizedBox(height: 8,),
                     StreamBuilder<QuerySnapshot>(
-                      stream: _streamClass,
+                      stream: _streamCourse,
                       builder: (context, snapshot){
                         if(snapshot.connectionState==ConnectionState.waiting){
                           return LoadingView();
@@ -126,10 +133,57 @@ class _HomePage extends State<HomePage>{
                                     if(_role==null||_role!.isEmpty){
                                       CustomDialog(context: context, content: Languages.of(context).requireLogin)
                                     }else{
-                                      Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))),
+                                      Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,''))),
                                     }
 
-                                  }),
+                                  }, false),
+                                );
+                              }).toList(),
+                            ),
+                          );
+                        }
+                      },
+                    ),
+                    SizedBox(height: 16,),
+                    itemSeeMore(context, Languages.of(context).classStudy, (call) => null),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _streamClass,
+                      builder: (context, snapshots){
+                        if(snapshots.connectionState==ConnectionState.waiting){
+                          return SizedBox();
+                        }else if(snapshots.hasError){
+                          return NoDataView(Languages.of(context).noData);
+                        }else{
+                          return Container(
+                            height: 300,
+                            child: ListView(
+                              shrinkWrap: true,
+                              physics: AlwaysScrollableScrollPhysics(),
+                              scrollDirection: Axis.horizontal,
+                              children: snapshots.data!.docs.map((e) {
+                                Map<String, dynamic> data = e.data() as  Map<String, dynamic>;
+                                List<dynamic> listUser = data['subscribe'];
+                                MyClass myClass = MyClass.fromJson(data);
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: itemClass(context, data['nameClass'], data['teacherName'], data['imageLink'], (click) => {
+                                    if(_role==null||_role!.isEmpty){
+                                      CustomDialog(context: context, content: Languages.of(context).requireLogin)
+                                    }else{
+                                      if(CommonKey.INK_WELL!=click&&!listUser.contains(_phone)){
+                                        listUser.add(_phone!),
+                                        _phone!.isNotEmpty?_presenter!.RegisterClass(data['idClass'], listUser, data['idCourse']):null,
+                                      }else if(CommonKey.INK_WELL==click&&listUser.contains(_phone)){
+                                        _presenter!.getCourse(data['idCourse']).then((value) {
+                                          if(value!=null&&value.getIdCourse!.isNotEmpty){
+                                            Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(myClass, value, _role)));
+                                          }
+                                        }),
+                                      }else{
+                                        showToast(Languages.of(context).requireClass)
+                                      }
+                                    }
+                                  }, (listUser.contains(_phone)&&CommonKey.MEMBER==_role)?false:CommonKey.TEACHER==_role?false:true),
                                 );
                               }).toList(),
                             ),
@@ -262,5 +316,10 @@ class _HomePage extends State<HomePage>{
         ],
       ),
     );
+  }
+
+  Future<void> _getAccountInfor() async{
+    _phone = await _presenter!.getUserInfo();
+    setState(()=>null);
   }
 }

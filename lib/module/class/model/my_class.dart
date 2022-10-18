@@ -41,9 +41,9 @@ class MyClass{
   }
 
   MyClass.fromJson(dynamic json) {
-    idClass = json['lessionId'];
-    idCourse = json['idClassDetail'];
-    idTeacher = json['nameLession'];
+    idClass = json['idClass'];
+    idCourse = json['idCourse'];
+    idTeacher = json['idTeacher'];
     status = json['status'];
     teacherName = json['teacherName'];
     startDate = json['startDate'];
@@ -51,6 +51,7 @@ class MyClass{
     nameClass = json['nameClass'];
     describe = json['describe'];
     startHours = json['startHours'];
+    imageLink = json['imageLink'];
     subscribe = json['subscribe'] != null ? json['subscribe'].cast<String>() : [];
   }
 }

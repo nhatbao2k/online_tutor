@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 
 import '../../../common/common_key.dart';
+import '../../../storage/shared_preferences.dart';
 
 class ClassAddPresenter{
   Future<bool> createClass(File fileImage, ClassCourse course, MyClass myClass) async{
@@ -128,4 +130,13 @@ class ClassAddPresenter{
     FirebaseFirestore.instance.collection('class').doc(idClass).delete();
   }
 
+  Future<String> getUserInfo() async{
+    String phone = '';
+    dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
+    if(data!=null){
+      Map<String, dynamic>json = jsonDecode(data.toString());
+      phone = json['phone']!=null?json['phone']:'';
+    }
+    return phone;
+  }
 }

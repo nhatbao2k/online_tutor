@@ -15,23 +15,28 @@ import 'model/class_course.dart';
 class ClassPage extends StatefulWidget {
   final ClassCourse? _course;
   String? _role;
-  ClassPage(this._course, this._role);
+  String? _keyFlow;
+  ClassPage(this._course, this._role, this._keyFlow);
 
   @override
-  State<ClassPage> createState() => _ClassPageState(_course, _role);
+  State<ClassPage> createState() => _ClassPageState(_course, _role, _keyFlow);
 }
 
 class _ClassPageState extends State<ClassPage> {
   final ClassCourse? _course;
   String? _role;
-  _ClassPageState(this._course, this._role);
+  String _username='';
+  String? _keyFlow;
+  _ClassPageState(this._course, this._role, this._keyFlow);
   Stream<QuerySnapshot>? _stream;
   ClassAddPresenter? _presenter;
 
   @override
   void initState() {
-    _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
     _presenter = ClassAddPresenter();
+    _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
+    getUserInfor();
+
   }
 
   @override
@@ -46,7 +51,7 @@ class _ClassPageState extends State<ClassPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppBar(appType: AppType.child, title: Languages.of(context).myClass),
+          CommonKey.HOME_PAGE==_keyFlow?CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).appName):CustomAppBar(appType: AppType.child, title: Languages.of(context).myClass),
           Expanded(
             child: CustomScrollView(
               slivers: [
@@ -104,5 +109,12 @@ class _ClassPageState extends State<ClassPage> {
         ),
       ),
     );
+  }
+
+  Future<void> getUserInfor() async{
+    _username = await _presenter!.getUserInfo();
+    setState(()=>null);
+    _stream=FirebaseFirestore.instance.collection('class').where('subscribe', arrayContains: _username).snapshots();
+    print(_username);
   }
 }

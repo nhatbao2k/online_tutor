@@ -64,8 +64,8 @@ class _CoursePageState extends State<CoursePage> {
                           return (CommonKey.ADMIN==_role||CommonKey.TEACHER==_role)?itemCourseAdmin(context, data['name'], data['teacherName'], data['imageLink'],
                                   (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>CourseProductPage(CommonKey.EDIT, data))),
                                   (onClickDelete) => _presenter!.deleteCourse(data['idCourse']),
-                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))))
-                          :itemCourse(context, data['name'], data['teacherName'], data['imageLink'], (id) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role))));
+                                  (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,''))))
+                          :itemCourse(context, data['name'], data['teacherName'], data['imageLink'], (id) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,''))));
                         }).toList(),
                       );
                     },

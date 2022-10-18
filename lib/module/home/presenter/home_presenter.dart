@@ -1,5 +1,11 @@
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:online_tutor/module/class/model/class_course.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
+import '../../../common/common_key.dart';
+import '../../../storage/shared_preferences.dart';
 import '../model/banner_slider.dart';
 
 class HomePresenter {
@@ -16,5 +22,35 @@ class HomePresenter {
       BannerSlider(title: 'Tài liệu', content: 'Ngân hàng kiến thức với 7000+ bộ tài liệu',linkImage: ImageView.banner_document),
     ];
     return bannerList;
+  }
+
+  void RegisterClass(String idClass, List<dynamic> userRegister, String idCourse){
+    FirebaseFirestore.instance.collection('class').doc(idClass).update({
+      'subscribe': userRegister
+    });
+    FirebaseFirestore.instance.collection('course').doc(idCourse).update({
+      'subscribe':userRegister
+    });
+  }
+
+  Future<String> getUserInfo() async{
+    String phone = '';
+    dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
+    if(data!=null){
+      Map<String, dynamic>json = jsonDecode(data.toString());
+      phone = json['phone']!=null?json['phone']:'';
+    }
+    return phone;
+  }
+
+  Future<ClassCourse> getCourse(String idCourse) async{
+    ClassCourse course=ClassCourse('', '', '', '');
+    await FirebaseFirestore.instance.collection('course').where('idCourse', isEqualTo: idCourse).get().then((value) {
+      value.docs.forEach((element) {
+        course = ClassCourse(element['idCourse'], element['idTeacher'], element['teacherName'], element['name']);
+      });
+    });
+    print(course);
+    return course;
   }
 }

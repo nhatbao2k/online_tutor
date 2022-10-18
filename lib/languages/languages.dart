@@ -103,4 +103,6 @@ abstract class Languages{
   String get saturday;
   String get sunday;
   String get schedule;
+  String get teacher;
+  String get requireClass;
 }

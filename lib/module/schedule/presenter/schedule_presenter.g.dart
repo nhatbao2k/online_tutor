@@ -29,8 +29,9 @@ mixin _$SchedulePresenter on _SchedulePresenter, Store {
       AsyncAction('_SchedulePresenter.getSchedule', context: context);
 
   @override
-  Future<List<MyClass>> getSchedule(String idTeacher) {
-    return _$getScheduleAsyncAction.run(() => super.getSchedule(idTeacher));
+  Future<List<MyClass>> getSchedule(String idTeacher, String role) {
+    return _$getScheduleAsyncAction
+        .run(() => super.getSchedule(idTeacher, role));
   }
 
   @override

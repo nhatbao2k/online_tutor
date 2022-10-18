@@ -104,9 +104,9 @@ Widget itemSeeMore(BuildContext context, String title, Function(String call) cal
   );
 }
 
-Widget itemClass(BuildContext context, String title, String gv, String imageLink, Function(bool click) onClick){
+Widget itemClass(BuildContext context, String title, String gv, String imageLink, Function(String click) onClick, bool visiable){
   return InkWell(
-    onTap: () => onClick(true),
+    onTap: () => onClick(CommonKey.INK_WELL),
     child: Container(
       height: 250,
       width: 250,
@@ -141,14 +141,17 @@ Widget itemClass(BuildContext context, String title, String gv, String imageLink
               maxline: 2
           ),
           Spacer(),
-          // Container(
-          //   width: getWidthDevice(context),
-          //   margin: EdgeInsets.only(left: 8, right: 8),
-          //   child: ElevatedButton(
-          //     onPressed: ()=>onClick(true),
-          //     child: CustomText(Languages.of(context).signUp),
-          //   ),
-          // )
+          Visibility(
+            visible: visiable,
+            child: Container(
+              width: getWidthDevice(context),
+              margin: EdgeInsets.only(left: 8, right: 8),
+              child: ElevatedButton(
+                onPressed: ()=>onClick(''),
+                child: CustomText(Languages.of(context).signUp),
+              ),
+            ),
+          )
         ],
       ),
     ),

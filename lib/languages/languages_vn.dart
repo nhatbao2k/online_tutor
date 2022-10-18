@@ -396,4 +396,13 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement schedule
   String get schedule => 'Lịch học';
+
+  @override
+  // TODO: implement teacher
+  String get teacher => 'Giáo viên';
+
+
+  @override
+  // TODO: implement requireClass
+  String get requireClass => 'Bạn phải đăng ký lớp học';
 }

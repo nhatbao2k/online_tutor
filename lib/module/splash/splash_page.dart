@@ -58,6 +58,7 @@ class _SplashPage extends State<SplashPage>{
     // if(username.isNotEmpty){
     bool checkLogin = false;
     String role = '';
+    String phone = '';
     dynamic username = await SharedPreferencesData.GetData(CommonKey.USERNAME);
     dynamic data = await SharedPreferencesData.GetData(CommonKey.USER);
     if(username.toString().isNotEmpty){
@@ -66,8 +67,9 @@ class _SplashPage extends State<SplashPage>{
       if(data!=null){
         Map<String, dynamic>json = jsonDecode(data.toString());
         role = json['role']!=null?json['role']:'';
+        phone = json['phone']!=null?json['phone']:'';
       }
     }
-    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin, role)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Dashboard(checkLogin, role, phone)));
   }
 }

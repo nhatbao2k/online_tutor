@@ -44,4 +44,6 @@ class CommonKey{
   static final String CLASS="CLASS";
   static final String CLASS_DETAIL="CLASS_DETAIL";
   static final String LESSION = "LESSION";
+  static final String MEMBER = "MEMBER";
+  static final String INK_WELL = "INK_WELL";
 }

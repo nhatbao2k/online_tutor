@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobx/mobx.dart';
 import 'package:online_tutor/common/single_state.dart';
-import 'package:online_tutor/module/class/model/my_class_detail.dart';
 
 part 'class_detail_admin_presenter.g.dart';
 

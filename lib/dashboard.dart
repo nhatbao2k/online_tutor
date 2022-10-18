@@ -1,25 +1,28 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_key.dart';
-import 'package:online_tutor/module/advise/advise_page.dart';
+import 'package:online_tutor/module/class/class_page.dart';
 import 'package:online_tutor/module/course/course_page.dart';
 import 'package:online_tutor/module/home/home_page.dart';
 import 'package:online_tutor/module/login/login_page.dart';
 import 'package:online_tutor/module/profile/profile_page.dart';
 import 'package:online_tutor/module/schedule/schedule_page.dart';
 import 'package:online_tutor/module/social/news/news_page.dart';
+import 'package:online_tutor/presenter/dash_board_presenter.dart';
+
+import 'module/class/model/class_course.dart';
 
 class Dashboard extends StatefulWidget{
   bool? _checkLogin;
   String? _role;
-  Dashboard(this._checkLogin, this._role);
+  String? _username;
+  Dashboard(this._checkLogin, this._role, this._username);
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _Dashboard(_checkLogin, _role);
+    return _Dashboard(_checkLogin, _role, this._username);
   }
 }
 
@@ -27,17 +30,23 @@ class _Dashboard extends State<Dashboard>{
   bool? _checkLogin;
   int _selectdIndex = 2;
   String? _role;
-  _Dashboard(this._checkLogin, this._role);
+  String? _username;
+  ClassCourse? _course;
+  _Dashboard(this._checkLogin, this._role, this._username);
 
+  DashBoardPresenter? _presenter;
   @override
   void initState() {
-
+    if(CommonKey.MEMBER==_role){
+      _presenter=DashBoardPresenter();
+      getCourse();
+    }
   }
   Widget _getBody(){
     if(this._selectdIndex == 0){
-      return _checkLogin!?SchedulePage():LoginPage();
+      return _checkLogin!?SchedulePage(_role):LoginPage();
     }else if(_selectdIndex == 1){
-      return _checkLogin!?CoursePage(_role):LoginPage();
+      return _checkLogin!?CommonKey.MEMBER==_role?ClassPage(_course, _role, CommonKey.HOME_PAGE):CoursePage(_role):LoginPage();
     }else if(_selectdIndex == 2){
       return HomePage(_role);
     }else if(_selectdIndex == 3){
@@ -95,5 +104,9 @@ class _Dashboard extends State<Dashboard>{
         ),
       ),
     );
+  }
+
+  Future<void> getCourse() async{
+    _course = await _presenter!.getCourse(_username!);
   }
 }
