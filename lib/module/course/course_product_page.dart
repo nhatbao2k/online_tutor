@@ -151,6 +151,7 @@ class _CourseProductPage extends State<CourseProductPage>{
                             _selectName=value;
                             _selectId=value;
                             _teacherName=_selectName!.fullname!;
+                            _idTeacher=_selectId!.phone!;
                           });
                         },
                       ),
@@ -165,6 +166,7 @@ class _CourseProductPage extends State<CourseProductPage>{
                             _selectId=value;
                             _selectName=value;
                             _idTeacher=_selectId!.phone!;
+                            _teacherName=_selectName!.fullname!;
                           });
                         },
                       ),

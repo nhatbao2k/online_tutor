@@ -401,8 +401,11 @@ class LanguagesVn extends Languages{
   // TODO: implement teacher
   String get teacher => 'Giáo viên';
 
-
   @override
   // TODO: implement requireClass
   String get requireClass => 'Bạn phải đăng ký lớp học';
+
+  @override
+  // TODO: implement denyAccess
+  String get denyAccess => 'Truy cập bị từ chối';
 }

@@ -11,17 +11,21 @@ import '../../class/model/my_class.dart';
 import '../../class/model/my_class_detail.dart';
 
 class LessionProductPresenter{
+  String _url = '';
   Future<String> UploadFilePdf(File file, MyClassDetail? myClassDetail,
       ClassCourse? course, MyClass? myClass, String fileName) async{
     String path = '${CommonKey.COURSE}/${course!.getIdCourse}/${course.getNameCourse}/${myClass!.idClass}/$fileName';
     final reference = FirebaseStorage.instance.ref().child('$path');
-    final uploadTask = reference.putData(file.readAsBytesSync()).catchError((onError){
+
+    final uploadTask = await reference.putData(file.readAsBytesSync()).then((p0) {
+
+    }).catchError((onError){
       return '';
     });
-    String url = '';
-    await getLinkStorage(path).then((value) => url=value);
 
-    return url;
+    _url = await getLinkStorage(path).then((value) => _url=value);
+
+    return _url;
   }
   
   Future<bool> CreateLessionDetail(LessionDetail lessionDetail) async{

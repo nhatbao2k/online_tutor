@@ -46,7 +46,7 @@ class _Dashboard extends State<Dashboard>{
     if(this._selectdIndex == 0){
       return _checkLogin!?SchedulePage(_role):LoginPage();
     }else if(_selectdIndex == 1){
-      return _checkLogin!?CommonKey.MEMBER==_role?ClassPage(_course, _role, CommonKey.HOME_PAGE):CoursePage(_role):LoginPage();
+      return _checkLogin!?CommonKey.MEMBER==_role?ClassPage(_course, _role, CommonKey.DASH_BOARD):CoursePage(_role):LoginPage();
     }else if(_selectdIndex == 2){
       return HomePage(_role);
     }else if(_selectdIndex == 3){

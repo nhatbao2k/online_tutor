@@ -16,4 +16,6 @@ class ImageView{
   static const tab_bar = asset + 'tab_bar.png';
   static const not_found = asset + 'notFound.png';
   static const chose_image = asset + 'chose_image.jpg';
+  static const banner_social = asset + 'banner_social.png';
+  static const camera_social = asset + 'camera_social.png';
 }

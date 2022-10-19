@@ -36,7 +36,6 @@ class _ClassPageState extends State<ClassPage> {
     _presenter = ClassAddPresenter();
     _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
     getUserInfor();
-
   }
 
   @override
@@ -51,7 +50,7 @@ class _ClassPageState extends State<ClassPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CommonKey.HOME_PAGE==_keyFlow?CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).appName):CustomAppBar(appType: AppType.child, title: Languages.of(context).myClass),
+          CommonKey.DASH_BOARD==_keyFlow?CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).appName):CustomAppBar(appType: AppType.child, title: Languages.of(context).myClass),
           Expanded(
             child: CustomScrollView(
               slivers: [
@@ -68,6 +67,7 @@ class _ClassPageState extends State<ClassPage> {
                         return Wrap(
                           children:snapshot.data!.docs.map((e) {
                             Map<String, dynamic> data = e.data()! as Map<String, dynamic>;
+                            List<dynamic> register = data['subscribe'];
                             return (CommonKey.TEACHER==_role||CommonKey.ADMIN==_role)?itemCourseAdminHours(context, data['nameClass'], data['teacherName'],
                                 data['imageLink'], '${
                                 CommonKey.MON==data['startDate']
@@ -87,9 +87,30 @@ class _ClassPageState extends State<ClassPage> {
                                     (onClickEdit) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassAddPage(_course, CommonKey.EDIT, data))),
                                     (onClickDelete) => _presenter!.deleteClass(data['idClass']),
                                     (click) => Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role))))
-                            :itemCourse(context, data['nameClass'], data['teacherName'], data['imageLink'], (id) => {
-                              Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role)))
-                            });
+                            :itemCourseHours(context, data['nameClass'], data['teacherName'], data['imageLink'], (id) => {
+                              register.contains(_username)
+                                  ?Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(MyClass(idClass: data['idClass'], teacherName: data['teacherName'], nameClass: data['nameClass']), _course, _role)))
+                                  :showToast(Languages.of(context).requireClass)
+                            },'${
+                                CommonKey.MON==data['startDate']
+                                    ? Languages.of(context).monday
+                                    :CommonKey.TUE==data['startDate']
+                                    ? Languages.of(context).tuesday
+                                    :CommonKey.WED==data['startDate']
+                                    ? Languages.of(context).wednesday
+                                    :CommonKey.THU==data['startDate']
+                                    ? Languages.of(context).thurday
+                                    :CommonKey.FRI==data['startDate']
+                                    ? Languages.of(context).friday
+                                    :CommonKey.SAT==data['startDate']
+                                    ? Languages.of(context).saturday
+                                    :Languages.of(context).sunday
+                            } - ${data['startHours']}', () {
+                              if(!register.contains(_username)){
+                                register.add(_username);
+                                _presenter!.RegisterClass(data['idClass'], register, data['idCourse']);
+                              }
+                            },register.contains(_username)?false:true);
                           }).toList(),
                         );
                       }
@@ -114,7 +135,10 @@ class _ClassPageState extends State<ClassPage> {
   Future<void> getUserInfor() async{
     _username = await _presenter!.getUserInfo();
     setState(()=>null);
-    _stream=FirebaseFirestore.instance.collection('class').where('subscribe', arrayContains: _username).snapshots();
-    print(_username);
+    if(CommonKey.MEMBER==_role&&CommonKey.DASH_BOARD==_keyFlow){
+      _stream=FirebaseFirestore.instance.collection('class').where('subscribe', arrayContains: _username).snapshots();
+      print(_username);
+    }
+
   }
 }

@@ -133,7 +133,14 @@ class _HomePage extends State<HomePage>{
                                     if(_role==null||_role!.isEmpty){
                                       CustomDialog(context: context, content: Languages.of(context).requireLogin)
                                     }else{
-                                      Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,''))),
+                                      if(CommonKey.ADMIN==_role||(CommonKey.TEACHER==_role&&_phone==data['idTeacher'])){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,''))),
+                                      }else if(CommonKey.MEMBER==_role){
+                                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(ClassCourse(data['idCourse'], data['idTeacher'], data['teacherName'], data['name']), _role,CommonKey.MEMBER))),
+                                      } else{
+                                        showToast(Languages.of(context).denyAccess)
+                                      }
+
                                     }
 
                                   }, false),
@@ -174,16 +181,18 @@ class _HomePage extends State<HomePage>{
                                         listUser.add(_phone!),
                                         _phone!.isNotEmpty?_presenter!.RegisterClass(data['idClass'], listUser, data['idCourse']):null,
                                       }else if(CommonKey.INK_WELL==click&&listUser.contains(_phone)){
-                                        _presenter!.getCourse(data['idCourse']).then((value) {
-                                          if(value!=null&&value.getIdCourse!.isNotEmpty){
-                                            Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(myClass, value, _role)));
-                                          }
-                                        }),
-                                      }else{
+                                        _navigatorClass(data, myClass),
+                                      }else if(CommonKey.INK_WELL==click&&CommonKey.TEACHER==_role&&_phone==data['idTeacher']){
+                                       _navigatorClass(data, myClass),
+                                      }else if(CommonKey.INK_WELL==click&&CommonKey.TEACHER==_role&&_phone!=data['idTeacher']){
+                                        showToast(Languages.of(context).denyAccess),
+                                      } else if(CommonKey.INK_WELL==click&&CommonKey.ADMIN==_role){
+                                        _navigatorClass(data, myClass),
+                                      } else{
                                         showToast(Languages.of(context).requireClass)
                                       }
                                     }
-                                  }, (listUser.contains(_phone)&&CommonKey.MEMBER==_role)?false:CommonKey.TEACHER==_role?false:true),
+                                  }, (listUser.contains(_phone)&&CommonKey.MEMBER==_role)?false:(CommonKey.TEACHER==_role||CommonKey.ADMIN==_role)?false:true),
                                 );
                               }).toList(),
                             ),
@@ -321,5 +330,13 @@ class _HomePage extends State<HomePage>{
   Future<void> _getAccountInfor() async{
     _phone = await _presenter!.getUserInfo();
     setState(()=>null);
+  }
+  
+  void _navigatorClass(Map<String, dynamic> data, MyClass myClass){
+    _presenter!.getCourse(data['idCourse']).then((value) {
+      if(value!=null&&value.getIdCourse!.isNotEmpty){
+        Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassDetailAdminPage(myClass, value, _role)));
+      }
+    });
   }
 }

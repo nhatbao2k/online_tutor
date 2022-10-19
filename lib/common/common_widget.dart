@@ -381,6 +381,70 @@ Widget itemCourseAdminHours(BuildContext context, String title, String content, 
   );
 }
 
+Widget itemCourseHours(BuildContext context, String title, String content, String imageLink, Function(String id) onClick, String time, Function()onClickRegister, bool visiable){
+  return InkWell(
+    onTap: () => onClick(''),
+    child: Container(
+      height: 300,
+      margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+      width: checkLandscape(context)?getWidthDevice(context)/4:getWidthDevice(context)/2-16,
+      padding: EdgeInsets.all(4),
+      decoration: BoxDecoration(
+          color: CommonColor.white,
+          borderRadius: BorderRadius.all(Radius.circular(8)),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 7,
+              offset: const Offset(0, 3),
+            )
+          ]
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ImageLoad.imageNetwork('$imageLink', 150, getWidthDevice(context)),
+          SizedBox(height: 16,),
+          CustomText('$title', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2),
+          SizedBox(height: 8,),
+          CustomText(
+              'GV: $content',
+              textStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: CommonColor.black,
+              ),
+              maxline: 2
+          ),
+          SizedBox(height: 8,),
+          CustomText(
+              '${Languages.of(context).time}: $time',
+              textStyle: TextStyle(
+                overflow: TextOverflow.ellipsis,
+                color: CommonColor.black,
+              ),
+              maxline: 1
+          ),
+          Spacer(),
+          Visibility(
+            visible: visiable,
+            child: Container(
+              width: getWidthDevice(context),
+              margin: EdgeInsets.only(left: 8, right: 8),
+              child: ElevatedButton(
+                onPressed: ()=>onClickRegister(),
+                child: CustomText(Languages.of(context).signUp),
+              ),
+            ),
+          )
+        ],
+      ),
+    ),
+  );
+}
+
 Widget itemCourse(BuildContext context, String title, String content, String imageLink, Function(String id) onClick){
   return InkWell(
     onTap: () => onClick(''),

@@ -60,20 +60,21 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
       initialVideoId: '${getYoutubeId(_presenter!.detail!.videoLink!)}',
       flags: const YoutubePlayerFlags(
         mute: false,
-        autoPlay: true,
+        autoPlay: false,
         disableDragSeek: false,
         loop: false,
+        isLive: false,
         forceHD: false,
-        enableCaption: true
+        enableCaption: true,
       )
     )..addListener(() {_listen(); });
   }
 
   void _listen(){
     if(_isPlayerReady && mounted && !_controller.value.isFullScreen){
-      setState((){
-        _playerState = _controller.value.playerState;
-      });
+      // setState((){
+      //   _playerState = _controller.value.playerState;
+      // });
     }
   }
 

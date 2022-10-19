@@ -139,4 +139,13 @@ class ClassAddPresenter{
     }
     return phone;
   }
+
+  void RegisterClass(String idClass, List<dynamic> userRegister, String idCourse){
+    FirebaseFirestore.instance.collection('class').doc(idClass).update({
+      'subscribe': userRegister
+    });
+    FirebaseFirestore.instance.collection('course').doc(idCourse).update({
+      'subscribe':userRegister
+    });
+  }
 }

@@ -54,7 +54,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).classDetail, nameFunction: Languages.of(context).delete, callback: (value){
+          CustomAppBar(appType: CommonKey.MEMBER==_role?AppType.child:AppType.childFunction, title: Languages.of(context).classDetail, nameFunction: Languages.of(context).delete, callback: (value){
             if(_myClassResult!.idClassDetail!=null){
               showLoaderDialog(context);
               _presenter!.DeleteClassDetail(_myClassResult!.idClassDetail!).then((value) {
@@ -129,13 +129,12 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   }
 
   Widget _itemLession(Lession lession){
-
     return InkWell(
       onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>LessionAdminPage(lession, CommonKey.ADMIN, _myClassResult, _myClass, _course, _role))),
       child: Container(
         width: getWidthDevice(context),
         color: CommonColor.white,
-        padding: EdgeInsets.all(4),
+        padding: EdgeInsets.only(right: 8, left: 8, top: 8, bottom: 8),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.center,

@@ -105,4 +105,5 @@ abstract class Languages{
   String get schedule;
   String get teacher;
   String get requireClass;
+  String get denyAccess;
 }
