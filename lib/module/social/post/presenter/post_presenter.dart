@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,52 +20,30 @@ class PostPresenter {
     return imageList;
   }
 
-
+  String _url='';
   Future<String> upLoadImage(File file, String username) async{
-    String _url='';
     final metadata = SettableMetadata(contentType: "image/jpeg");
-
-// Create a reference to the Firebase Storage bucket
     final storageRef = FirebaseStorage.instance.ref();
-
-// Upload file and metadata to the path 'images/mountains.jpg'
     String path = 'social/$username/${getCurrentTime()}.jpg';
-    final uploadTask = storageRef
+    await storageRef
         .child("$path")
-        .putFile(file, metadata);
-
-// Listen for state changes, errors, and completion of the upload.
-    uploadTask.snapshotEvents.listen((TaskSnapshot taskSnapshot) async{
-      switch (taskSnapshot.state) {
-        case TaskState.running:
-          final progress =
-              100.0 * (taskSnapshot.bytesTransferred / taskSnapshot.totalBytes);
-          print("Upload is $progress% complete.");
-          break;
-        case TaskState.paused:
-          print("Upload is paused.");
-          break;
-        case TaskState.canceled:
-          print("Upload was canceled");
-          break;
-        case TaskState.error:
-        // Handle unsuccessful uploads
-          break;
-        case TaskState.success:
-        // Handle successful uploads on complete
-          _url= await getLinkStorage(path).then((value) => _url=value);
-          break;
-      }
+        .putFile(file, metadata).whenComplete(() async{
+      _url= await getLinkStorage(path).then((value) => _url=value);
     });
     return _url;
   }
 
-  Future<bool> CreateNewPost(List<ImageModel> listImage, News news) async{
-    List<String> _imageList = [];
+  List<String> _imageList = [];
+  Future<List<String>> getLink(List<ImageModel> listImage,News news)async{
     for(ImageModel model in listImage){
       String url = await upLoadImage(model.fileImage!, news.username!);
       _imageList.add(url);
     }
+    return _imageList;
+  }
+
+  Future<bool> CreateNewPost( List<String> imageList, News news) async{
+
     DateTime currentPhoneDate = DateTime.now(); //DateTime
     Timestamp myTimeStamp = Timestamp.fromDate(currentPhoneDate);
     CollectionReference postNews = FirebaseFirestore.instance.collection('news');
@@ -73,7 +52,7 @@ class PostPresenter {
         "comments": 1,
         "description": news.description,
         "fullname": news.fullname,
-        "mediaUrl": _imageList,
+        "mediaUrl": imageList,
         "timestamp": myTimeStamp,
         "userAvatar": news.userAvatar,
         "username": news.username,
@@ -86,7 +65,10 @@ class PostPresenter {
 
   Future<Person> getAccountInfor() async{
     dynamic user = await SharedPreferencesData.GetData(CommonKey.USER);
-    Person person = Person.fromJson(user.toString());
+    Map<String, dynamic>json = jsonDecode(user.toString());
+
+    Person person = Person(fullname: json['fullname'], avatar: json['avatar'],
+    describe: json['describe'], phone: json['phone']);
     return person;
   }
 }

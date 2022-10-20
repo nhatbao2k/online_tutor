@@ -55,9 +55,9 @@ class _PostPageState extends State<PostPage> {
                 username: _person!.phone,
               );
               showLoaderDialog(context);
-              _presenter!.CreateNewPost(_imageList, news).then((value) {
+              _presenter!.getLink(_imageList, news).then((value) => _presenter!.CreateNewPost(value, news).then((value) {
                 listenStatus(context, value);
-              });
+              }));
             }
           },),
           Expanded(

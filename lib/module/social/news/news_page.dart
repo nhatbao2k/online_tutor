@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
@@ -19,6 +20,14 @@ class NewPages extends StatefulWidget{
 }
 
 class _NewPages extends State<NewPages>{
+  Stream<QuerySnapshot>? _stream;
+
+
+  @override
+  void initState() {
+    _stream = FirebaseFirestore.instance.collection('news').snapshots();
+  }
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -41,103 +50,23 @@ class _NewPages extends State<NewPages>{
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _header(),
-                  Container(
-                    height:getHeightDevice(context)/1.1,
-                    child: ListView.builder(
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: 1,
-                      itemBuilder: (context, index)=>Card(
-                        margin: EdgeInsets.all(8),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.max,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedBox(height: 8,),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.max,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(width: 4,),
-                                ClipOval(
-                                  child: ImageLoad.imageNetwork('url', 50, 50),
-                                ),
-                                SizedBox(width: 4,),
-                                Expanded(
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.max,
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      CustomText('Nhật Bảo', textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: CommonColor.black)),
-                                      CustomText('1 tiếng trước', textStyle: TextStyle(fontSize: 12, color: CommonColor.black_light)),
-                                    ],
-                                  ),
-                                ),
-                                PopupMenuButton<MenuStrip>(
-                                  itemBuilder: (context)=>[
-                                    PopupMenuItem(
-                                      child: CustomText(
-                                        Languages.of(context).edit,
-                                        textStyle: TextStyle(fontSize: 12)
-                                      ),
-                                    ),
-                                    PopupMenuItem(
-                                      child: CustomText(
-                                          Languages.of(context).delete,
-                                          textStyle: TextStyle(fontSize: 12)
-                                      ),
-                                    ),
-                                  ],
-                                  onSelected: (value){
-                                    switch(value){
-                                      case MenuStrip.UPDATE:
-                                        showToast('sửa');
-                                        break;
-                                      case MenuStrip.DELETE:
-                                        showToast('xóa');
-                                        break;
-                                    }
-                                  },
-                                  icon: Icon(
-                                    Icons.more_vert_sharp,
-                                    color: CommonColor.blue,
-                                  ),
-                                )
-                              ],
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: CustomText('Bài này làm như thế lào hả ae', textStyle: TextStyle(color: CommonColor.black, fontSize: 14,)),
-                            ),
-                            ImageLoad.imageNetwork('', getHeightDevice(context)/2, getWidthDevice(context)),
-                            Row(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.chat,
-                                    color: CommonColor.blue,
-                                  ),
-                                  onPressed: ()=>null,
-                                ),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.share,
-                                    color: CommonColor.blue,
-                                  ),
-                                  onPressed: ()=>null,
-                                )
-                              ],
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
+                  StreamBuilder<QuerySnapshot>(
+                    stream: _stream,
+                    builder: (context, snapshot){
+                      if(snapshot.connectionState==ConnectionState.waiting){
+                        return LoadingView();
+                      }else if(snapshot.hasError){
+                        return NoDataView(Languages.of(context).noData);
+                      }else{
+                        return ListView(
+                          children: snapshot.data!.docs.map((e) {
+                            Map<String, dynamic> data = e.data() as Map<String, dynamic>;
+                            return ;
+                          }).toList(),
+                        )
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -204,6 +133,99 @@ class _NewPages extends State<NewPages>{
         ),
       ],
     );
+  }
+
+  Widget _itemChat(){
+    return Card(
+      margin: EdgeInsets.all(8),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(height: 8,),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(width: 4,),
+              ClipOval(
+                child: ImageLoad.imageNetwork('url', 50, 50),
+              ),
+              SizedBox(width: 4,),
+              Expanded(
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    CustomText('Nhật Bảo', textStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: CommonColor.black)),
+                    CustomText('1 tiếng trước', textStyle: TextStyle(fontSize: 12, color: CommonColor.black_light)),
+                  ],
+                ),
+              ),
+              PopupMenuButton<MenuStrip>(
+                itemBuilder: (context)=>[
+                  PopupMenuItem(
+                    child: CustomText(
+                        Languages.of(context).edit,
+                        textStyle: TextStyle(fontSize: 12)
+                    ),
+                  ),
+                  PopupMenuItem(
+                    child: CustomText(
+                        Languages.of(context).delete,
+                        textStyle: TextStyle(fontSize: 12)
+                    ),
+                  ),
+                ],
+                onSelected: (value){
+                  switch(value){
+                    case MenuStrip.UPDATE:
+                      showToast('sửa');
+                      break;
+                    case MenuStrip.DELETE:
+                      showToast('xóa');
+                      break;
+                  }
+                },
+                icon: Icon(
+                  Icons.more_vert_sharp,
+                  color: CommonColor.blue,
+                ),
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomText('Bài này làm như thế lào hả ae', textStyle: TextStyle(color: CommonColor.black, fontSize: 14,)),
+          ),
+          ImageLoad.imageNetwork('', getHeightDevice(context)/2, getWidthDevice(context)),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              IconButton(
+                icon: Icon(
+                  Icons.chat,
+                  color: CommonColor.blue,
+                ),
+                onPressed: ()=>null,
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.share,
+                  color: CommonColor.blue,
+                ),
+                onPressed: ()=>null,
+              )
+            ],
+          )
+        ],
+      ),
+    ),;
   }
 }
 
