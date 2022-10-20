@@ -14,6 +14,9 @@ import '../../teacher/model/person.dart';
 import 'model/image.dart';
 
 class PostPage extends StatefulWidget {
+  String? _keyFlow;
+  Map<String, dynamic>? _data;
+  PostPage(this._keyFlow, this._data);
 
   @override
   State<PostPage> createState() => _PostPageState();
@@ -24,10 +27,18 @@ class _PostPageState extends State<PostPage> {
   List<ImageModel> _imageList=[];
   String _content = '';
   Person? _person;
+  TextEditingController _textController = TextEditingController();
+  List<dynamic> _listLink = [];
   @override
   void initState() {
     _presenter = PostPresenter();
     _getAccountInfor();
+    if(CommonKey.EDIT==widget._keyFlow){
+      _textController = TextEditingController(text: widget._data!['description']);
+      _listLink = widget._data!['mediaUrl'];
+      _imageList = _presenter!.getImageUpdate(_listLink);
+      _content = widget._data!['description'];
+    }
   }
 
   @override
@@ -55,9 +66,14 @@ class _PostPageState extends State<PostPage> {
                 username: _person!.phone,
               );
               showLoaderDialog(context);
-              _presenter!.getLink(_imageList, news).then((value) => _presenter!.CreateNewPost(value, news).then((value) {
+              CommonKey.EDIT!=widget._keyFlow
+                  ?_presenter!.getLink(_imageList, news).then((value) => _presenter!.CreateNewPost(value, news).then((value) {
                 listenStatus(context, value);
-              }));
+              }))
+              :_presenter!.UpdatePost(idNews: widget._data!['id'], listModel: _imageList, listLink: widget._data!['mediaUrl']
+                  , description: _content, news: news).then((value) {
+                    listenStatus(context, value);
+              });
             }
           },),
           Expanded(
@@ -76,6 +92,7 @@ class _PostPageState extends State<PostPage> {
                     ),
                     maxLines: 10,
                     onChanged: (value)=>setState(()=>_content=value),
+                    controller: _textController,
                   ),
                 ),
                 Container(
@@ -139,7 +156,7 @@ class _PostPageState extends State<PostPage> {
         child: Stack(
           children: [
             imageModel.imageLink!=null
-                ?ImageLoad.imageNetwork('url', getWidthDevice(context)/2-16, getWidthDevice(context)/2-16)
+                ?ImageLoad.imageNetwork('${imageModel.imageLink}', getWidthDevice(context)/2-16, getWidthDevice(context)/2-16)
                 :Image(image: FileImage(imageModel.fileImage!), width: getWidthDevice(context)/2-16, height: getWidthDevice(context)/2-16,),
             Positioned(
               top: 0,
@@ -149,7 +166,12 @@ class _PostPageState extends State<PostPage> {
                   Icons.close,
                   color: CommonColor.greyLight,
                 ),
-                onPressed: ()=>setState(()=>_imageList.removeAt(index)),
+                onPressed: ()=>setState((){
+                  _imageList.removeAt(index);
+                  if(CommonKey.EDIT==widget._keyFlow){
+                    _listLink.removeAt(index);
+                  }
+                }),
               ),
             )
           ],

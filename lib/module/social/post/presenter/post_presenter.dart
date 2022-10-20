@@ -71,4 +71,27 @@ class PostPresenter {
     describe: json['describe'], phone: json['phone']);
     return person;
   }
+
+  List<ImageModel> getImageUpdate(List<dynamic> listImage){
+    List<ImageModel> listImageModel = [];
+    for(dynamic list in listImage){
+      listImageModel.add(ImageModel(imageLink: list));
+    }
+    return listImageModel;
+  }
+
+  Future<bool> UpdatePost({required String idNews,required List<ImageModel> listModel, required List<dynamic> listLink,required String description, required News news})async{
+    List<ImageModel> listModelFile = await listModel.where((element) => element.fileImage!=null).toList();
+    if(listModelFile.length>0){
+      List<String> listLinkImage = await getLink(listModelFile, news);
+      listLink.addAll(listLinkImage);
+      print(listLink);
+    }
+
+    await FirebaseFirestore.instance.collection('news').doc(idNews).update({
+      'mediaUrl': listLink,
+      'description': description
+    }).whenComplete(() => true).catchError((onError)=> false);
+    return true;
+  }
 }
