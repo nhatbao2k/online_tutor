@@ -408,4 +408,28 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement denyAccess
   String get denyAccess => 'Truy cập bị từ chối';
+
+  @override
+  // TODO: implement post
+  String get post => 'Đăng bài';
+
+  @override
+  // TODO: implement news
+  String get createPost => 'Tạo bài viết';
+
+  @override
+  // TODO: implement uQuestion
+  String get uQuestion => 'Bạn muốn hỏi gì';
+
+  @override
+  // TODO: implement edit
+  String get edit => 'Sửa';
+
+  @override
+  // TODO: implement choseImage
+  String get choseImage => 'Chọn ảnh vào bài viết';
+
+  @override
+  // TODO: implement emptyContent
+  String get emptyContent => 'Chưa có nội dung';
 }

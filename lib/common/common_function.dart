@@ -156,4 +156,29 @@ String getCurrentTime() {
   return "$time";
 }
 
+String readTimestamp(Timestamp? timestamp) {
+  if(timestamp==null) return "";
+  var now = DateTime.now();
+  var format = DateFormat('HH:mm a');
+  var date = DateTime.fromMillisecondsSinceEpoch(timestamp.millisecondsSinceEpoch);
+  var diff = now.difference(date);
+  var time = '';
+
+  if (diff.inSeconds <= 0 || diff.inSeconds > 0 && diff.inMinutes == 0 || diff.inMinutes > 0 && diff.inHours == 0 || diff.inHours > 0 && diff.inDays == 0) {
+    time = format.format(date);
+  } else if (diff.inDays > 0 && diff.inDays < 7) {
+    if (diff.inDays == 1) {
+      time = diff.inDays.toString() + ' ngày trước';
+    } else {
+      time = diff.inDays.toString() + ' ngày trước';
+    }
+  } else {
+    if (diff.inDays == 7) {
+      time = (diff.inDays / 7).floor().toString() + ' tuần trước';
+    } else {
+      time = (diff.inDays / 7).floor().toString() + ' tuần trước';
+    }
+  }
+  return time;
+}
 

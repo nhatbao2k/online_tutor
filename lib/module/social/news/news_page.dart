@@ -4,7 +4,9 @@ import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/common/image_load.dart';
+import 'package:online_tutor/common/menu_strip.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/social/post/post_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
 class NewPages extends StatefulWidget{
@@ -73,13 +75,36 @@ class _NewPages extends State<NewPages>{
                                     ],
                                   ),
                                 ),
-                                IconButton(
-                                  onPressed: ()=>null,
+                                PopupMenuButton<MenuStrip>(
+                                  itemBuilder: (context)=>[
+                                    PopupMenuItem(
+                                      child: CustomText(
+                                        Languages.of(context).edit,
+                                        textStyle: TextStyle(fontSize: 12)
+                                      ),
+                                    ),
+                                    PopupMenuItem(
+                                      child: CustomText(
+                                          Languages.of(context).delete,
+                                          textStyle: TextStyle(fontSize: 12)
+                                      ),
+                                    ),
+                                  ],
+                                  onSelected: (value){
+                                    switch(value){
+                                      case MenuStrip.UPDATE:
+                                        showToast('sửa');
+                                        break;
+                                      case MenuStrip.DELETE:
+                                        showToast('xóa');
+                                        break;
+                                    }
+                                  },
                                   icon: Icon(
-                                    Icons.more_vert,
+                                    Icons.more_vert_sharp,
                                     color: CommonColor.blue,
                                   ),
-                                ),
+                                )
                               ],
                             ),
                             Padding(
@@ -143,7 +168,7 @@ class _NewPages extends State<NewPages>{
               child: CustomText(Languages.of(context).uNeed, textStyle: TextStyle(fontSize: 14, color: CommonColor.black)),
             ),
             IconButton(
-              onPressed: ()=>null,
+              onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>PostPage())),
               icon: Icon(Icons.image, color: CommonColor.blue,),
             )
           ],

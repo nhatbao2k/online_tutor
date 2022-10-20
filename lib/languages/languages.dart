@@ -106,4 +106,10 @@ abstract class Languages{
   String get teacher;
   String get requireClass;
   String get denyAccess;
+  String get post;
+  String get createPost;
+  String get uQuestion;
+  String get edit;
+  String get choseImage;
+  String get emptyContent;
 }

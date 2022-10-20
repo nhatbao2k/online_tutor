@@ -1,0 +1,4 @@
+enum MenuStrip{
+  UPDATE,
+  DELETE
+}

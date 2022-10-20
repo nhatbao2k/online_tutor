@@ -171,11 +171,11 @@ Widget NoDataView(String mess){
   );
 }
 
-Future<void> cropImage(Function (File?) onSelectFile, String type,BuildContext context) async {
+Future<void> cropImage(BuildContext context,Function (File?) onResult, String type) async {
   final pickedImage =
   await ImagePicker().getImage(source: CommonKey.CAMERA==type?ImageSource.camera : ImageSource.gallery);
   if(pickedImage==null){
-    onSelectFile(null);
+    onResult(null);
   }else {
     CroppedFile? croppedFile =  await ImageCropper().cropImage(
       sourcePath: pickedImage.path,
@@ -202,13 +202,13 @@ Future<void> cropImage(Function (File?) onSelectFile, String type,BuildContext c
       ],
     );
     if (croppedFile != null) {
-      onSelectFile(File(croppedFile.path));
+      onResult(File(croppedFile.path));
     }
   }
 }
 
-Future<void> selectImages(Function (List<File>?) onSelectFile, bool type) async {
-  if(type){
+Future<void> SelectImages(Function (List<File>?) onSelectFile, String type) async {
+  if(CommonKey.CAMERA==type){
     final pickedCam = await ImagePicker().getImage(source:ImageSource.camera);
     if(pickedCam==null){
       onSelectFile(null);

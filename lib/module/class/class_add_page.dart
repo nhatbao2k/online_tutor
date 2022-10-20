@@ -144,7 +144,7 @@ class _ClassAddPageState extends State<ClassAddPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InkWell(
-                      onTap: () => cropImage((p0) => setState(()=>_fileImage=p0!), '', context),
+                      onTap: () => cropImage(context,(p0) => setState(()=>_fileImage=p0!), ''),
                       child: Center(child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):(_imageLink.isNotEmpty&&CommonKey.EDIT==_keyFlow)?ImageLoad.imageNetwork(_imageLink, 150, 150):Image.asset(ImageView.chose_image, width: 150, height: 150,)),
                     ),
                     Padding(

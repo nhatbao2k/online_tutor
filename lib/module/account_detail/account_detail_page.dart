@@ -143,10 +143,10 @@ class _AccountDetailPage extends State<AccountDetailPage>{
                             )
                         ),
                         child: InkWell(
-                          onTap: ()=>cropImage((p0) => setState((){
+                          onTap: ()=>cropImage(context,(p0) => setState((){
                             _fileImage=p0;
                             _presenter!.updateAvatar(p0!, _keyUser, CommonKey.AVATAR);
-                          }), '', context),
+                          }), ''),
                           child:  ClipOval(
                             child: ImageLoad.imageNetwork(data['avatar'], 100, 100)
                           ),
@@ -167,7 +167,7 @@ class _AccountDetailPage extends State<AccountDetailPage>{
                             child: IconButton(
                               icon: const Icon(Icons.camera_alt, size: 12, color: CommonColor.grey,),
                               onPressed: (){
-                                cropImage((p0) => setState(()=>_fileImage=p0), CommonKey.CAMERA, context);
+                                cropImage(context,(p0) => setState(()=>_fileImage=p0), CommonKey.CAMERA);
                               },
                             ),
                           ),

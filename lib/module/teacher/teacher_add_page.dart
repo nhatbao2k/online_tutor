@@ -1,7 +1,6 @@
 
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
@@ -15,7 +14,6 @@ import '../../common/common_key.dart';
 import '../../common/common_theme.dart';
 import '../../common/common_widget.dart';
 import '../../res/images/image_view.dart';
-import 'model/person.dart';
 
 class TeacherAddPage extends StatefulWidget {
 
@@ -100,9 +98,9 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                   )
                               ),
                               child: InkWell(
-                                onTap: ()=>cropImage((p0) => setState((){
+                                onTap: ()=>cropImage(context, (p0) => setState((){
                                   _fileImage=p0;
-                                }), '', context),
+                                }), ''),
                                 child:  ClipOval(
                                     child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):Image.asset(ImageView.no_load, width: 150, height: 150, fit: BoxFit.cover,)
                                 ),
@@ -123,7 +121,7 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                   child: IconButton(
                                     icon: const Icon(Icons.camera_alt, size: 12, color: CommonColor.grey,),
                                     onPressed: (){
-                                      cropImage((p0) => setState(()=>_fileImage=p0), CommonKey.CAMERA, context);
+                                      cropImage(context, (p0) => setState(()=>_fileImage=p0), CommonKey.CAMERA);
                                     },
                                   ),
                                 ),
