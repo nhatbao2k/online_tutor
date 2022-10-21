@@ -81,12 +81,18 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
 
   @override
   void deactivate() {
-    // _controller.pause();
+    if(_controller!=null){
+      _controller.pause();
+    }
   }
 
 
   @override
   void dispose() {
+    super.dispose();
+    if(_controller!=null){
+      _controller.dispose();
+    }
 
   }
 

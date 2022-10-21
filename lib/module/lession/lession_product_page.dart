@@ -138,11 +138,18 @@ class _LessionProductPageState extends State<LessionProductPage> {
                               allowedExtensions: ['pdf'],
                             );
                             if(result!=null){
+                              showLoaderDialog(context);
                               PlatformFile file = result.files.first;
                               String fileName = result.files.first.name;
                               _fileNameContent = fileName;
                               final File fileForFirebase = File(file.path!);
-                              _fileContent = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName);
+                              _fileContent = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName).then((value) {
+                                Navigator.pop(context);
+                                if(value.isEmpty){
+                                  showToast(Languages.of(context).onFailure);
+                                }
+                                return value;
+                              });
                               setState(()=>null);
                             }
                           },
@@ -177,11 +184,18 @@ class _LessionProductPageState extends State<LessionProductPage> {
                               allowedExtensions: ['pdf'],
                             );
                             if(result!=null){
+                              showLoaderDialog(context);
                               PlatformFile file = result.files.first;
                               String fileName = result.files.first.name;
                               _fileNameQuestion = fileName;
                               final File fileForFirebase = File(file.path!);
-                              _fileQuestion = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName);
+                              _fileQuestion = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName).then((value) {
+                                Navigator.pop(context);
+                                if(value.isEmpty){
+                                  showToast(Languages.of(context).onFailure);
+                                }
+                                return value;
+                              });
                               _homeworkList[0].question=_fileQuestion;
                               setState(()=>null);
                             }
@@ -209,11 +223,18 @@ class _LessionProductPageState extends State<LessionProductPage> {
                               allowedExtensions: ['pdf'],
                             );
                             if(result!=null){
+                              showLoaderDialog(context);
                               PlatformFile file = result.files.first;
                               String fileName = result.files.first.name;
                               _fileNameAnswer = fileName;
                               final File fileForFirebase = File(file.path!);
-                              _fileAnswer = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName);
+                              _fileAnswer = await _presenter!.UploadFilePdf(fileForFirebase, _myClassDetail, _course, _myClass, fileName).then((value) {
+                                Navigator.pop(context);
+                                if(value.isEmpty){
+                                  showToast(Languages.of(context).onFailure);
+                                }
+                                return value;
+                              });
                               _homeworkList[0].answer=_fileAnswer;
                               setState(()=>null);
                             }
@@ -266,14 +287,14 @@ class _LessionProductPageState extends State<LessionProductPage> {
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).question, hintText: Languages.of(context).question),
-              onChanged: (value)=>setState(()=> _videoLink=value),
+              onChanged: (value)=>setState(()=> qa.question=value),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
               decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).answer, hintText: Languages.of(context).answer),
-              onChanged: (value)=>setState(()=> _videoLink=value),
+              onChanged: (value)=>setState(()=> qa.answer=value),
             ),
           ),
           Row(
