@@ -112,4 +112,5 @@ abstract class Languages{
   String get edit;
   String get choseImage;
   String get emptyContent;
+  String get onFailure;
 }

@@ -1,9 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_key.dart';
 import 'package:online_tutor/common/common_widget.dart';
+import 'package:online_tutor/common/image_load.dart';
+import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/account_detail/account_detail_page.dart';
-import 'package:online_tutor/module/profile/profile_presenter.dart';
+import 'package:online_tutor/module/profile/presenter/profile_presenter.dart';
 import 'package:online_tutor/module/teacher/teacher_add_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
@@ -21,7 +24,7 @@ class ProfilePage extends StatefulWidget{
 class _ProfilePage extends State<ProfilePage>{
   Map<String, dynamic>? _user;
   ProfilePresenter? _presenter;
-
+  Stream<DocumentSnapshot>? _streamUser;
   @override
   void initState() {
     _presenter = ProfilePresenter();
@@ -31,6 +34,10 @@ class _ProfilePage extends State<ProfilePage>{
   Future<void> initData() async{
     _user = await _presenter!.getAccountInfor();
     print(_user);
+    if(_user!=null){
+      _streamUser = FirebaseFirestore.instance.collection('users').doc(_user!['phone']).snapshots();
+      setState(()=>null);
+    }
   }
   @override
   Widget build(BuildContext context) {
@@ -123,59 +130,20 @@ class _ProfilePage extends State<ProfilePage>{
           fit: BoxFit.fill,
         ),
       ),
-      child: Column(
-        children: [
-          const SizedBox(height: 16,),
-          Stack(
-              children:[
-                Container(
-                    decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(200)),
-                        border: Border.all(
-                            color: CommonColor.orangeOriginLight,
-                            width: 1.0
-                        )
-                    ),
-                    child: InkWell(
-                      onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>AccountDetailPage(_user))),
-                      child: const ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(200)),
-                        child: Image(
-                          image: AssetImage(
-                              ImageView.truong_man
-                          ),
-                          height: 100,
-                          width: 100,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                    )
-                ),
-                Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                      height: 28,
-                      width: 28,
-                      decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.all(Radius.circular(200)),
-                          color: CommonColor.white,
-                          border: Border.all(width: 1.0, color: CommonColor.orangeOriginLight)
-                      ),
-                      child: Center(
-                        child: IconButton(
-                          icon: const Icon(Icons.camera_alt, size: 12, color: CommonColor.grey,),
-                          onPressed: (){
-
-                          },
-                        ),
-                      ),
-                    ))
-              ]
-          ),
-          const SizedBox(height: 8,),
-          CustomText('hello username', textStyle: const TextStyle(fontSize: 14, color: CommonColor.white, fontWeight: FontWeight.bold)),
-        ],
+      child: StreamBuilder<DocumentSnapshot>(
+        stream: _streamUser,
+        builder: (context, snapshots){
+          if(snapshots.connectionState==ConnectionState.waiting){
+            return LoadingView();
+          }else if(snapshots.hasError){
+            return _itemUser(null);
+          }else if(!snapshots.hasData){
+            return _itemUser(null);
+          }else{
+            Map<String, dynamic> data = snapshots.data!.data() as Map<String, dynamic>;
+            return _itemUser(data);
+          }
+        },
       ),
     );
   }
@@ -254,5 +222,70 @@ class _ProfilePage extends State<ProfilePage>{
     );
   }
 
-
+  Widget _itemUser(Map<String, dynamic>? data){
+    return Column(
+      children: [
+        const SizedBox(height: 16,),
+        Stack(
+            children:[
+              Container(
+                  decoration: BoxDecoration(
+                      borderRadius: const BorderRadius.all(Radius.circular(200)),
+                      border: Border.all(
+                          color: CommonColor.orangeOriginLight,
+                          width: 1.0
+                      )
+                  ),
+                  child: InkWell(
+                    onTap: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>AccountDetailPage(_user))),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.all(Radius.circular(200)),
+                      child: data!=null
+                          ?ImageLoad.imageNetwork(data['avatar'], 100, 100)
+                          :Image(
+                        image: AssetImage(
+                            ImageView.truong_man
+                        ),
+                        height: 100,
+                        width: 100,
+                        fit: BoxFit.fill,
+                      ),
+                    ),
+                  )
+              ),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Container(
+                    height: 28,
+                    width: 28,
+                    decoration: BoxDecoration(
+                        borderRadius: const BorderRadius.all(Radius.circular(200)),
+                        color: CommonColor.white,
+                        border: Border.all(width: 1.0, color: CommonColor.orangeOriginLight)
+                    ),
+                    child: Center(
+                      child: IconButton(
+                        icon: const Icon(Icons.image, size: 12, color: CommonColor.grey,),
+                        onPressed: (){
+                          cropImage(context, (p0) {
+                            showLoaderDialog(context);
+                            _presenter!.UpdateImage(p0!, _user!['phone']).then((value) {
+                              Navigator.pop(context);
+                              if(!value){
+                                showToast(Languages.of(context).onFailure);
+                              }
+                            });
+                          }, '');
+                        },
+                      ),
+                    ),
+                  ))
+            ]
+        ),
+        const SizedBox(height: 8,),
+        CustomText('${data!=null?data['fullname']:''}', textStyle: const TextStyle(fontSize: 14, color: CommonColor.white, fontWeight: FontWeight.bold)),
+      ],
+    );
+  }
 }

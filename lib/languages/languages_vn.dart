@@ -433,4 +433,8 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement emptyContent
   String get emptyContent => 'Chưa có nội dung';
+
+  @override
+  // TODO: implement onFailure
+  String get onFailure => 'Thất bại';
 }
