@@ -53,7 +53,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
   String _fileQuestion = '';
   String _fileAnswer = '';
   String _fileNameAnswer = '';
-  List<Homework> _homeworkList = [Homework(idHomework: '1',listQuestion: [QA(id: '1')], worksheet: true)];
+  List<Homework> _homeworkList = [Homework(idHomework: '1',listQuestion: [QA(id: '1')], worksheet: true, totalQA: 0.0)];
   List<String> _stringList = ['Có trắc nghiệm', 'Không trắc nghiệm'];
   String _select = '';
   String _fullname = '';
@@ -286,14 +286,14 @@ class _LessionProductPageState extends State<LessionProductPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
-              decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).question, hintText: Languages.of(context).question),
+              decoration: CommonTheme.textFieldInputDecoration(labelText: CommonKey.EDIT==_keyFlow?qa.question:Languages.of(context).question, hintText: CommonKey.EDIT==_keyFlow?qa.question:Languages.of(context).question),
               onChanged: (value)=>setState(()=> qa.question=value),
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: TextFormField(
-              decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).answer, hintText: Languages.of(context).answer),
+              decoration: CommonTheme.textFieldInputDecoration(labelText: CommonKey.EDIT==_keyFlow?qa.answer:Languages.of(context).answer, hintText: CommonKey.EDIT==_keyFlow?qa.answer:Languages.of(context).answer),
               onChanged: (value)=>setState(()=> qa.answer=value),
             ),
           ),
@@ -340,6 +340,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
     _videoLink = _lessionDetail!.videoLink!;
     _homeworkList[0].question=_fileQuestion;
     _homeworkList[0].answer=_fileAnswer;
+    _homeworkList[0].listQuestion=_lessionDetail!.homework![0].listQuestion;
     _controllerUrlLink = TextEditingController(text: _videoLink);
     setState(()=>null);
   }

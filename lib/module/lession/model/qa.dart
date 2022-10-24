@@ -12,6 +12,8 @@ class QA {
   String? id;
   String? question;
   String? answer;
+  bool? correct;
+  String? studentAnswer;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};

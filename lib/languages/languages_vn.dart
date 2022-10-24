@@ -437,4 +437,64 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement onFailure
   String get onFailure => 'Thất bại';
+
+  @override
+  // TODO: implement submit
+  String get submit => 'Nộp bài';
+
+  @override
+  // TODO: implement indexQA
+  String get indexQA => 'Câu';
+
+  @override
+  // TODO: implement right
+  String get right => 'Đ';
+
+  @override
+  // TODO: implement wrong
+  String get wrong => 'S';
+
+  @override
+  // TODO: implement anwserHomework
+  String get anwserHomework => 'Trả lời';
+
+  @override
+  // TODO: implement bad
+  String get bad => 'Cần xem lại bài giảng và nghe video để hiểu bài hơn';
+
+  @override
+  // TODO: implement supperGood
+  String get supperGood => 'Bạn rất xuất sắc, có vẻ chúng tôi không làm khó được bạn rồi!';
+
+  @override
+  // TODO: implement wellDone
+  String get wellDone => 'Bạn thật khá đấy, hãy nâng hạng của mình lên nhé!';
+
+  @override
+  // TODO: implement averageExam
+  String get averageExam => 'Bạn đã nỗ lực, tuy nhiên kết quả còn chưa được như mong muốn. Hãy xem lại bài và làm tốt hơn.';
+
+  @override
+  // TODO: implement exellent
+  String get exellent => 'Xuất sắc';
+
+  @override
+  // TODO: implement good
+  String get good => 'Tốt';
+
+  @override
+  // TODO: implement goodless
+  String get goodless => 'Khá';
+
+  @override
+  // TODO: implement low
+  String get low => 'Yếu';
+
+  @override
+  // TODO: implement result
+  String get result => 'Kết quả';
+
+  @override
+  // TODO: implement resultCategory
+  String get resultCategory => 'Loại';
 }

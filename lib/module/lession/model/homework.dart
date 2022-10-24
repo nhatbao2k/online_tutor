@@ -6,13 +6,15 @@ class Homework {
       this.answer, 
       this.question, 
       this.worksheet, 
-      this.listQuestion,});
+      this.listQuestion,
+      this.totalQA});
 
   Homework.fromJson(dynamic json) {
     idHomework = json['idHomework'];
     answer = json['answer'];
     question = json['question'];
     worksheet = json['worksheet'];
+    totalQA = json['totalQA'];
     if (json['listQuestion'] != null) {
       listQuestion = [];
       json['listQuestion'].forEach((v) {
@@ -25,6 +27,7 @@ class Homework {
   String? question;
   bool? worksheet;
   List<QA>? listQuestion;
+  double? totalQA;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -32,6 +35,7 @@ class Homework {
     map['answer'] = answer;
     map['question'] = question;
     map['worksheet'] = worksheet;
+    map['totalQA'] = totalQA;
     if (listQuestion != null) {
       map['listQuestion'] = listQuestion!.map((v) => v.toJson()).toList();
     }

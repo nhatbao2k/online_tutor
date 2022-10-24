@@ -81,9 +81,9 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
 
   @override
   void deactivate() {
-    if(_controller!=null){
-      _controller.pause();
-    }
+    // if(_controller!=null){
+    //   _controller.pause();
+    // }
   }
 
 
@@ -204,15 +204,15 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                           physics: NeverScrollableScrollPhysics(),
                           children: [
                             Container(
-                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.fileContent)
+                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.fileContent, null, null)
                                     :NoDataView(Languages.of(context).noData)
                             ),
                             Container(
-                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.homework![0].question)
+                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.homework![0].question, _presenter!.detail!.homework![0].listQuestion, _presenter!.detail)
                                     :NoDataView(Languages.of(context).noData)
                             ),
                             Container(
-                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.homework![0].answer)
+                                child: _presenter!.detail!=null?PdfViewerPage(_presenter!.detail!.homework![0].answer, null, null)
                                     :NoDataView(Languages.of(context).noData)
                             ),
                             Container(

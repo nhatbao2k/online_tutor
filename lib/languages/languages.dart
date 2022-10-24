@@ -113,4 +113,19 @@ abstract class Languages{
   String get choseImage;
   String get emptyContent;
   String get onFailure;
+  String get submit;
+  String get indexQA;
+  String get right;
+  String get wrong;
+  String get anwserHomework;
+  String get supperGood;
+  String get wellDone;
+  String get bad;
+  String get averageExam;
+  String get exellent;
+  String get good;
+  String get goodless;
+  String get low;
+  String get result;
+  String get resultCategory;
 }
