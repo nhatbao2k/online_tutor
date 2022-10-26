@@ -128,4 +128,5 @@ abstract class Languages{
   String get low;
   String get result;
   String get resultCategory;
+  String get feedback;
 }

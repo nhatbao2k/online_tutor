@@ -8,6 +8,7 @@ import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/account_detail/account_detail_page.dart';
 import 'package:online_tutor/module/profile/presenter/profile_presenter.dart';
 import 'package:online_tutor/module/teacher/teacher_add_page.dart';
+import 'package:online_tutor/module/teacher/teacher_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
 import '../../common/common_function.dart';
@@ -152,7 +153,7 @@ class _ProfilePage extends State<ProfilePage>{
     return   InkWell(
       onTap: (){
         if(CommonKey.TEAM_TEACHER==keyFlow){
-          Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherAddPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherPage()));
         }
       },
       child: Container(

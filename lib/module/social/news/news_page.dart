@@ -246,9 +246,9 @@ class _NewPages extends State<NewPages>{
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-                ImageLoad.imageNetwork(listImage[0]!=null?listImage[0]:'', getHeightDevice(context)/2, getWidthDevice(context)/2-16),
+                ImageLoad.imageNetwork(listImage[0]!=null?listImage[0]:'', getHeightDevice(context)/4, getWidthDevice(context)/2-16),
                 Spacer(),
-                ImageLoad.imageNetwork(listImage[1]!=null?listImage[1]:'', getHeightDevice(context)/2, getWidthDevice(context)/2-16),
+                ImageLoad.imageNetwork(listImage[1]!=null?listImage[1]:'', getHeightDevice(context)/4, getWidthDevice(context)/2-16),
             ],
           ),
               ): InkWell(

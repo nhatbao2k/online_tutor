@@ -496,4 +496,8 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement resultCategory
   String get resultCategory => 'Loại';
+
+  @override
+  // TODO: implement feedback
+  String get feedback => 'Phản hồi';
 }

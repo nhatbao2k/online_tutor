@@ -182,3 +182,7 @@ String readTimestamp(Timestamp? timestamp) {
   return time;
 }
 
+String replaceKey(String content, String keyFlow){
+  return content.replaceAll(keyFlow, "");
+}
+

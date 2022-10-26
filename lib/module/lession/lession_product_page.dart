@@ -93,7 +93,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
               CustomDialog(context: context, content: 'Chưa có file câu hỏi');
             }else{
               if(CommonKey.EDIT!=_keyFlow){
-                Discuss? discuss = Discuss(name: _fullname, avatar: _avatar, timeStamp: getTimestamp(), content: Languages.of(context).youNeed);
+                Discuss? discuss = Discuss(name: _fullname, avatar: _avatar, timeStamp: getTimestamp(), content: Languages.of(context).youNeed, nameFeedback: '');
                 LessionDetail lessionDetail = LessionDetail(idLessionDetail: replaceSpace(_lession!.lessionId!), fileContent: _fileContent,
                     nameLession: _lession!.nameLession!, videoLink: _videoLink, homework: _homeworkList, discuss: [discuss]);
                 showLoaderDialog(context);
