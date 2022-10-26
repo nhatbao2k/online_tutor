@@ -1,15 +1,19 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_color.dart';
 import 'package:online_tutor/common/common_function.dart';
+import 'package:online_tutor/common/common_key.dart';
+import 'package:online_tutor/common/common_theme.dart';
 import 'package:online_tutor/common/common_widget.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/lession/model/discuss.dart';
 import 'package:online_tutor/module/lession/model/lession_detail.dart';
 
 import '../../../common/image_load.dart';
-
+import 'dart:math' as math;
 class DiscussPage extends StatefulWidget {
 
   LessionDetail? _lession;
@@ -26,6 +30,7 @@ class _DiscussPageState extends State<DiscussPage> {
   _DiscussPageState(this._lession);
 
   Stream<DocumentSnapshot>? _stream;
+  File? _fileImage;
   @override
   void initState() {
     _stream = FirebaseFirestore.instance.collection('lession_detail').doc(_lession!.idLessionDetail!)
@@ -66,8 +71,61 @@ class _DiscussPageState extends State<DiscussPage> {
                 ),
                 Container(
                   color: CommonColor.white,
-                  height: 60,
-                )
+                  width: getWidthDevice(context),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      _fileImage!=null
+                          ?Stack(
+                        alignment: Alignment.topCenter,
+                        children: [
+                          Image(image: FileImage(_fileImage!,), width: getWidthDevice(context)*0.2, height: getWidthDevice(context)*0.25,),
+                          IconButton(
+                            onPressed: ()=>setState(()=>_fileImage=null),
+                            icon: Icon(
+                              Icons.clear,
+                              color: CommonColor.grayLight,
+                            ),
+                          )
+                        ],
+                      )
+                      :SizedBox(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          SizedBox(width: 4,),
+                          IconButton(
+                            onPressed: ()=>cropImage(context, (p0) => setState(()=> _fileImage=p0!), ''),
+                            icon: Icon(
+                              Icons.image,
+                              color: CommonColor.blue,
+                            ),
+                          ),
+                          Expanded(
+                            child: TextFormField(
+                              decoration: CommonTheme.textFieldInputDecorationChat(),
+                            ),
+                          ),
+                          Transform.rotate(
+                            angle: -35*math.pi /180,
+                            child: IconButton(
+                              onPressed: ()=>null,
+                              icon: Icon(
+                                Icons.send,
+                                color: CommonColor.blue,
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(height: 4,)
               ],
             );
           }
