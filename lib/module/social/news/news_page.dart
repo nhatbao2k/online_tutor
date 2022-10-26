@@ -9,6 +9,7 @@ import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/common/menu_strip.dart';
 import 'package:online_tutor/common/view_image_list.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/social/comment_news/comment_news.dart';
 import 'package:online_tutor/module/social/news/news_detail_page.dart';
 import 'package:online_tutor/module/social/news/presenter/news_presenter.dart';
 import 'package:online_tutor/module/social/post/post_page.dart';
@@ -27,6 +28,7 @@ class _NewPages extends State<NewPages>{
   Stream<QuerySnapshot>? _stream;
   Stream<DocumentSnapshot>? _streamUser;
   String _username = '';
+  Map<String, dynamic>? _dataUser;
   NewsPresenter? _presenter;
   @override
   void initState() {
@@ -289,7 +291,7 @@ class _NewPages extends State<NewPages>{
                   Icons.chat,
                   color: CommonColor.blue,
                 ),
-                onPressed: ()=>null,
+                onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>CommentNewsPage(data, _dataUser))),
               ),
               IconButton(
                 icon: Icon(
@@ -306,7 +308,8 @@ class _NewPages extends State<NewPages>{
   }
 
   Future<void> getUserInfor() async{
-    _username = await _presenter!.getUserInfor();
+    _dataUser = await _presenter!.getUserInfor();
+    _username = _dataUser!['phone'];
     _streamUser = FirebaseFirestore.instance.collection('users').doc(_username).snapshots();
     setState(()=>null);
   }

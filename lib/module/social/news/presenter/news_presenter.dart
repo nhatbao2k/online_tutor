@@ -6,14 +6,11 @@ import '../../../../common/common_key.dart';
 import '../../../../storage/shared_preferences.dart';
 
 class NewsPresenter{
-  Future<String> getUserInfor() async{
+  Future<Map<String, dynamic>> getUserInfor() async{
     dynamic user = await SharedPreferencesData.GetData(CommonKey.USER);
-    String username = '';
-    if(user.toString().isNotEmpty){
-      Map<String, dynamic>json = jsonDecode(user.toString());
-      username = json['phone'];
-    }
-    return username;
+    Map<String, dynamic> userData = jsonDecode(user.toString());
+    user = userData;
+    return userData;
   }
   
   void DeleteNews(String idNews){
