@@ -38,11 +38,13 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
   CommentPresenter? _presenter;
   String _level = '1';
   Comment? _comment;
+  int _indexLevel = 0;
+  String _linkImage = '';
   @override
   void initState() {
     _presenter = CommentPresenter();
     _streamNew = FirebaseFirestore.instance.collection('news').doc(widget._data!['id']).snapshots();
-    _streamComment = FirebaseFirestore.instance.collection('comment').doc(widget._data!['id']).collection(widget._data!['id']).snapshots();
+    _streamComment = FirebaseFirestore.instance.collection('comment').doc(widget._data!['id']).collection(widget._data!['id']).orderBy('timeStamp', descending: false).snapshots();
   }
 
   @override
@@ -241,38 +243,53 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                       Transform.rotate(
                         angle: -35*math.pi /180,
                         child: IconButton(
-                          onPressed: (){
+                          onPressed: ()async{
                             if(_message.isNotEmpty||_fileImage!=null){
-                              Comment? comment = _level!=1
+
+                              Comment? comment = await _level!='1'
                                   ?_comment
                                   :Comment(
-                                nameFeedback: _nameFeedback,
-                                name: widget._dataUser!['fullname'],
-                                content: _message,
-                                idUser: widget._dataUser!['phone'],
-                                avatar: widget._dataUser!['avatar'],
-                                timeStamp: getTimestamp(),
-                                level: _level,
-                                listComment: [
-                                ]
+                                  nameFeedback: _nameFeedback,
+                                  name: widget._dataUser!['fullname'],
+                                  content: _message,
+                                  idUser: widget._dataUser!['phone'],
+                                  avatar: widget._dataUser!['avatar'],
+                                  timeStamp: getTimestamp(),
+                                  level: _level,
+                                  listComment: [
+                                  ]
                               );
-                              _level!=1?_comment!.listComment!.add(
+                              if(_level!='1'){
+                                _linkImage = await _presenter!.getLinkImage(idNews: widget._data!['id'], comment: comment!, imageFile: _fileImage!);
+                              }
+                              _level=='2'?_comment!.listComment!.add(
                                   Comment(
                                       id: getCurrentTime(),
                                       nameFeedback: _nameFeedback,
                                       name: widget._dataUser!['fullname'],
-                                      content: _message,
+                                      content: replaceKey(_message, _nameFeedback),
                                       idUser: widget._dataUser!['phone'],
                                       avatar: widget._dataUser!['avatar'],
                                       timeStamp: getTimestamp(),
                                       level: _level,
+                                      imageLink: _linkImage,
                                       listComment: [
                                       ]
                                   )
-                              ):null;
+                              ):_level=='3'?_comment!.listComment![_indexLevel].listComment!.add( Comment(
+                                  id: getCurrentTime(),
+                                  nameFeedback: _nameFeedback,
+                                  name: widget._dataUser!['fullname'],
+                                  content: replaceKey(_message, _nameFeedback),
+                                  idUser: widget._dataUser!['phone'],
+                                  avatar: widget._dataUser!['avatar'],
+                                  timeStamp: getTimestamp(),
+                                  imageLink: _linkImage,
+                                  level: _level,
+                              )):null;
                               _fileImage!=null
-                                  ?_presenter!.SendChat(idNews: widget._data!['id'], comment: comment!, type: _level!=1?CommonKey.UPDATE_CHILD:CommonKey.ADD_NEW, imageFile: _fileImage!)
-                                  :_presenter!.SendChat(idNews: widget._data!['id'], comment: comment!, type: _level!=1?CommonKey.UPDATE_CHILD:CommonKey.ADD_NEW);
+                                  ?_presenter!.SendChat(idNews: widget._data!['id'], comment: comment!, type: _level!='1'?CommonKey.UPDATE_CHILD:CommonKey.ADD_NEW, imageFile: _fileImage!)
+                                  :_presenter!.SendChat(idNews: widget._data!['id'], comment: comment!, type: _level!='1'?CommonKey.UPDATE_CHILD:CommonKey.ADD_NEW);
                               _message = '';
                               _fileImage = null;
                               _controllerMess = TextEditingController(text: _message);
@@ -323,6 +340,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  CustomText(comment.name!, textStyle: TextStyle(fontSize: 14, color: CommonColor.gray,)),
                   (comment.nameFeedback==null||comment.nameFeedback!.isEmpty)?SizedBox():CustomText(comment.nameFeedback!, textStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: CommonColor.black)),
                   CustomText(comment.content!, textStyle: TextStyle(fontSize: 14, color: CommonColor.black,))
                 ],
@@ -374,7 +392,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
             SizedBox(width: 50,),
             InkWell(
               onTap: (){
-                
+                _presenter!.DeleteComment(comment,widget._data!['id']);
               },
               child: CustomText(
                   Languages.of(context).delete,
@@ -382,8 +400,113 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
               ),
             ),
           ],
-        )
+        ),
+        comment.listComment!.length>0?Wrap(
+          children: List.generate(comment.listComment!.length, (index) => _itemChatChild(comment.listComment![index], index, comment)).toList(),
+        ):SizedBox()
       ],
+    );
+  }
+
+  Widget _itemChatChild(Comment comment, int index, Comment commentParent){
+    List<dynamic> image =[comment.imageLink];
+    return Padding(
+      padding: const EdgeInsets.only(left: 16, top: 16, right: 8),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ClipOval(
+                child: ImageLoad.imageNetwork(comment.avatar, 35, 35),
+              ),
+              SizedBox(width: 8,),
+              SizedBox(
+                width: getWidthDevice(context)/1.5,
+                child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        CustomText(comment.name!, textStyle: TextStyle(fontSize: 15, color: CommonColor.black,fontWeight: FontWeight.bold, overflow: TextOverflow.ellipsis), maxline: 1),
+                        SizedBox(width: 4,),
+                        Expanded(child:(comment.nameFeedback==null||comment.nameFeedback!.isEmpty)?SizedBox():CustomText('@${comment.nameFeedback!}', textStyle: TextStyle(fontSize: 15,  color: CommonColor.gray, overflow: TextOverflow.ellipsis), maxline: 1),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 4,),
+                    CustomText(comment.content!, textStyle: TextStyle(fontSize: 15, color: CommonColor.black,))
+                  ],
+                ),
+              ),
+            ],
+          ),
+          comment.imageLink!=null
+              ?Padding(
+            padding: const EdgeInsets.only(left: 50, top: 8),
+            child: InkWell(
+                onTap: ()=> Navigator.push(context, MaterialPageRoute(builder: (_)=>ViewImageList(image, 0))),
+                child: ImageLoad.imageNetwork(comment.imageLink, getWidthDevice(context)*0.5, getWidthDevice(context)*0.5)),
+          )
+              :SizedBox(),
+          SizedBox(height: 12,),
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(width: 48,),
+              InkWell(
+                onTap: (){
+                  setState((){
+                    _isFeedback = true;
+                    _nameFeedback = '${comment.name}';
+                    if(comment.level=='2'){
+                      _indexLevel = index;
+                    }
+                    _controllerMess = TextEditingController(text: _nameFeedback);
+                    _level='3';
+                    _comment = commentParent;
+                    print(commentParent);
+                  });
+                },
+                child: CustomText(
+                    Languages.of(context).feedback,
+                    textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
+                ),
+              ),
+              SizedBox(width: 50,),
+              InkWell(
+                onTap: (){
+                  if(comment.level=="2"){
+                    commentParent.listComment!.remove(comment);
+                  }else{
+                    commentParent.listComment![index].listComment!.remove(comment);
+                  }
+                  _presenter!.UpdateChildComment(commentParent, widget._data!['id']);
+                },
+                child: CustomText(
+                    Languages.of(context).delete,
+                    textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
+                ),
+              ),
+            ],
+          ),
+          (comment.listComment!=null)?Wrap(
+            children: List.generate(comment.listComment!.length, (index3) => _itemChatChild(comment.listComment![index3], index, commentParent)).toList(),
+          ):SizedBox()
+        ],
+      ),
     );
   }
 }
