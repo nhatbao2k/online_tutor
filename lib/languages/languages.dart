@@ -129,4 +129,7 @@ abstract class Languages{
   String get result;
   String get resultCategory;
   String get feedback;
+  String get document;
+  String get documentNews;
+  String get nameDocument;
 }

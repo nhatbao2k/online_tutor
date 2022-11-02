@@ -7,11 +7,11 @@ import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/account_detail/account_detail_page.dart';
 import 'package:online_tutor/module/profile/presenter/profile_presenter.dart';
-import 'package:online_tutor/module/teacher/teacher_add_page.dart';
 import 'package:online_tutor/module/teacher/teacher_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 
 import '../../common/common_function.dart';
+import '../document/document_page.dart';
 
 class ProfilePage extends StatefulWidget{
   @override
@@ -91,7 +91,7 @@ class _ProfilePage extends State<ProfilePage>{
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _itemOption('Bảng vàng', Icons.star, CommonKey.SUPPORT),
-                    _itemOption('Tài liệu', Icons.library_books, CommonKey.REGISTER)
+                    _itemOption('Tài liệu', Icons.library_books, CommonKey.DOCUMENT)
                   ],
                 ),
               ),
@@ -154,6 +154,8 @@ class _ProfilePage extends State<ProfilePage>{
       onTap: (){
         if(CommonKey.TEAM_TEACHER==keyFlow){
           Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherPage()));
+        }else if(CommonKey.DOCUMENT==keyFlow){
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>DocumentPage(_user!)));
         }
       },
       child: Container(

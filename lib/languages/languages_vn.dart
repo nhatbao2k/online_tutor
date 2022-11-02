@@ -501,4 +501,16 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement feedback
   String get feedback => 'Phản hồi';
+
+  @override
+  // TODO: implement document
+  String get document => 'Tài liệu';
+
+  @override
+  // TODO: implement documentNews
+  String get documentNews => 'Thêm mới tài liệu';
+
+  @override
+  // TODO: implement nameDocument
+  String get nameDocument => 'Tên tài liệu';
 }
