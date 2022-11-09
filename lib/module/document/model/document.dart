@@ -6,6 +6,9 @@ class Document{
   String? name;
   List<DocumentFile>? listDocument;
 
+
+  Document({this.id, this.imageLink, this.name, this.listDocument});
+
   Document.fromJson(dynamic json) {
     id = json['id'];
     imageLink = json['imageLink'];

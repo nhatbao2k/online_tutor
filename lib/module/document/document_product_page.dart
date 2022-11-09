@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/custom_app_bar.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/document/model/document.dart';
 import 'package:online_tutor/module/document/presenter/document_product_presenter.dart';
 
 import '../../common/common_color.dart';
@@ -50,14 +51,28 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).documentNews, nameFunction: Languages.of(context).createNew, callback: (value){
-
+            if(_fileImage==null){
+              showToast(Languages.of(context).imageNull);
+            }else if(_nameDocument.isEmpty){
+              showToast(Languages.of(context).subjectEmpty);
+            }else{
+              Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList);
+              _presenter!.CreateDocument(imageFile: _fileImage!, document: doc).then((value) {
+                if(value){
+                  showToast(Languages.of(context).onSuccess);
+                  Navigator.pop(context);
+                }else{
+                  showToast(Languages.of(context).onFailure);
+                }
+              });
+            }
           },),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.max,
                 mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   InkWell(
                     onTap: () => cropImage(context,(p0) => setState(()=>_fileImage=p0!), ''),
@@ -70,10 +85,8 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
                       onChanged: (value)=>setState(()=> _nameDocument=value),
                     ),
                   ),
-                  ListView.separated(
-                    itemBuilder: (context, index)=>_itemDocument(_documentList[index]),
-                    itemCount: _documentList.length,
-                    separatorBuilder: (context, index)=>SizedBox(height: 8,),
+                  Wrap(
+                    children: List.generate(_documentList.length, (index) => _itemDocument(_documentList[index]))
                   ),
                   ButtonIcon(Icons.add, (data) => setState(()=>_documentList.add(DocumentFile()))),
                 ],
@@ -88,46 +101,49 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
   Widget _itemDocument(DocumentFile documentFile){
     return   Padding(
       padding: EdgeInsets.all(8),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Expanded(
-                child: CustomText('File nội dung: '),
-              ),
-              IconButton(
-                icon: Icon(Icons.arrow_circle_up_sharp),
-                color: CommonColor.blue,
-                onPressed: () async{
-                  FilePickerResult? result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom,
-                    allowedExtensions: ['pdf'],
-                  );
-                  if(result!=null){
-                    showLoaderDialog(context);
-                    PlatformFile file = result.files.first;
-                    String fileName = result.files.first.name;
-                    final File fileForFirebase = File(file.path!);
-                    _presenter!.UploadFilePdf(fileForFirebase, fileName).then((value) {
-                      if(value.isNotEmpty){
-                        documentFile.id = getCurrentTime();
-                        documentFile.linkeFile=value;
-                        documentFile.nameFile=fileName;
-                      }
-                      setState(()=>null);
-                    });
-                  }
-                },
-              )
-            ],
-          ),
-          ButtonIcon(Icons.delete, (data) => setState(()=>_documentList.remove(documentFile)))
-        ],
+      child: Card(
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: CustomText('File nội dung: ${documentFile.nameFile}'),
+                ),
+                IconButton(
+                  icon: Icon(Icons.arrow_circle_up_sharp),
+                  color: CommonColor.blue,
+                  onPressed: () async{
+                    FilePickerResult? result = await FilePicker.platform.pickFiles(
+                      type: FileType.custom,
+                      allowedExtensions: ['pdf'],
+                    );
+                    if(result!=null){
+                      showLoaderDialog(context);
+                      PlatformFile file = result.files.first;
+                      String fileName = result.files.first.name;
+                      final File fileForFirebase = File(file.path!);
+                      _presenter!.UploadFilePdf(fileForFirebase, fileName).then((value) {
+                        Navigator.pop(context);
+                        if(value.isNotEmpty){
+                          documentFile.id = getCurrentTime();
+                          documentFile.linkeFile=value;
+                          documentFile.nameFile=fileName;
+                        }
+                        setState(()=>null);
+                      });
+                    }
+                  },
+                )
+              ],
+            ),
+            ButtonIcon(Icons.delete, (data) => setState(()=>_documentList.remove(documentFile)))
+          ],
+        ),
       ),
     );
   }

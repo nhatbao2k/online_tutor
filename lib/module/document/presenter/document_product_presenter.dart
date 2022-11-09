@@ -11,7 +11,7 @@ class DocumentProductPresenter{
 
   Future<String> UploadFilePdf(File file, String fileName) async{
     String url = '';
-    String path = '${CommonKey.DOCUMENT}/${fileName}/$getCurrentTime()/$fileName';
+    String path = '${CommonKey.DOCUMENT}/${fileName}/${getCurrentTime()}/$fileName';
     final reference = FirebaseStorage.instance.ref().child('$path');
 
     final uploadTask = await reference.putData(file.readAsBytesSync()).then((p0) {
