@@ -10,7 +10,6 @@ import 'package:online_tutor/module/sign_up/sign_up_page.dart';
 import 'package:online_tutor/res/images/image_view.dart';
 import 'package:online_tutor/restart_page.dart';
 import 'package:online_tutor/storage/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../common/common_function.dart';
 import '../../languages/languages.dart';

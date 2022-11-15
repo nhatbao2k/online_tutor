@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -6,6 +7,7 @@ import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/module/document/model/document.dart';
 
 import '../../../common/common_key.dart';
+import '../../../storage/shared_preferences.dart';
 
 class DocumentProductPresenter{
 
@@ -37,5 +39,12 @@ class DocumentProductPresenter{
       FirebaseFirestore.instance.collection('documents').doc(document.id).set(data).whenComplete(() => true);
     });
     return true;
+  }
+
+  Future<Map<String, dynamic>> getAccountInfor() async{
+    dynamic user = await SharedPreferencesData.GetData(CommonKey.USER);
+    Map<String, dynamic> userData = jsonDecode(user.toString());
+    user = userData;
+    return userData;
   }
 }

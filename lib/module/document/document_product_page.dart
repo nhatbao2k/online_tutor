@@ -31,12 +31,14 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
   String _imageLink='';
   String _nameDocument='';
   List<DocumentFile> _documentList = [DocumentFile()];
+  Map<String, dynamic>? _dataUser;
   DocumentProductPresenter? _presenter;
 
 
   @override
   void initState() {
     _presenter = DocumentProductPresenter();
+    getUserInfor();
   }
 
   @override
@@ -56,7 +58,7 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
             }else if(_nameDocument.isEmpty){
               showToast(Languages.of(context).subjectEmpty);
             }else{
-              Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList);
+              Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList, teacher: _dataUser!['fullname']);
               _presenter!.CreateDocument(imageFile: _fileImage!, document: doc).then((value) {
                 if(value){
                   showToast(Languages.of(context).onSuccess);
@@ -131,7 +133,7 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
                         Navigator.pop(context);
                         if(value.isNotEmpty){
                           documentFile.id = getCurrentTime();
-                          documentFile.linkeFile=value;
+                          documentFile.linkFile=value;
                           documentFile.nameFile=fileName;
                         }
                         setState(()=>null);
@@ -146,5 +148,10 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
         ),
       ),
     );
+  }
+
+  Future<void> getUserInfor() async{
+    _dataUser = await _presenter!.getAccountInfor();
+    setState(()=>null);
   }
 }
