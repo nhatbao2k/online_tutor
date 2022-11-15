@@ -9,6 +9,8 @@ import 'package:online_tutor/common/image_load.dart';
 import 'package:online_tutor/common/menu_strip.dart';
 import 'package:online_tutor/common/view_image_list.dart';
 import 'package:online_tutor/languages/languages.dart';
+import 'package:online_tutor/module/social/chat/chat_user_page.dart';
+import 'package:online_tutor/module/social/chat/chats_page.dart';
 import 'package:online_tutor/module/social/comment_news/comment_news.dart';
 import 'package:online_tutor/module/social/news/news_detail_page.dart';
 import 'package:online_tutor/module/social/news/presenter/news_presenter.dart';
@@ -34,7 +36,7 @@ class _NewPages extends State<NewPages>{
   void initState() {
     _stream = FirebaseFirestore.instance.collection('news').orderBy('timestamp',descending: true).snapshots();
     _presenter = NewsPresenter();
-    getUserInfor();
+    _getUserInfor();
   }
 
   @override
@@ -50,7 +52,9 @@ class _NewPages extends State<NewPages>{
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppBar(appType: AppType.appbar_home, title: Languages.of(context).qa),
+          CustomAppBar(appType: AppType.appbar_home_social, title: Languages.of(context).qa,callback: (value){
+            Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatsPage(_dataUser)));
+          },),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
@@ -228,7 +232,7 @@ class _NewPages extends State<NewPages>{
                   Icons.chat_outlined,
                   color: CommonColor.blue,
                 ),
-                onPressed: ()=>null,
+                onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>ChatUserPage(_dataUser, data))),
               )
             ],
           ),
@@ -307,7 +311,7 @@ class _NewPages extends State<NewPages>{
     );
   }
 
-  Future<void> getUserInfor() async{
+  Future<void> _getUserInfor() async{
     _dataUser = await _presenter!.getUserInfor();
     _username = _dataUser!['phone'];
     _streamUser = FirebaseFirestore.instance.collection('users').doc(_username).snapshots();

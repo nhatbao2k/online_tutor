@@ -513,4 +513,8 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement nameDocument
   String get nameDocument => 'Tên tài liệu';
+
+  @override
+  // TODO: implement listChat
+  String get listChat => 'Đoạn chat';
 }

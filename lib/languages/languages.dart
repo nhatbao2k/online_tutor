@@ -132,4 +132,5 @@ abstract class Languages{
   String get document;
   String get documentNews;
   String get nameDocument;
+  String get listChat;
 }

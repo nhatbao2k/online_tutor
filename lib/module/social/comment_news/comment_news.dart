@@ -197,7 +197,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
             right: 0,
             left: 0,
             child: Container(
-              margin: EdgeInsets.only(top: 8, left: 8, right: 8),
+              margin: EdgeInsets.only(top: 8,),
               padding: EdgeInsets.only(top: 8, bottom: 8),
               decoration: BoxDecoration(
                 color: CommonColor.grayLight
