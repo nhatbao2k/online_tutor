@@ -517,4 +517,12 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement listChat
   String get listChat => 'Đoạn chat';
+
+  @override
+  // TODO: implement contentEmpty
+  String get contentEmpty => 'Vui lòng nhập nội dung';
+
+  @override
+  // TODO: implement member
+  String get member => 'Học viên';
 }

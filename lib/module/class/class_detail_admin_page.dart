@@ -32,16 +32,23 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
   MyClass? _myClass;
   ClassCourse? _course;
   String? _role;
+  String _content = '';
   _ClassDetailAdminPageState(this._myClass, this._course, this._role);
   Stream<QuerySnapshot>? _stream;
   MyClassDetail? _myClassResult;
   ClassDetailAdminPresenter? _presenter;
+  Map<String, dynamic>? _dataUser;
   @override
   void initState() {
     _presenter = ClassDetailAdminPresenter();
     _stream =  FirebaseFirestore.instance.collection('class_detail').where('idClass', isEqualTo: '${_myClass!.idClass!}').snapshots();
+    getAccountInfor();
   }
 
+  Future<void> getAccountInfor()async{
+    _dataUser = await _presenter!.getUserInfor();
+    setState(()=>null);
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -172,7 +179,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
             IconButton(onPressed: ()=>null, icon: Icon(Icons.info, color: CommonColor.blue,)),
             Expanded(child: CustomText(Languages.of(context).infor, textStyle: TextStyle(fontSize: 14, color: CommonColor.blue))),
             TextButton(
-              onPressed: ()=>null,
+              onPressed: ()=>_showDialog(),
               child: CustomText(Languages.of(context).rating, textStyle: TextStyle(fontSize: 14, color: CommonColor.orangeLight)),
             ),
             SizedBox(width: 8,),
@@ -185,6 +192,28 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
         Divider(),
         SizedBox(height: 8,),
       ],
+    );
+  }
+
+  void _showDialog(){
+    showDialog(
+        context: context,
+        builder: (_)=>StatefulBuilder(builder: (_, setState)=>AlertDialog(
+          title: CustomText(_myClassResult!.describe!=null?_myClassResult!.describe!:Languages.of(context).noData, textStyle: TextStyle(color: CommonColor.blue, fontSize: 16)),
+          content: TextField(
+            onChanged: (value)=>setState(()=>_content=value),
+          ),
+          actions: [
+            ButtonDefault(Languages.of(context).submit, (data) {
+              if(_content.isEmpty){
+                showToast(Languages.of(context).contentEmpty);
+              }else{
+                _presenter!.CreateRating(_course!, _myClassResult, _content, _dataUser!);
+                Navigator.pop(context);
+              }
+            })
+          ],
+        ))
     );
   }
 }

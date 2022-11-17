@@ -38,6 +38,7 @@ class _HomePage extends State<HomePage>{
   int _current = 0;
   Stream<QuerySnapshot>? _streamCourse;
   Stream<QuerySnapshot>? _streamClass;
+  Stream<QuerySnapshot>? _streamRatings;
   String? _role;
   String? _phone = '';
 
@@ -50,6 +51,7 @@ class _HomePage extends State<HomePage>{
     _bannerList = _presenter!.getBanner();
     _streamCourse = FirebaseFirestore.instance.collection('course').snapshots();
     _streamClass = FirebaseFirestore.instance.collection('class').snapshots();
+    _streamRatings = FirebaseFirestore.instance.collection('ratings').snapshots();
   }
 
   @override
@@ -202,18 +204,29 @@ class _HomePage extends State<HomePage>{
                     ),
                     SizedBox(height: 16,),
                     itemSeeMore(context, Languages.of(context).comment, (call) => null),
-                    Container(
-                      height: 150,
-                      width: getWidthDevice(context),
-                      child: ListView.builder(
-                        itemCount: 10,
-                        scrollDirection: Axis.horizontal,
-                        shrinkWrap: false,
-                        itemBuilder: (context, index){
-                          return _itemComment();
-                        },
-                      ),
+                    StreamBuilder<QuerySnapshot>(
+                      stream: _streamRatings,
+                      builder: (context, snapshots){
+                        if(snapshots.connectionState==ConnectionState.waiting){
+                          return SizedBox();
+                        }else if(snapshots.hasError){
+                          return NoDataView(Languages.of(context).noData);
+                        }else{
+                          return   Container(
+                            height: 150,
+                            width: getWidthDevice(context),
+                            child: ListView(
+                                scrollDirection:Axis.horizontal,
+                              children: snapshots.data!.docs.map((e) {
+                                Map<String, dynamic> data = e.data() as Map<String, dynamic>;
+                                return _itemComment(data);
+                              }).toList(),
+                            )
+                          );
+                        }
+                      },
                     ),
+
                     SizedBox(height: 16,),
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
@@ -274,9 +287,9 @@ class _HomePage extends State<HomePage>{
     );
   }
 
-  Widget _itemComment(){
+  Widget _itemComment(Map<String, dynamic> data){
     return   Container(
-      width: getWidthDevice(context),
+      width: getWidthDevice(context)*0.8,
       padding: EdgeInsets.all(8),
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       decoration: BoxDecoration(
@@ -302,7 +315,7 @@ class _HomePage extends State<HomePage>{
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               ClipOval(
-                child: ImageLoad.imageNetwork('', 50, 50),
+                child: ImageLoad.imageNetwork(data['avatar'], 50, 50),
               ),
               SizedBox(width: 8,),
               Expanded(
@@ -311,17 +324,17 @@ class _HomePage extends State<HomePage>{
                   mainAxisSize: MainAxisSize.max,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CustomText('username', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 1),
-                    CustomText('member', textStyle: TextStyle(color: CommonColor.black, fontSize: 12)),
+                    CustomText(data['fullname'], textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 1),
+                    CustomText(CommonKey.MEMBER==data['role']?Languages.of(context).member:Languages.of(context).teacher, textStyle: TextStyle(color: CommonColor.black, fontSize: 12)),
                   ],
                 ),
               )
             ],
           ),
           SizedBox(height: 4,),
-          CustomText('Ten lop hoc', textStyle: TextStyle(color: CommonColor.black, fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 1),
+          CustomText(data['nameClass'], textStyle: TextStyle(color: CommonColor.black, fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 1),
           SizedBox(height: 4,),
-          CustomText('khoas hoc rat la hay, cac kieu, cau kieu ca ssssssssssssssssssssssssssss aaaaaaaaaaaaaa sssssssssssssssss ssssssssssssss bshhashjsa jkaskjkdjbsajbdkj', textStyle: TextStyle(fontSize: 12, color: CommonColor.black, overflow: TextOverflow.ellipsis), maxline: 3)
+          CustomText(data['comment'], textStyle: TextStyle(fontSize: 12, color: CommonColor.black, overflow: TextOverflow.ellipsis), maxline: 3)
         ],
       ),
     );

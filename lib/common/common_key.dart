@@ -48,4 +48,5 @@ class CommonKey{
   static final String INK_WELL = "INK_WELL";
   static final String DASH_BOARD ="DASH_BOARD";
   static final String UPDATE_CHILD = "UPDATE_CHILD";
+  static final String CHAT="CHAT";
 }
