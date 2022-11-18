@@ -524,4 +524,8 @@ class LanguageEn extends Languages{
   @override
   // TODO: implement member
   String get member => 'Học viên';
+
+  @override
+  // TODO: implement fileEmpty
+  String get fileEmpty => 'Chưa có tệp đính kèm';
 }

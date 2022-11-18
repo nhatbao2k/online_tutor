@@ -47,4 +47,31 @@ class DocumentProductPresenter{
     user = userData;
     return userData;
   }
+
+  void DeleteDoc(Document document){
+    FirebaseFirestore.instance.collection('documents').doc(document.id).delete();
+  }
+
+
+  Future<bool> UpdateDocument({File? imageFile, required Document document}) async{
+    String link = '';
+    if(imageFile!=null){
+      final metadata = SettableMetadata(contentType: "image/jpeg");
+      final storageRef = FirebaseStorage.instance.ref();
+      String path = '${CommonKey.DOCUMENT}/${document.name}/${document.id}/${getCurrentTime()}..jpg';
+      await storageRef
+          .child("$path")
+          .putFile(imageFile, metadata).whenComplete(() async{
+        document.imageLink = await getLinkStorage(path).then((value) => document.imageLink=value);
+      });
+    }
+    List<Map<String, dynamic>> dataDocument =[];
+    document.listDocument!.forEach((element) => dataDocument.add(element.toJson()));
+    await FirebaseFirestore.instance.collection('documents').doc(document.id).update({
+    'imageLink': document.imageLink,
+      'name': document.name,
+      'listDocument':dataDocument
+    });
+    return true;
+  }
 }

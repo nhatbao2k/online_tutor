@@ -135,4 +135,5 @@ abstract class Languages{
   String get listChat;
   String get contentEmpty;
   String get member;
+  String get fileEmpty;
 }

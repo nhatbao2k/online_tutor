@@ -18,8 +18,9 @@ import 'model/document_file.dart';
 
 class DocumentProductPage extends StatefulWidget {
   String? _keyFlow;
+  Document? _document;
 
-  DocumentProductPage(this._keyFlow);
+  DocumentProductPage(this._keyFlow, this._document);
 
   @override
   State<DocumentProductPage> createState() => _DocumentProductPageState();
@@ -33,11 +34,17 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
   List<DocumentFile> _documentList = [DocumentFile()];
   Map<String, dynamic>? _dataUser;
   DocumentProductPresenter? _presenter;
-
+  TextEditingController _controllerText = TextEditingController();
 
   @override
   void initState() {
     _presenter = DocumentProductPresenter();
+    if(CommonKey.EDIT==widget._keyFlow){
+      _controllerText = TextEditingController(text: widget._document!.name);
+      _nameDocument = widget._document!.name!;
+      _documentList = widget._document!.listDocument!;
+      _imageLink = widget._document!.imageLink!;
+    }
     getUserInfor();
   }
 
@@ -53,13 +60,41 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).documentNews, nameFunction: Languages.of(context).createNew, callback: (value){
-            if(_fileImage==null){
+            if(_fileImage==null&&CommonKey.EDIT!=widget._keyFlow){
               showToast(Languages.of(context).imageNull);
             }else if(_nameDocument.isEmpty){
               showToast(Languages.of(context).subjectEmpty);
-            }else{
+            }else if(_documentList.length==0){
+              showToast(Languages.of(context).fileEmpty);
+            } else{
+              showLoaderDialog(context);
               Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList, teacher: _dataUser!['fullname']);
-              _presenter!.CreateDocument(imageFile: _fileImage!, document: doc).then((value) {
+              if(CommonKey.EDIT==widget._keyFlow){
+                widget._document!.name = _nameDocument;
+                widget._document!.listDocument = _documentList;
+              }
+              CommonKey.EDIT==widget._keyFlow
+                  ?_fileImage==null
+                  ?_presenter!.UpdateDocument(document: widget._document!,).then((value) {
+                Navigator.pop(context);
+                if(value){
+                  showToast(Languages.of(context).onSuccess);
+                  Navigator.pop(context);
+                }else{
+                  showToast(Languages.of(context).onFailure);
+                }
+              })
+                  :_presenter!.UpdateDocument(document: widget._document!, imageFile: _fileImage!).then((value) {
+                Navigator.pop(context);
+                if(value){
+                  showToast(Languages.of(context).onSuccess);
+                  Navigator.pop(context);
+                }else{
+                  showToast(Languages.of(context).onFailure);
+                }
+              })
+                  :_presenter!.CreateDocument(imageFile: _fileImage!, document: doc).then((value) {
+                Navigator.pop(context);
                 if(value){
                   showToast(Languages.of(context).onSuccess);
                   Navigator.pop(context);
@@ -85,6 +120,7 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
                     child: TextFormField(
                       decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).nameClass, hintText: Languages.of(context).nameClass),
                       onChanged: (value)=>setState(()=> _nameDocument=value),
+                      controller: _controllerText,
                     ),
                   ),
                   Wrap(
