@@ -259,7 +259,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                                   listComment: [
                                   ]
                               );
-                              if(_level!='1'){
+                              if(_level!='1'&&_fileImage!=null){
                                 _linkImage = await _presenter!.getLinkImage(idNews: widget._data!['id'], comment: comment!, imageFile: _fileImage!);
                               }
                               _level=='2'?_comment!.listComment!.add(
@@ -348,7 +348,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
             ),
           ],
         ),
-        comment.imageLink!=null
+        comment.imageLink!=null&&comment.imageLink!.isNotEmpty
             ?Padding(
           padding: const EdgeInsets.only(left: 50, top: 8),
           child: InkWell(
@@ -451,7 +451,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
               ),
             ],
           ),
-          comment.imageLink!=null
+          comment.imageLink!=null&&comment.imageLink!.isNotEmpty
               ?Padding(
             padding: const EdgeInsets.only(left: 50, top: 8),
             child: InkWell(
