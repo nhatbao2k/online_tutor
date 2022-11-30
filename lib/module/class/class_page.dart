@@ -34,7 +34,11 @@ class _ClassPageState extends State<ClassPage> {
   @override
   void initState() {
     _presenter = ClassAddPresenter();
-    _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
+    if(_course==null){
+      _stream = FirebaseFirestore.instance.collection('class').snapshots();
+    }else{
+      _stream = FirebaseFirestore.instance.collection('class').where('idCourse', isEqualTo: _course!.getIdCourse).snapshots();
+    }
     getUserInfor();
   }
 

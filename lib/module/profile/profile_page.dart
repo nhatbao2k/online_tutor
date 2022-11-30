@@ -14,6 +14,10 @@ import '../../common/common_function.dart';
 import '../document/document_page.dart';
 
 class ProfilePage extends StatefulWidget{
+  String? _role;
+
+  ProfilePage(this._role);
+
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
@@ -153,7 +157,7 @@ class _ProfilePage extends State<ProfilePage>{
     return   InkWell(
       onTap: (){
         if(CommonKey.TEAM_TEACHER==keyFlow){
-          Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherPage()));
+          Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherPage(widget._role)));
         }else if(CommonKey.DOCUMENT==keyFlow){
           Navigator.push(context, MaterialPageRoute(builder: (_)=>DocumentPage(_user!)));
         }

@@ -210,38 +210,38 @@ class _DiscussPageState extends State<DiscussPage> {
         )
         :SizedBox(),
         SizedBox(height: 12,),
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(width: index==0?48:46,),
-            InkWell(
-              onTap: (){
-                setState((){
-                  _isFeedback = true;
-                  _nameFeedback = '${discuss.name}';
-                  _controllerMess = TextEditingController(text: _nameFeedback);
-                });
-              },
-              child: CustomText(
-                Languages.of(context).feedback,
-                textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
-              ),
-            ),
-            SizedBox(width: 50,),
-            InkWell(
-              onTap: (){
-                _detail!.discuss!.removeAt(index);
-                _presenter!.PostData(_detail!);
-              },
-              child: CustomText(
-                  Languages.of(context).delete,
-                  textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
-              ),
-            ),
-          ],
-        )
+        // _dataUser['phone']== Row(
+        //   mainAxisSize: MainAxisSize.max,
+        //   mainAxisAlignment: MainAxisAlignment.start,
+        //   crossAxisAlignment: CrossAxisAlignment.start,
+        //   children: [
+        //     SizedBox(width: index==0?48:46,),
+        //     InkWell(
+        //       onTap: (){
+        //         setState((){
+        //           _isFeedback = true;
+        //           _nameFeedback = '${discuss.name}';
+        //           _controllerMess = TextEditingController(text: _nameFeedback);
+        //         });
+        //       },
+        //       child: CustomText(
+        //         Languages.of(context).feedback,
+        //         textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
+        //       ),
+        //     ),
+        //     SizedBox(width: 50,),
+        //     InkWell(
+        //       onTap: (){
+        //         _detail!.discuss!.removeAt(index);
+        //         _presenter!.PostData(_detail!);
+        //       },
+        //       child: CustomText(
+        //           Languages.of(context).delete,
+        //           textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
+        //       ),
+        //     ),
+        //   ],
+        // )
       ],
     );
   }

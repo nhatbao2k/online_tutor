@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:online_tutor/common/common_function.dart';
 import 'package:online_tutor/common/common_key.dart';
 
 class TeacherAddPresenter{
@@ -20,13 +21,18 @@ class TeacherAddPresenter{
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email!,
         password: phone!,
-      );
-      await user?.updateDisplayName(phone);
-      if(file!=null){
-        await upLoadAvatar(file, phone);
-      }
-      await addTeacher(name!, phone, email, address!, birthday!, describe!);
-      await FirebaseAuth.instance.signOut();
+      ).then((value) async{
+        await user?.updateDisplayName(phone);
+        if(file!=null){
+        await upLoadAvatar(file, phone).then((value){
+          addTeacher(name!, phone, email, address!, birthday!, describe!);
+        });
+        }else{
+          addTeacher(name!, phone, email, address!, birthday!, describe!);
+        }
+        await FirebaseAuth.instance.signOut();
+      });
+
       return true;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
@@ -86,12 +92,12 @@ class TeacherAddPresenter{
     String url = '';
     try {
       final ref = FirebaseStorage.instance.ref().child("$phone/${CommonKey.AVATAR}/$phone.jpg");
-      url = (await ref.getDownloadURL()).toString();
+      url = await getLinkStorage("$phone/${CommonKey.AVATAR}/$phone.jpg");
     } on Exception catch (e) {
       // TODO
       url = '';
     }
-    FirebaseFirestore.instance
+    await FirebaseFirestore.instance
     .collection('users')
     .doc(phone)
     .set({
@@ -104,7 +110,7 @@ class TeacherAddPresenter{
       'birthday': birthday,
       'describe': describe,
       'office': ''
-    });
+    }).then((value) => true);
     return true;
   }
 }

@@ -390,7 +390,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
               ),
             ),
             SizedBox(width: 50,),
-            InkWell(
+            widget._dataUser!['phone']==comment.idUser?InkWell(
               onTap: (){
                 _presenter!.DeleteComment(comment,widget._data!['id']);
               },
@@ -398,7 +398,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                   Languages.of(context).delete,
                   textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
               ),
-            ),
+            ):SizedBox(),
           ],
         ),
         comment.listComment!.length>0?Wrap(
@@ -486,7 +486,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                 ),
               ),
               SizedBox(width: 50,),
-              InkWell(
+              widget._dataUser!['phone']==comment.idUser?InkWell(
                 onTap: (){
                   if(comment.level=="2"){
                     commentParent.listComment!.remove(comment);
@@ -499,7 +499,7 @@ class _CommentNewsPageState extends State<CommentNewsPage> {
                     Languages.of(context).delete,
                     textStyle: TextStyle(color: CommonColor.blue, fontSize: 10)
                 ),
-              ),
+              ):SizedBox(),
             ],
           ),
           (comment.listComment!=null)?Wrap(

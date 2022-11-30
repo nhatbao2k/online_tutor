@@ -32,7 +32,7 @@ class _SignUpPage extends State<SignUpPage>{
   final _formPass1 = GlobalKey<FormState>();
   final _formPass2 = GlobalKey<FormState>();
   final _formEmail = GlobalKey<FormState>();
-  final _user = FirebaseAuth.instance.currentUser;
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -194,7 +194,7 @@ class _SignUpPage extends State<SignUpPage>{
                           setState((){
                           });
                         },
-                        obscureText: _seePass2,
+                        obscureText: !_seePass2,
                         validator: (value){
                           if(value!.isEmpty){
                             return '\u26A0 ${Languages.of(context).passError}';
@@ -252,9 +252,12 @@ class _SignUpPage extends State<SignUpPage>{
       final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: email,
         password: pass,
-      );
+      ).whenComplete(() async{
+        final _user = FirebaseAuth.instance.currentUser;
+        await _user?.updateDisplayName(_phone);
+      });
       // await user!.updateDisplayName(_phone);
-      await _user?.updateDisplayName(_phone);
+
       FirebaseFirestore.instance.collection('users').doc(_phone).set({
         "phone": _phone,
         "avatar": "",

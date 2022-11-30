@@ -12,8 +12,9 @@ import '../class/model/class_course.dart';
 
 class CoursePage extends StatefulWidget {
   String? _role;
+  String? _keyFlow;
 
-  CoursePage(this._role);
+  CoursePage(this._role, this._keyFlow);
 
   @override
   State<CoursePage> createState() => _CoursePageState(_role);
@@ -44,7 +45,9 @@ class _CoursePageState extends State<CoursePage> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppBar(appType: AppType.appbar_home, title: ''),
+          CommonKey.HOME_PAGE==widget._keyFlow
+              ?CustomAppBar(appType: AppType.child, title: 'Khoá học')
+              :CustomAppBar(appType: AppType.appbar_home, title: ''),
           Expanded(
             child: CustomScrollView(
               slivers: [

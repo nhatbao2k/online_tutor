@@ -16,6 +16,7 @@ import 'package:online_tutor/module/home/presenter/home_presenter.dart';
 import '../class/class_detail_admin_page.dart';
 import '../class/class_page.dart';
 import '../class/model/class_course.dart';
+import '../course/course_page.dart';
 import 'model/banner_slider.dart';
 
 class HomePage extends StatefulWidget{
@@ -111,7 +112,13 @@ class _HomePage extends State<HomePage>{
                       }).toList(),
                     ),
                     SizedBox(height: 16,),
-                    itemSeeMore(context, Languages.of(context).course,(call) => null),
+                    itemSeeMore(context, Languages.of(context).course,(call) {
+                      if(_role==null||_role!.isEmpty){
+                        CustomDialog(context: context, content: Languages.of(context).requireLogin);
+                      }else{
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>CoursePage(_role, CommonKey.HOME_PAGE)));
+                      }
+                    }),
                     SizedBox(height: 8,),
                     StreamBuilder<QuerySnapshot>(
                       stream: _streamCourse,
@@ -154,7 +161,13 @@ class _HomePage extends State<HomePage>{
                       },
                     ),
                     SizedBox(height: 16,),
-                    itemSeeMore(context, Languages.of(context).classStudy, (call) => null),
+                    itemSeeMore(context, Languages.of(context).classStudy, (call) {
+                      if(_role==null||_role!.isEmpty){
+                        CustomDialog(context: context, content: Languages.of(context).requireLogin);
+                      }else{
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>ClassPage(null, _role, '')));
+                      }
+                    }),
                     StreamBuilder<QuerySnapshot>(
                       stream: _streamClass,
                       builder: (context, snapshots){
