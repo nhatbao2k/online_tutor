@@ -10,7 +10,6 @@ import 'package:online_tutor/languages/languages.dart';
 import 'package:online_tutor/module/class/model/my_class.dart';
 import 'package:online_tutor/module/class/model/my_class_detail.dart';
 import 'package:online_tutor/module/class/presenter/class_detail_product_presenter.dart';
-import 'package:tiengviet/tiengviet.dart';
 
 import '../../common/common_key.dart';
 import '../../common/common_theme.dart';
@@ -148,10 +147,15 @@ class _ClassDetailProductPageState extends State<ClassDetailProductPage> {
   Widget _itemLession(Lession lession, int index){
     Status selectStatus = _selectStatus!;
     print('test $selectStatus -- ');
-    lession.idClassDetail = CommonKey.LESSION+getCurrentTime();
+    if(CommonKey.EDIT!=_keyFlow){
+      lession.idClassDetail = _idClassDetail;
+      lession.lessionId = CommonKey.LESSION+getCurrentTime();
+    }
+    if(lession.lessionId==null){
+      lession.lessionId = CommonKey.LESSION+getCurrentTime();
+    }
     TextEditingController controllerId = TextEditingController();
     TextEditingController controllerName = TextEditingController();
-    lession.lessionId = CommonKey.LESSION+getCurrentTime();
     if(CommonKey.EDIT==_keyFlow){
       if(lession.idClassDetail!=null){
         controllerId = TextEditingController(text: lession.lessionId);

@@ -225,29 +225,32 @@ class _LessionAdminPageState extends State<LessionAdminPage> {
                   ),
                   floatingActionButton: Visibility(
                     visible: CommonKey.ADMIN==_role||CommonKey.TEACHER==_role,
-                    child: FloatingActionButton(
-                      onPressed: ()=> {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (_) => LessionProductPage(_lession!, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'', _course!, _myClass!, _myClassDetail!, _presenter!.state==SingleState.HAS_DATA?_presenter!.detail:null))),
-                        _controller.pause(),
-                      },
-                      child: Observer(
-                        builder: (_){
-                          if(_presenter!.state==SingleState.HAS_DATA){
-                            return Icon(
-                              Icons.edit,
-                              color: CommonColor.white,
-                            );
-                          }else{
-                            return Icon(
-                              Icons.edit,
-                              color: CommonColor.white,
-                            );
-                          }
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 50.0),
+                      child: FloatingActionButton(
+                        onPressed: ()=> {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (_) => LessionProductPage(_lession!, _presenter!.state==SingleState.HAS_DATA?CommonKey.EDIT:'', _course!, _myClass!, _myClassDetail!, _presenter!.state==SingleState.HAS_DATA?_presenter!.detail:null))),
+                          _controller.pause(),
                         },
-                      )
+                        child: Observer(
+                          builder: (_){
+                            if(_presenter!.state==SingleState.HAS_DATA){
+                              return Icon(
+                                Icons.edit,
+                                color: CommonColor.white,
+                              );
+                            }else{
+                              return Icon(
+                                Icons.edit,
+                                color: CommonColor.white,
+                              );
+                            }
+                          },
+                        )
+                      ),
                     ),
                   ),
                 ),

@@ -24,9 +24,18 @@ class TeacherAddPresenter{
       ).then((value) async{
         await user?.updateDisplayName(phone);
         if(file!=null){
-        await upLoadAvatar(file, phone).then((value){
-          addTeacher(name!, phone, email, address!, birthday!, describe!);
-        });
+          String link = '';
+
+            final metadata = SettableMetadata(contentType: "image/jpeg");
+            final storageRef = FirebaseStorage.instance.ref();
+            String path = '$phone/${CommonKey.AVATAR}/$phone.jpg';
+            await storageRef
+                .child("$path")
+                .putFile(file, metadata).whenComplete(() async{
+              link = await getLinkStorage(path).then((value) => link=value);
+              addTeacher(name!, phone, email, address!, birthday!, describe!);
+            });
+
         }else{
           addTeacher(name!, phone, email, address!, birthday!, describe!);
         }
@@ -109,8 +118,34 @@ class TeacherAddPresenter{
       'address': address,
       'birthday': birthday,
       'describe': describe,
-      'office': ''
+      'office': 'Giáo viên',
+      'isLooked': false
     }).then((value) => true);
+    return true;
+  }
+
+  Future<bool> updateTeacher(File? imageFile,String name, String phone, String address, String birthday, String describe, String keyUser, String linkImage) async{
+    String link = linkImage;
+    if(imageFile!=null){
+      final metadata = SettableMetadata(contentType: "image/jpeg");
+      final storageRef = FirebaseStorage.instance.ref();
+      String path = '$keyUser/${CommonKey.AVATAR}/$keyUser.jpg';
+      await storageRef
+          .child("$path")
+          .putFile(imageFile, metadata).whenComplete(() async{
+        link = await getLinkStorage(path).then((value) => link=value);
+      });
+    }
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(phone)
+        .update({
+      "avatar": link,
+      'fullname': name,
+      'address': address,
+      'birthday': birthday,
+      'describe': describe,
+    }).then((value) => true).catchError((onError)=>false);
     return true;
   }
 }

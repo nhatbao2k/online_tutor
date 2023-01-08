@@ -16,6 +16,9 @@ import '../../common/common_widget.dart';
 import '../../res/images/image_view.dart';
 
 class TeacherAddPage extends StatefulWidget {
+  Map<String, dynamic>? _data;
+  String? _role;
+  TeacherAddPage(this._data, this._role);
 
   @override
   State<TeacherAddPage> createState() => _TeacherAddPageState();
@@ -27,6 +30,8 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
   TextEditingController? _controllerAddress = TextEditingController();
   TextEditingController? _controllerBirthday = TextEditingController();
   TextEditingController? _controllerDescribeInfo = TextEditingController();
+  TextEditingController? _controllerPhone = TextEditingController();
+  TextEditingController? _controllerEmail = TextEditingController();
   String _fullname = '';
   String _keyUser ='';
   String _address = '';
@@ -37,6 +42,7 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
   String _email='';
   bool _loadFirst = true;
   File? _fileImage;
+  String _avatar = '';
   TeacherAddPresenter? _presenter;
 
 
@@ -44,7 +50,24 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
   @override
   void initState() {
     _presenter = TeacherAddPresenter();
-
+    if(widget._data!=null){
+      _avatar = widget._data!['avatar'];
+      _userName = widget._data!['phone'];
+      _fullname = widget._data!['fullname'];
+      _phone = widget._data!['phone'];
+      _controllerPhone = TextEditingController(text:widget._data!['phone']);
+      _controllerName = TextEditingController(text: widget._data!['fullname']);
+      _address = widget._data!['address'];
+      _controllerAddress = TextEditingController(text: widget._data!['address']);
+      _describeInfo = widget._data!['describe'];
+      _birthday = widget._data!['birthday'];
+      _controllerBirthday = TextEditingController(text: widget._data!['birthday']);
+      _office = widget._data!['office'];
+      _controllerDescribeInfo = TextEditingController(text: widget._data!['describe']);
+      _describeInfo = widget._data!['describe'];
+      _email = widget._data!['email'];
+      _controllerEmail = TextEditingController(text: _email);
+    }
   }
 
   @override
@@ -61,25 +84,40 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).teacherAdd, nameFunction: Languages.of(context).createNew, callback: (value){
+            CommonKey.ADMIN==widget._role?CustomAppBar(appType: AppType.childFunction, title: Languages.of(context).teacherAdd, nameFunction: Languages.of(context).createNew, callback: (value){
               showLoaderDialog(context);
-              _fileImage!=null?_presenter!.createAccount(file: _fileImage!,name: _fullname, phone: _phone, email: _email, address: _address, birthday: _birthday, describe: _describeInfo).then((value) {
-                Navigator.pop(context);
-                if(value){
+              if(widget._data==null&&CommonKey.ADMIN==widget._role){
+                _fileImage!=null?_presenter!.createAccount(file: _fileImage!,name: _fullname, phone: _phone, email: _email, address: _address, birthday: _birthday, describe: _describeInfo).then((value) {
                   Navigator.pop(context);
-                }else{
-                  CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).addFailure);
-                }
-              }):_presenter!.createAccount(name: _fullname,phone:  _phone,email:  _email,address:  _address,birthday:  _birthday,describe:  _describeInfo).then((value) {
-                Navigator.pop(context);
-                if(value){
+                  if(value){
+                    Navigator.pop(context);
+                  }else{
+                    CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).addFailure);
+                  }
+                }):_presenter!.createAccount(name: _fullname,phone:  _phone,email:  _email,address:  _address,birthday:  _birthday,describe:  _describeInfo).then((value) {
                   Navigator.pop(context);
-                  showToast(Languages.of(context).onSuccess);
-                }else{
-                  CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).addFailure);
-                }
-              });
-            },),
+                  if(value){
+                    Navigator.pop(context);
+                    showToast(Languages.of(context).onSuccess);
+                  }else{
+                    CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).addFailure);
+                  }
+                });
+              }else{
+                _presenter!.updateTeacher(_fileImage, _fullname, _phone, _address, _birthday, _describeInfo, _keyUser, _avatar).then((value) {
+                  Navigator.pop(context);
+                  if(value){
+                    Navigator.pop(context);
+                    showToast(Languages.of(context).onSuccess);
+                  }else{
+                    CustomDialog(context: context, iconData: Icons.warning_rounded, title: Languages.of(context).alert, content: Languages.of(context).onFailure);
+                  }
+                });
+              }
+
+            },)
+                :
+            CustomAppBar(appType: AppType.child, title: Languages.of(context).teacher),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -102,7 +140,9 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                   _fileImage=p0;
                                 }), ''),
                                 child:  ClipOval(
-                                    child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):Image.asset(ImageView.no_load, width: 150, height: 150, fit: BoxFit.cover,)
+                                    child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):_avatar.isNotEmpty&&widget._data!=null
+                                        ?Image.network(_avatar,width: 150, height: 150,fit: BoxFit.cover,)
+                                        :Image.asset(ImageView.no_load, width: 150, height: 150, fit: BoxFit.cover,)
                                 ),
                               )
                           ),
@@ -146,6 +186,7 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: TextFormField(
+                        controller: _controllerPhone,
                           decoration: CommonTheme.textFieldInputDecoration(hintText: Languages.of(context).phone, labelText: Languages.of(context).phone),
                           maxLines: 1,
                           onChanged: (value)=>setState(()=> _phone=value),
@@ -153,12 +194,14 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                         validator: (value){
                             return value!.isEmpty?Languages.of(context).phoneEmpty:_phone.length!=10?Languages.of(context).phoneError:null;
                         },
+                        enabled: widget._data!=null?false:true,
                       ),
                     ),
                     SizedBox(height: 8,),
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: TextFormField(
+                        controller: _controllerEmail,
                           decoration: CommonTheme.textFieldInputDecoration(hintText: Languages.of(context).email, labelText: Languages.of(context).email),
                           maxLines: 1,
                           onChanged: (value)=>setState(()=> _email=value),
@@ -166,12 +209,14 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                         validator:(value){
                           return value!.isEmpty?Languages.of(context).emailEmpty:!validateEmail(value)?Languages.of(context).emailError:null;
                         },
+                        enabled: widget._data!=null? false: true,
                       ),
                     ),
                     SizedBox(height: 8,),
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: TextFormField(
+                        controller: _controllerAddress,
                           decoration: CommonTheme.textFieldInputDecoration(hintText: Languages.of(context).address, labelText: Languages.of(context).address),
                           maxLines: 1,
                           onChanged: (value)=>setState(()=> _address=value)
@@ -202,9 +247,11 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: TextFormField(
+                        controller: _controllerDescribeInfo,
                           decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).describeInfo, hintText: Languages.of(context).describeInfo),
                           maxLines: 10,
-                          onChanged: (value)=>setState(()=> _describeInfo=value)
+                          onChanged: (value)=>setState(()=> _describeInfo=value,
+                          )
                       ),
                     ),
                   ],

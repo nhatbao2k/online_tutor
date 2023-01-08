@@ -261,7 +261,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
                       },
                     ),
                   ),
-                  _select=='Có trắc nghiệm'
+                  _homeworkList[0].worksheet==true
                       ?Wrap(
                     children:  List.generate(_homeworkList[0].listQuestion!.length, (index) => _itemWorkSheet(_homeworkList[0].listQuestion![index], index)),
                       ):SizedBox()
@@ -338,6 +338,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
     _fileContent = _lessionDetail!.fileContent!;
     _fileNameContent = _fileContent;
     _videoLink = _lessionDetail!.videoLink!;
+    _homeworkList[0] = _lessionDetail!.homework![0];
     _homeworkList[0].question=_fileQuestion;
     _homeworkList[0].answer=_fileAnswer;
     _homeworkList[0].listQuestion=_lessionDetail!.homework![0].listQuestion;
