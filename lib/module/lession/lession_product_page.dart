@@ -254,7 +254,9 @@ class _LessionProductPageState extends State<LessionProductPage> {
                           _homeworkList[0].listQuestion=null;
                           _homeworkList[0].worksheet=false;
                         }else{
-                          _homeworkList[0] = Homework(idHomework: '1',listQuestion: [QA(id: '1')]);
+                          _homeworkList[0] = Homework(idHomework: '1',listQuestion: [QA(id: '1',),]);
+                          _homeworkList[0].question=_fileQuestion;
+                          _homeworkList[0].answer = _fileAnswer;
                           _homeworkList[0].worksheet=true;
                         }
                         setState(()=>null);
@@ -338,6 +340,7 @@ class _LessionProductPageState extends State<LessionProductPage> {
     _fileContent = _lessionDetail!.fileContent!;
     _fileNameContent = _fileContent;
     _videoLink = _lessionDetail!.videoLink!;
+    _homeworkList = _lessionDetail!.homework!;
     _homeworkList[0] = _lessionDetail!.homework![0];
     _homeworkList[0].question=_fileQuestion;
     _homeworkList[0].answer=_fileAnswer;
