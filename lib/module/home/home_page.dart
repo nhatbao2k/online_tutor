@@ -116,7 +116,7 @@ class _HomePage extends State<HomePage>{
                       if(_role==null||_role!.isEmpty){
                         CustomDialog(context: context, content: Languages.of(context).requireLogin);
                       }else{
-                        Navigator.push(context, MaterialPageRoute(builder: (_)=>CoursePage(_role, CommonKey.HOME_PAGE)));
+                        Navigator.push(context, MaterialPageRoute(builder: (_)=>CoursePage(_role, CommonKey.HOME_PAGE, _phone)));
                       }
                     }),
                     SizedBox(height: 8,),

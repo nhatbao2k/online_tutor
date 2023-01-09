@@ -385,7 +385,7 @@ Widget itemCourseHours(BuildContext context, String title, String content, Strin
   return InkWell(
     onTap: () => onClick(''),
     child: Container(
-      height: 300,
+      height: 330,
       margin: EdgeInsets.symmetric(horizontal: 8, vertical: 8),
       width: checkLandscape(context)?getWidthDevice(context)/4:getWidthDevice(context)/2-16,
       padding: EdgeInsets.all(4),

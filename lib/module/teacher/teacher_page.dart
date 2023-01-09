@@ -63,51 +63,58 @@ class _TeacherPageState extends State<TeacherPage> {
                     alignment: WrapAlignment.center,
                       children: snapshot.data!.docs.map((e) {
                         Map<String, dynamic> data = e.data() as Map<String, dynamic>;
-                        return Card(
-                          margin: EdgeInsets.all(8),
-                          child: Container(
-                            width: getWidthDevice(context)/2-16,
-                            height: getHeightDevice(context)*0.35,
-                            padding: EdgeInsets.all(8),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.max,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                ImageLoad.imageNetwork(data['avatar'], getWidthDevice(context)/4, getWidthDevice(context)/2-32),
-                                SizedBox(height: 8,),
-                                CustomText('GV: ${data['fullname']}', textStyle: TextStyle(fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2, textAlign: TextAlign.center),
-                                SizedBox(height: 8,),
-                                CustomText('Đ/c: ${data['address']}', textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 2),
-                                SizedBox(height: 8,),
-                                CustomText('Chức vụ: ${data['office']}', textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 2),
-                                SizedBox(height: 8,),
-                                CustomText(data['describe'], textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 3),
-                                Spacer(),
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    IconButton(
-                                      onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherAddPage(data, widget._role))),
-                                      icon: Icon(
-                                        Icons.edit,
-                                        color: CommonColor.blue,
+                        return InkWell(
+                          onTap: (){
+                            if(CommonKey.ADMIN!=widget._role){
+                              Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherAddPage(data, widget._role)));
+                            }
+                          },
+                          child: Card(
+                            margin: EdgeInsets.all(8),
+                            child: Container(
+                              width: getWidthDevice(context)/2-16,
+                              height:  CommonKey.ADMIN==widget._role?getHeightDevice(context)*0.35:getHeightDevice(context)*0.3,
+                              padding: EdgeInsets.all(8),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  ImageLoad.imageNetwork(data['avatar'], getWidthDevice(context)/4, getWidthDevice(context)/2-32),
+                                  SizedBox(height: 8,),
+                                  CustomText('GV: ${data['fullname']}', textStyle: TextStyle(fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2, textAlign: TextAlign.center),
+                                  SizedBox(height: 8,),
+                                  CustomText('Đ/c: ${data['address']}', textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 2),
+                                  SizedBox(height: 8,),
+                                  CustomText('Chức vụ: ${data['office']}', textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 2),
+                                  SizedBox(height: 8,),
+                                  CustomText(data['describe'], textStyle: TextStyle(fontSize: 12, overflow: TextOverflow.fade), maxline: 3),
+                                  Spacer(),
+                                  CommonKey.ADMIN==widget._role?Row(
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      IconButton(
+                                        onPressed: ()=>Navigator.push(context, MaterialPageRoute(builder: (_)=>TeacherAddPage(data, widget._role))),
+                                        icon: Icon(
+                                          Icons.edit,
+                                          color: CommonColor.blue,
+                                        ),
                                       ),
-                                    ),
-                                    IconButton(
-                                      onPressed: (){
-                                        _presenter!.lookAccount(data['phone']);
-                                      },
-                                      icon: Icon(
-                                        Icons.lock_open_sharp,
-                                        color: CommonColor.blue,
+                                      IconButton(
+                                        onPressed: (){
+                                          _presenter!.lookAccount(data['phone']);
+                                        },
+                                        icon: Icon(
+                                          Icons.lock_open_sharp,
+                                          color: CommonColor.blue,
+                                        ),
                                       ),
-                                    ),
-                                  ],
-                                )
-                              ],
+                                    ],
+                                  ):SizedBox()
+                                ],
+                              ),
                             ),
                           ),
                         );

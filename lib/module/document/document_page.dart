@@ -150,7 +150,7 @@ class _DocumentPageState extends State<DocumentPage> {
             CustomText('${document.name}', textStyle: TextStyle(color: CommonColor.black, fontWeight: FontWeight.bold, fontSize: 16, overflow: TextOverflow.ellipsis), maxline: 2),
             CustomText('GV: ${document.teacher}', textStyle: TextStyle(color: CommonColor.black,  fontSize: 14, overflow: TextOverflow.ellipsis), maxline: 2),
             SizedBox(height: 4,),
-            Row(
+            document.creatUser==widget._dataUser!['phone']?Row(
               mainAxisSize: MainAxisSize.max,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -171,7 +171,7 @@ class _DocumentPageState extends State<DocumentPage> {
                   onPressed: ()=>_presenter!.DeleteDoc(document),
                 ),
               ],
-            )
+            ):SizedBox()
           ],
         ),
       ),

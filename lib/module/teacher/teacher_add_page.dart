@@ -136,9 +136,14 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                   )
                               ),
                               child: InkWell(
-                                onTap: ()=>cropImage(context, (p0) => setState((){
-                                  _fileImage=p0;
-                                }), ''),
+                                onTap: (){
+                                  if(CommonKey.ADMIN==widget._role){
+                                    cropImage(context, (p0) => setState((){
+                                      _fileImage=p0;
+                                    }), '');
+                                  }
+
+                                },
                                 child:  ClipOval(
                                     child: _fileImage!=null?Image(image: FileImage(_fileImage!),width: 150, height: 150,):_avatar.isNotEmpty&&widget._data!=null
                                         ?Image.network(_avatar,width: 150, height: 150,fit: BoxFit.cover,)
@@ -146,7 +151,7 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                 ),
                               )
                           ),
-                          Positioned(
+                          CommonKey.ADMIN==widget._role?Positioned(
                               bottom: 5,
                               right: 5,
                               child: Container(
@@ -165,7 +170,7 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                                     },
                                   ),
                                 ),
-                              ))
+                              )):SizedBox()
                         ]
                     ),
                     Padding(
@@ -219,22 +224,27 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                         controller: _controllerAddress,
                           decoration: CommonTheme.textFieldInputDecoration(hintText: Languages.of(context).address, labelText: Languages.of(context).address),
                           maxLines: 1,
-                          onChanged: (value)=>setState(()=> _address=value)
+                          onChanged: (value)=>setState(()=> _address=value),
+                        enabled: CommonKey.ADMIN==widget._role?true:false,
                       ),
                     ),
                     Padding(
                       padding: EdgeInsets.all(8),
                       child: InkWell(
-                        onTap: ()=>DatePicker.showDatePicker(context,
-                            showTitleActions: true,
-                            minTime: DateTime(2000, 1, 31),
-                            maxTime: DateTime(2022, 12, 31), onChanged: (date) {
-                            }, onConfirm: (date) {
-                              print('confirm $date');
-                              _controllerBirthday = TextEditingController(text: splitSpace(date.toString()));
-                              _birthday=splitSpace(date.toString());
-                              setState((){});
-                            }, currentTime: DateTime.now(), locale: LocaleType.vi),
+                        onTap: (){
+                          if(CommonKey.ADMIN==widget._role){
+                            DatePicker.showDatePicker(context,
+                                showTitleActions: true,
+                                minTime: DateTime(2000, 1, 31),
+                                maxTime: DateTime(2022, 12, 31), onChanged: (date) {
+                                }, onConfirm: (date) {
+                                  print('confirm $date');
+                                  _controllerBirthday = TextEditingController(text: splitSpace(date.toString()));
+                                  _birthday=splitSpace(date.toString());
+                                  setState((){});
+                                }, currentTime: DateTime.now(), locale: LocaleType.vi);
+                          }
+                        },
                         child: TextFormField(
                             decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).birthday, hintText: Languages.of(context).birthday),
                             maxLines: 1,
@@ -251,7 +261,8 @@ class _TeacherAddPageState extends State<TeacherAddPage> {
                           decoration: CommonTheme.textFieldInputDecoration(labelText: Languages.of(context).describeInfo, hintText: Languages.of(context).describeInfo),
                           maxLines: 10,
                           onChanged: (value)=>setState(()=> _describeInfo=value,
-                          )
+                          ),
+                        enabled: CommonKey.ADMIN==widget._role?true:false,
                       ),
                     ),
                   ],

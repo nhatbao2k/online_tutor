@@ -13,8 +13,9 @@ import '../class/model/class_course.dart';
 class CoursePage extends StatefulWidget {
   String? _role;
   String? _keyFlow;
+  String? _username;
 
-  CoursePage(this._role, this._keyFlow);
+  CoursePage(this._role, this._keyFlow, this._username);
 
   @override
   State<CoursePage> createState() => _CoursePageState(_role);
@@ -30,7 +31,11 @@ class _CoursePageState extends State<CoursePage> {
   @override
   void initState() {
     _presenter = CoursePresenter();
-    _stream = FirebaseFirestore.instance.collection('course').snapshots();
+    if(CommonKey.TEACHER==widget._role){
+      _stream = FirebaseFirestore.instance.collection('course').where('idTeacher', isEqualTo: widget._username).snapshots();
+    }else{
+      _stream = FirebaseFirestore.instance.collection('course').snapshots();
+    }
   }
 
   @override

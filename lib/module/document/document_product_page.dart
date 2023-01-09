@@ -68,7 +68,7 @@ class _DocumentProductPageState extends State<DocumentProductPage> {
               showToast(Languages.of(context).fileEmpty);
             } else{
               showLoaderDialog(context);
-              Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList, teacher: _dataUser!['fullname']);
+              Document doc = Document(id: getCurrentTime(), name: _nameDocument, listDocument: _documentList, teacher: _dataUser!['fullname'], creatUser: _dataUser!['phone']);
               if(CommonKey.EDIT==widget._keyFlow){
                 widget._document!.name = _nameDocument;
                 widget._document!.listDocument = _documentList;
