@@ -73,7 +73,7 @@ class _TeacherPageState extends State<TeacherPage> {
                             margin: EdgeInsets.all(8),
                             child: Container(
                               width: getWidthDevice(context)/2-16,
-                              height:  CommonKey.ADMIN==widget._role?getHeightDevice(context)*0.35:getHeightDevice(context)*0.3,
+                              height:  CommonKey.ADMIN==widget._role?getHeightDevice(context)*0.35+8:getHeightDevice(context)*0.3+8,
                               padding: EdgeInsets.all(8),
                               child: Column(
                                 mainAxisSize: MainAxisSize.max,

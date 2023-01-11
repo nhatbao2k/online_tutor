@@ -204,7 +204,7 @@ class _ClassDetailAdminPageState extends State<ClassDetailAdminPage> {
             onChanged: (value)=>setState(()=>_content=value),
           ),
           actions: [
-            ButtonDefault(Languages.of(context).submit, (data) {
+            ButtonDefault(Languages.of(context).submitRating, (data) {
               if(_content.isEmpty){
                 showToast(Languages.of(context).contentEmpty);
               }else{

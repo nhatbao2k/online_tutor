@@ -529,4 +529,8 @@ class LanguagesVn extends Languages{
   @override
   // TODO: implement fileEmpty
   String get fileEmpty => 'Chưa có tệp đính kèm';
+
+  @override
+  // TODO: implement submitRating
+  String get submitRating => 'Gửi đánh giá';
 }

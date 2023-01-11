@@ -136,4 +136,5 @@ abstract class Languages{
   String get contentEmpty;
   String get member;
   String get fileEmpty;
+  String get submitRating;
 }
