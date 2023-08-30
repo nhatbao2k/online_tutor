@@ -17,7 +17,7 @@ import 'package:online_tutor/languages/languages.dart';
 import '../../common/common_color.dart';
 import 'account_detail_presenter.dart';
 
-
+//alo
 class AccountDetailPage extends StatefulWidget{
   Map<String, dynamic>? _user;
 
